@@ -1,7 +1,7 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly
+if( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
 }
 
 
@@ -17,32 +17,69 @@ if( array_key_exists( 'className', $block ) ) {
 // get field - layout (template)
 $layout = get_field( 'pull_layout' );
 
+
+// get field - pull from article (relationship)
 $pull_from = get_field( 'pull_from' );
-if( is_array( $pull_from) ) {
 
-	foreach( $pull_from as $pid ) {
-		//echo '<h1 style="color:red;">'.$pid.'</h1>';
-		//echo $slayout;
-		$args = array(
-			'id'		=> $pid,
-		);
-		$slayout = setup_acf_pull_view_template_pulls( $layout, $args );
 
-		if( $slayout === FALSE ) {
+// LOCAL
+if( get_field( 'pull_filter' ) == 'local' ) {
 
-			echo '<h4>Template is missing. Please check.</h4>';
+	if( is_array( $pull_from ) ) {
 
-		} else {
+		foreach( $pull_from as $pid ) {
 
-			echo $slayout;
+			//echo '<h1 style="color:red;">'.$pid.'</h1>';
+			//echo $slayout;
+			$args = array(
+				'id'		=> $pid,
+			);
+			
+			$slayout = setup_acf_pull_view_template_pulls( $layout, $args );
+
+			if( $slayout === FALSE ) {
+
+				echo '<h4>Template is missing. Please check.</h4>';
+
+			} else {
+
+				echo $slayout;
+
+			}
 
 		}
 
+	} else {
+
+		// pull from field is empty
+		echo '<h3>Please choose an article to pull from.</h3>';
+
 	}
 
-} else {
+}
 
-	// pull from field is empty
-	echo '<h3>Please choose an article to pull from.</h3>';
+
+// SUBSITE
+if( get_field( 'pull_filter' ) == 'subsite' ) {
+
+
+
+}
+
+
+// REST
+if( get_field( 'pull_filter' ) == 'rest' ) {
+
+	$slayout = setup_acf_pull_view_template_pulls( $layout, NULL );
+
+	if( $slayout === FALSE ) {
+
+		echo '<h4>Template is missing. Please check.</h4>';
+
+	} else {
+
+		echo $slayout;
+
+	}
 
 }

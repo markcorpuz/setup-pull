@@ -127,18 +127,20 @@ if( !function_exists( 'setup_acf_pull_view_template_pulls' ) ) {
 
 	        include $layout_file;
 
-	        $new_output = ob_get_clean();
+            return ob_get_clean();
+	        /*$new_output = ob_get_clean();
 	            
 	        if( !empty( $new_output ) )
 	            $output = $new_output;
-
+            */
 	    } else {
 
-	        $output = FALSE;
+	        //$output = FALSE;
+            return FALSE;
 
 	    }
 
-	    return $output;
+	    //return $output;
 
 	}
 
