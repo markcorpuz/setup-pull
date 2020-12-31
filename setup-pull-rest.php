@@ -101,11 +101,15 @@ function setup_pull_rest_api( $atts ) {
     			$array = json_decode( file_get_contents( $url_combined.$id ), TRUE, 512 );
 
         		// post ID
-        		return setup_pull_through_the_url( $array, $field, $block );
+        		return setup_pull_through_the_url( $array, $field, $block, NULL );
 
         	} else {
 
-        		echo '<h1>'.$field.'</h1>';
+        		//echo '<h1>'.$id.' | '.$field.'</h1>';
+        		$array = json_decode( file_get_contents( $url_combined ), TRUE, 512 );
+
+        		// post name (slug)
+        		return setup_pull_through_the_url( $array, $field, $block, $id );
 
         	}
 

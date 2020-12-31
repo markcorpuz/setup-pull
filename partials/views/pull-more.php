@@ -20,16 +20,29 @@ $pull_filter = get_field( 'pull_filter' );
 $get_this_block = get_field( 'pull_block' );
 
 
+/*
+			Here's the priority on sources:
+			1. pull from same site
+			2. pull from multisite
+			3. pull with REST (technically number 2 is probably gonna use this)
+
+			Here's the priority on content:
+			1. pull the_content
+			2. pull a specific block from the_content
+			3. pull a setup-log block from another location and placing it in the destination
+			4. pull a custom_field (if needed)
+*/
+
 // PULL FROM SAME SITE
 if( $pull_filter == 'local' ) {
-
+	
 	if( empty( $get_this_block ) ) {
 
 		// PULL ALL WP-CONTENT
 		$out = setup_pull_the_whole_content( $pid );
 
 	} else {
-
+		
 		// PULL SPECIFIC BLOCK FROM WP-CONTENT
 		$out = setup_pull_parse_blocks( $content, $get_this_block );
 

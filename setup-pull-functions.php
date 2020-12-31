@@ -8,31 +8,40 @@ if( ! defined( 'ABSPATH' ) ) {
 // go though the URL to isolate what's being pulled
 if( !function_exists( 'setup_pull_through_the_url' ) ) {
 
-	function setup_pull_through_the_url( $array, $field, $block ) {
+	function setup_pull_through_the_url( $array, $field, $block, $slug_or_title ) {
 
-		if( is_array( $field ) ) {
+        if( empty( $slug_or_title ) ) {
 
-			// more than 1 field is being pulled
+    		/*if( is_array( $field ) ) {
 
-		} else {
+    			// more than 1 field is being pulled
 
-			// only 1 field is being pulled
-			if( !empty( $block ) ) {
+    		} else {*/
 
-				//return setup_pull_parse_blocks( $array, $block );
+    			// only 1 field is being pulled
+    			if( !empty( $block ) ) {
 
-				// PULL BLOCK
-				echo '<h2>BLOCK</h2>';
+    				//return setup_pull_parse_blocks( $array, $block );
 
-			} else {
+    				// PULL BLOCK
+    				echo '<h2>BLOCK</h2>';
 
-				// PULL FIELD
-				//echo '<h2>NO BLOCK</h2>';
-				return setup_pull_loop_though_each_field( $array, $field );
+    			} else {
 
-			}
+    				// PULL FIELD
+    				//echo '<h2>NO BLOCK</h2>';
+    				return setup_pull_loop_though_each_field( $array, $field );
 
-		} // if( is_array( $field ) ) {
+    			}
+
+    		//} // if( is_array( $field ) ) {
+
+        } else {
+
+            // page name (slug) or title is being used to pull information
+            return setup_pull_loop_though_each_field( $array, $field, $slug_or_title );
+
+        }
 
 	}
 
@@ -96,26 +105,61 @@ if( !function_exists( 'setup_pull_the_whole_content' ) ) {
 // Loop through the pulled information
 if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
 
-    function setup_pull_loop_though_each_field( $array, $field ) {
+    function setup_pull_loop_though_each_field( $array, $field, $slug_or_title = NULL ) {
+
+        $fields = explode( ',', $field );
 
         foreach( $array as $key => $val ) {
 
-            //echo '<h1>'.$key.'</h1>'; // show all fields pulled
-            if( $field == $key ) {
+            if( empty( $slug_or_title ) ) {
 
-                // apply filters if content is being pulled
-                if( $field == 'content' ) {
+                //echo '<h1>'.$key.'</h1>'; // show all fields pulled
+                if( in_array( $key, $fields ) ) {
+                //if( $field == $key ) {
 
-                    return setup_pull_apply_filters_to_content( $val[ 'rendered' ] );
+                    // apply filters if content is being pulled
+                    if( $field == 'content' ) {
+
+                        $return = setup_pull_apply_filters_to_content( $val[ 'rendered' ] );
+                        
+                    } else {
+
+                        $return = $val[ 'rendered' ];
+
+                    }
                     
-                } else {
+//                    break; // exit loop
+                }
 
-                    $return = $val[ 'rendered' ];
+            } else {
+                //var_dump( $val[ 'title'] ); echo '<br />';
+                // page name (slug) or title is being used to pull information           
+                if( $val[ 'slug' ] == $slug_or_title || $val[ 'title'][ 'rendered' ] == $slug_or_title ) {
+
+                    foreach( $val as $v_key => $v_value ) {
+
+                        //echo '<h3>'.$v_key.'</h3>';
+                        if( in_array( $v_key, $fields ) ) {
+                        //if( $field == $v_key ) {
+
+                            // apply filters if content is being pulled
+                            if( $field == 'content' ) {
+
+                                $return = setup_pull_apply_filters_to_content( $v_value[ 'rendered' ] );
+                                
+                            } else {
+
+                                $return = $v_value[ 'rendered' ];
+
+                            }
+
+                        }
+
+                    } // foreach( $val as $v_key => $v_value ) {
 
                 }
-                
-                break; // exit loop
-            }
+
+            } // if( empty( $slug_or_title ) ) {
 
         }
 
