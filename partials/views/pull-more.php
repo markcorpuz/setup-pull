@@ -91,7 +91,7 @@ if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 } else {
 
 	$showsource = get_field( 'pull_source' );
-	if( !empty( $showsource ) && $showsource == 'show' ) {
+	if( !empty( $showsource ) && $showsource == 'show' && is_user_logged_in() ) {
 
 		// show this optional field
 		if( !empty( $pull_field ) ) {
