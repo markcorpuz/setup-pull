@@ -14,20 +14,26 @@ function setup_pull_rest_api( $atts ) {
     // variables | URL
     if( array_key_exists( "url", $atts ) ) {
         $url = $atts[ 'url' ];
+    } else {
+    	$url = '';
     }
     
     // variables | Native or Custom field (yes or no)
     if( array_key_exists( "id", $atts ) ) {
         $id = $atts[ 'id' ];
+    } else {
+    	$id = '';
     }
     
-    // variables | Field
-    /*if( array_key_exists( "field", $atts ) ) {
-        $field = $atts[ 'field' ];
+    // variables | Flter
+    if( array_key_exists( "pull_filter", $atts ) ) {
+        $pull_filter = $atts[ 'pull_filter' ];
+    } else {
+        $pull_filter = '';
     }
     
     // variables | Template
-    if( array_key_exists( "template", $atts ) ) {
+    /*if( array_key_exists( "template", $atts ) ) {
         $template = $atts[ 'template' ];
     }
     
@@ -50,11 +56,15 @@ function setup_pull_rest_api( $atts ) {
     // variables | 
     if( array_key_exists( "field", $atts ) ) {
         $field = $atts[ 'field' ];
+    } else {
+    	$field = '';
     }
     
     // variables | Block
     if( array_key_exists( "block", $atts ) ) {
         $block = $atts[ 'block' ];
+    } else {
+    	$block = '';
     }
 
     /*
@@ -65,16 +75,22 @@ function setup_pull_rest_api( $atts ) {
     // variables | API Extension
     if( array_key_exists( "api_url_ext", $atts ) ) {
     	$rest_api_url_extension = $atts[ 'api_url_ext' ]; // 'wp'  or 'acf'
+    } else {
+    	$rest_api_url_extension = '';
     }
 
     // variables | Post Type
     if( array_key_exists( "post_type", $atts ) ) {
     	$post_type = $atts[ 'post_type' ];
+    } else {
+    	$post_type = '';
     }
 
     // variables | Post Type
     if( array_key_exists( "version", $atts ) ) {
     	$version = $atts[ 'version' ];
+    } else {
+    	$version = '';
     }
 
     //echo rtrim( $url, "/" ).'/wp-json/'.$rest_api_url_extension.'/'.$version.'/'.$post_type.'/'.$id;
@@ -99,9 +115,13 @@ function setup_pull_rest_api( $atts ) {
 
         		// pull and decode
     			$array = json_decode( file_get_contents( $url_combined.$id ), TRUE, 512 );
-
+    			
         		// post ID
-        		return setup_pull_through_the_url( $array, $field, $block, NULL );
+                if( $pull_filter == 'rest' ) {
+                    return setup_pull_through_the_url( $array, $field );
+                } else {
+                    return setup_pull_through_the_url( $array, $field, $block );
+                }
 
         	} else {
 
@@ -109,7 +129,11 @@ function setup_pull_rest_api( $atts ) {
         		$array = json_decode( file_get_contents( $url_combined ), TRUE, 512 );
 
         		// post name (slug)
-        		return setup_pull_through_the_url( $array, $field, $block, $id );
+                if( $pull_filter == 'rest' ) {
+                    return setup_pull_through_the_url( $array, $field, NULL, $id );
+                } else {
+                    return setup_pull_through_the_url( $array, $field, $block, $id );
+                }
 
         	}
 

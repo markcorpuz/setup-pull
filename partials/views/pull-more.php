@@ -11,6 +11,10 @@ $classes = array();
 
 $classes = array_merge( $classes, explode( ' ', $block_css ) );
 
+$pull_from_website = get_field( 'pull_from_website' );
+$pull_from_article = get_field( 'pull_from_article' );
+$pull_field = get_field( 'pull_field' );
+
 // get wp-content
 $content = get_the_content( NULL, FALSE, $pid );
 
@@ -61,13 +65,14 @@ if( $pull_filter == 'subsite' ) {
 if( $pull_filter == 'rest' ) {
 
 	$args = array(
-		'url'			=>	get_field( 'pull_from_website' ),
-		'id'			=>	get_field( 'pull_from_article' ),
-		'field'			=>	get_field( 'pull_field' ),
+		'url'			=>	$pull_from_website,
+		'id'			=>	$pull_from_article,
+		'field'			=>	$pull_field,
 		'block'			=>	$get_this_block,
 		'api_url_ext' 	=> 	get_field( 'pull_api_extension' ),
     	'post_type' 	=> 	get_field( 'pull_post_type' ),
     	'version' 		=> 	get_field( 'pull_rest_version' ),
+    	'pull_filter'	=>	$pull_filter,
 	);
 
 	$out = setup_pull_rest_api( $args );
@@ -82,7 +87,27 @@ echo '</div>';*/
 if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 	// show default notification that the block exists
 	//SETUP-LOG | Template: All-In | Show: Title Summary InnerBlock
-	$out = 'SETUP-PULL | Template: '.get_field( 'pull_layout' ).' | Show: (Jake show all fields that are selected)';
+	$out = 'SETUP-PULL | Template: '.get_field( 'pull_layout' );
+} else {
+
+	$showsource = get_field( 'pull_source' );
+	if( !empty( $showsource ) && $showsource == 'show' ) {
+
+		// show this optional field
+		if( !empty( $pull_field ) ) {
+			$show_the_field_source = '<div>Field(s): '.$pull_field.'</div>';
+		} else {
+			$show_the_field_source = '';
+		}
+
+		$out = $out.'<div style="background-color:gray;">
+					<div>Source: <a href="'.$pull_from_website.'" target="_blank">'.$pull_from_website.'</a></div>
+					<div>Article: '.$pull_from_article.'</div>
+					'.$show_the_field_source.'
+				</div>';
+
+	}
+
 }
 
 // OUTPUT
