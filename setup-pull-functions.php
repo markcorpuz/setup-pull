@@ -129,7 +129,7 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
     function setup_pull_loop_though_each_field( $array, $field, $slug_or_title = NULL, $block = NULL ) {
 
         $fieldz = explode( ',', $field );
-        /*foreach( $fields as $f ) {
+        /*foreach( $fieldz as $f ) {
             $fields[] = trim( $f ); // remove spaces before and after each value
         }*/
         $fields = array_map( 'trim', $fieldz );
@@ -177,13 +177,14 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
                 }
 
             } else {
-
+                
                 // page name (slug) or title is being used to pull information           
                 if( $val[ 'slug' ] == $slug_or_title || $val[ 'title'][ 'rendered' ] == $slug_or_title ) {
 
                     foreach( $val as $v_key => $v_value ) {
 
-                        //echo $v_key.'<br />';
+                        // Filter fields
+                        //echo $v_key.' | '.$v_value.'<br />';
                         if( in_array( $v_key, $fields ) ) {
 
                             // apply filters if content is being pulled
@@ -207,6 +208,17 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
 
                         } // if( in_array( $v_key, $fields ) ) {
 
+                        // get the modified date of the entry
+                        if( $v_key == 'modified' ) {
+                            //echo $v_key.' | '.$v_value.'<br />';
+                            $entry_mod_date = $v_value;
+                        }
+
+                        // get the link to the source
+                        if( $v_key == 'link' ) {
+                            $entry_link = $v_value;
+                        }
+                        
                     } // foreach( $val as $v_key => $v_value ) {
 
                 }
@@ -223,6 +235,14 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
         // no entry found
         if( empty( $return ) ) {
             $return = 'No entry found. Please validate the source.';
+        } else {
+
+            $return = array(
+                'output'        => $return,
+                'mod_date'      => $entry_mod_date,
+                'entry_link'    => $entry_link,
+            );
+
         }
 
         return $return;

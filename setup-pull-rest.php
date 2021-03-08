@@ -57,7 +57,7 @@ function setup_pull_rest_api( $atts ) {
     if( array_key_exists( "field", $atts ) ) {
         $field = $atts[ 'field' ];
     } else {
-    	$field = '';
+    	$field = 'content';
     }
     
     // variables | Block
@@ -76,21 +76,21 @@ function setup_pull_rest_api( $atts ) {
     if( array_key_exists( "api_url_ext", $atts ) ) {
     	$rest_api_url_extension = $atts[ 'api_url_ext' ]; // 'wp'  or 'acf'
     } else {
-    	$rest_api_url_extension = '';
+    	$rest_api_url_extension = 'wp';
     }
 
     // variables | Post Type
     if( array_key_exists( "post_type", $atts ) ) {
     	$post_type = $atts[ 'post_type' ];
     } else {
-    	$post_type = '';
+    	$post_type = 'posts';
     }
 
     // variables | Post Type
     if( array_key_exists( "version", $atts ) ) {
     	$version = $atts[ 'version' ];
     } else {
-    	$version = '';
+    	$version = 'v2';
     }
 
     //echo rtrim( $url, "/" ).'/wp-json/'.$rest_api_url_extension.'/'.$version.'/'.$post_type.'/'.$id;

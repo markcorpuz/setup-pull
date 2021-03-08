@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 if( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -35,6 +35,9 @@ $get_this_block = get_field( 'pull_block' );
 			2. pull a specific block from the_content
 			3. pull a setup-log block from another location and placing it in the destination
 			4. pull a custom_field (if needed)
+
+			---------
+
 */
 
 // PULL FROM SAME SITE
@@ -91,7 +94,7 @@ if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 } else {
 
 	$showsource = get_field( 'pull_source' );
-	if( !empty( $showsource ) && $showsource == 'show' && is_user_logged_in() ) {
+	if( /*!empty( $showsource ) &&*/ $showsource == 'show' && is_user_logged_in() ) {
 
 		// show this optional field
 		if( !empty( $pull_field ) ) {

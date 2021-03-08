@@ -58,6 +58,22 @@ function setup_pull_block_acf_init() {
             ],
         ),
 
+        'pull_content' => array(
+            'name'                  => 'pull_content',
+            'title'                 => __('Pull Content'),
+            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-content.php',
+            'category'              => 'setup',
+            'icon'                  => 'pressthis',
+            'mode'                  => 'edit',
+            'keywords'              => array( 'pull', 'get', 'content' ),
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        ),
+
     );
 
     // Bail out if function doesn’t exist or no blocks available to register.
