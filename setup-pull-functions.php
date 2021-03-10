@@ -136,7 +136,7 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
         
         $return = ''; // initialize variable
         $ret = array();
-
+        //var_dump( $array );
         foreach( $array as $key => $val ) {
             
             if( empty( $slug_or_title ) ) {
@@ -221,24 +221,39 @@ if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
                         
                     } // foreach( $val as $v_key => $v_value ) {
 
-                }
+                }/* else {
+                    echo '<h1>ENTRY NOT FOUND!</h1>';
+                }*/
 
             } // if( empty( $slug_or_title ) ) {
 
         }
-
-        // arrange the layout based on how the fields are listed
-        foreach( $fields as $ff ) {
-            $return .= $ret[ $ff ];
+        
+        if( empty( $ret ) ) {
+            $entry_mod_date = '';
+            $entry_link = '';
         }
 
+        // arrange the layout based on how the fields are listed
+        //if( count( $fields ) > 1 ) {
+            $return_out = ''; // initialize variable
+            foreach( $fields as $ff ) {
+                $return_out .= $ret[ $ff ];
+            }
+            
+        /*} else {
+            
+            // only 1 field being pulled
+            $return_out = $fields[0];
+        }*/
+
         // no entry found
-        if( empty( $return ) ) {
+        if( empty( $return_out ) ) {
             $return = 'No entry found. Please validate the source.';
         } else {
 
             $return = array(
-                'output'        => $return,
+                'output'        => $return_out,
                 'mod_date'      => $entry_mod_date,
                 'entry_link'    => $entry_link,
             );

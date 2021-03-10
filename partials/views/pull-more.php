@@ -63,7 +63,7 @@ if( $pull_filter == 'subsite' ) {
 
 }
 
-
+/*  =================================
 // PULL FROM EXTERNAL SITE
 if( $pull_filter == 'rest' ) {
 
@@ -80,13 +80,14 @@ if( $pull_filter == 'rest' ) {
 
 	$out = setup_pull_rest_api( $args );
 
-}
+}=================================*/
 
 /*if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 // container wrap
 echo '<div class="'.join( ' ', $classes ).'">';
 
 echo '</div>';*/
+/* =================================
 if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 	// show default notification that the block exists
 	//SETUP-LOG | Template: All-In | Show: Title Summary InnerBlock
@@ -94,7 +95,7 @@ if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 } else {
 
 	$showsource = get_field( 'pull_source' );
-	if( /*!empty( $showsource ) &&*/ $showsource == 'show' && is_user_logged_in() ) {
+	if( $showsource == 'show' && is_user_logged_in() ) {
 
 		// show this optional field
 		if( !empty( $pull_field ) ) {
@@ -115,3 +116,4 @@ if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 
 // OUTPUT
 echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap">'.$out.'</div></div>';
+================================= */

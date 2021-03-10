@@ -43,20 +43,35 @@ $args = array(
 );
 
 $out = setup_pull_rest_api( $args );
-
+//var_dump($out);
 $showsource = get_field( 'pull_source' );
 if( $showsource == 'show' && is_user_logged_in() ) {
 
+	// DATE | catch error if no information available
+	if( empty( $out[ 'mod_date' ] ) ) {
+		$timestamp = 'No date available';	
+	} else{
+		$timestamp = date( 'ymd', strtotime( $out[ 'mod_date' ] ) );
+	}
+	
+	// LINK | catch error if no information available
+	if( empty( $out[ 'entry_link' ] ) ) {
+		$link_stamp = $pull_from_article;
+	} else {
+		$link_stamp = '<a href="'.$out[ "entry_link" ].'" target="_blank">'.$pull_from_article.'</a>';
+	}
+
+	// SET the URL
 	$this_url = urldecode( $pull_from_website ); // CLEAN UP URL
 	$this_url = preg_replace( "{/$}", "", $this_url ); // REMOVE THE / AT THE END OF THE URL
 	$this_url = preg_replace( "#^[^:/.]*[:/]+#i", "", $this_url ); // REMOVE THE HTTP://WWW or HTTPS
 
-	$outs = $out[ 'output' ].'<hr />'.date( 'ymd', strtotime( $out[ 'mod_date' ] ) ).' | <a href="'.$out[ "entry_link" ].'" target="_blank">'.$pull_from_article.'</a> | '.$this_url;
+	$outs = $out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
 
 } else {
 
 	$outs = $out[ 'output' ];
-	
+
 }
 
 // OUTPUT
