@@ -53,6 +53,10 @@ if( $showsource == 'show' && is_user_logged_in() ) {
 
 	$outs = $out[ 'output' ].'<hr />'.date( 'ymd', strtotime( $out[ 'mod_date' ] ) ).' | <a href="'.$out[ "entry_link" ].'" target="_blank">'.$pull_from_article.'</a> | '.$this_url;
 
+} else {
+
+	$outs = $out[ 'output' ];
+	
 }
 
 // OUTPUT
