@@ -75,4 +75,4 @@ if( $showsource == 'show' && is_user_logged_in() ) {
 }
 
 // OUTPUT
-echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap">'.$outs.'</div></div>';
+echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap entry-content">'.$outs.'</div></div>';
