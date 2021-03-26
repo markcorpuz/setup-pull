@@ -66,7 +66,7 @@ if( get_field( 'pull_filter' ) == 'subsite' ) {
 
 }
 
-/*
+
 // REST
 if( get_field( 'pull_filter' ) == 'rest' ) {
 
@@ -83,4 +83,3 @@ if( get_field( 'pull_filter' ) == 'rest' ) {
 	}
 
 }
-*/

@@ -58,14 +58,30 @@ function setup_pull_block_acf_init() {
             ],
         ),
 
-        'pull_content' => array(
-            'name'                  => 'pull_content',
-            'title'                 => __('Pull Content'),
-            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-content.php',
+        'pull_url' => array(
+            'name'                  => 'pull_url',
+            'title'                 => __('Pull URL'),
+            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-url.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
-            'keywords'              => array( 'pull', 'get', 'content' ),
+            'keywords'              => array( 'pull', 'get', 'content', 'url' ),
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        ),
+
+        'pull_local' => array(
+            'name'                  => 'pull_local',
+            'title'                 => __('Pull Local'),
+            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-local.php',
+            'category'              => 'setup',
+            'icon'                  => 'pressthis',
+            'mode'                  => 'edit',
+            'keywords'              => array( 'pull', 'get', 'content', 'url' ),
             'supports'              => [
                 'align'             => false,
                 'anchor'            => true,

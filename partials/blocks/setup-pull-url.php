@@ -16,36 +16,27 @@ $classes = array_merge( $classes, explode( ' ', $block_css ) );
 //types-of-text-content
 $pull_from_website = get_field( 'pull_from_website' );
 $pull_from_article = get_field( 'pull_from_article' );
-$pull_filter = get_field( 'pull_filter' );
-/*
-		New Block
-		Update: YYMMDD 00:00pm | slug | data.basestructure.com
-
-		-----------------
-
-		Remove:
-
-		Search by Title
-
-		-----------------
-
-		Show actual HTML code
-
-		-----------------
-
-		layout-capsule | 817
-*/
+$pull_post_type = get_field( 'pull_post_type' );
+if( $pull_post_type == 'other' ) {
+	// either posts or pages
+	$pull_post_type = get_field( 'pull_post_type_specific' );
+}
 
 $args = array(
 	'url'			=>	$pull_from_website,
 	'id'			=>	$pull_from_article,
-	'pull_filter'	=>	$pull_filter,
+//	'pull_filter'	=>	$pull_filter,
+	'post_type'		=>	$pull_post_type,
 );
 
+$btn_ops = '<button onclick="ShowMe">Show Raw</button>
+			<button onclick="copyToClipboard(\'#copyme\')">Copy to clipboard</button>';
+
 $out = setup_pull_rest_api( $args );
-//var_dump($out);
+//var_dump( $out );
+
 $showsource = get_field( 'pull_source' );
-if( $showsource == 'show' && is_user_logged_in() ) {
+if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 
 	// DATE | catch error if no information available
 	if( empty( $out[ 'mod_date' ] ) ) {
@@ -66,12 +57,16 @@ if( $showsource == 'show' && is_user_logged_in() ) {
 	$this_url = preg_replace( "{/$}", "", $this_url ); // REMOVE THE / AT THE END OF THE URL
 	$this_url = preg_replace( "#^[^:/.]*[:/]+#i", "", $this_url ); // REMOVE THE HTTP://WWW or HTTPS
 
-	$outs = $out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
+	$outs = $btn_ops.'<hr />'.$out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
 
 } else {
 
-	$outs = $out[ 'output' ];
-
+	if( is_array( $out ) && array_key_exists( 'output', $out ) ) {
+		$outs = $out[ 'output' ];
+	} else {
+		$outs = $out;
+	}
+	
 }
 
 // OUTPUT

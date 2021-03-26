@@ -4,45 +4,104 @@ if( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/*
+	1. pull local and block specific - not yet done
+*/
 
-// go though the URL to isolate what's being pulled
-if( !function_exists( 'setup_pull_through_the_url' ) ) {
 
-    function setup_pull_through_the_url( $array, $field, $block = NULL, $slug_or_title = NULL ) {
+// PULL THROUGH REST API USING POST/PAGE ID
+function setup_pull_through( $array, $block = NULL, $id = NULL ) {
 
-        if( empty( $slug_or_title ) ) {
+	//$fieldz = explode( ',', $field );
+        
+	// remove spaces in each array value
+	//$fields = array_map( 'trim', $fieldz );
 
-            /*if( is_array( $field ) ) {
+	$return = ''; // initialize variable
+	$ret = array();
+	
+	foreach( $array as $key => $val ) {
+		//echo '<h1>'.$key.'</h1>'; var_dump( $val );
 
-                // more than 1 field is being pulled
+	    // apply filters if content is being pulled
+	    if( $key == 'content' ) {
 
-            } else {*/
+	        if( empty( $block ) ) {
+	        	
+	        	/* **********************
+	        	 * return wp-content
+	        	 * if pulled by slug, the rendered content is
+	        	 * still hidden in another layer of array
+	        	 * ******************* */
+	        	if( is_numeric( $id ) ) {
+	        		$pulled_content = $val[ 'rendered' ];
+	        	} else {
+	        		$pulled_content = $val[ 'content' ][ 'rendered' ];
+	        	}
 
-                // only 1 field is being pulled
-                if( !empty( $block ) ) {
+	        	$entry_content = setup_pull_apply_filters_to_content( $pulled_content );
+	        	$entry_content_pre = '<pre id="copyme">'.setup_pull_display_code_pre( $pulled_content ).'</pre>';
 
-                    // PULL BLOCK
-                    //return setup_pull_parse_blocks( $array, $block );
-                    return setup_pull_loop_though_each_field( $array, $field, NULL, $block );
+	        } else {
 
-                } else {
+	            // parse blocks
+	            $entry_content = setup_pull_parse_blocks( $val[ 'rendered' ], $block );
 
-                    // PULL FIELD
-                    return setup_pull_loop_though_each_field( $array, $field );
+	        }
+	        
+	    }
 
-                }
+		// get the modified date of the entry
+		if( $key == 'modified' ) {
+			
+			if( is_numeric( $id ) ) {
+				// pulled using post ID
+		    	$entry_mod_date = $val;
+		    } else {
+		    	// pulled using post slug
+		    	$entry_mod_date = $val[ "modified" ];
+		    }
 
-            //} // if( is_array( $field ) ) {
+		}
 
-        } else {
+		// get the link to the source
+		if( $key == 'link' ) {
+			
+			if( is_numeric( $id ) ) {
+				// pulled using post ID
+		    	$entry_link = $val;
+		    } else {
+		    	// pulled using post slug
+		    	$entry_link = $val[ "link" ];
+		    }
 
-            // page name (slug) or title is being used to pull information
-            return setup_pull_loop_though_each_field( $array, $field, $slug_or_title );
+		}
 
-        }
+	}
 
-    }
+	// no entry found
+	if( empty( $entry_content ) ) {
+	    $return = 'No entry found. Please validate the source.';
+	} else {
 
+	    $return = array(
+	        'output'        => $entry_content,
+	        'output_pre'	=> $entry_content_pre,
+	        'mod_date'      => $entry_mod_date,
+	        'entry_link'    => $entry_link,
+	    );
+
+	}
+
+	return $return;
+
+}
+
+
+function setup_pull_display_code_pre( $string ) {
+	$string = str_replace( "<", "&lt;", $string );
+	$string = str_replace( ">", "&gt;", $string );
+	return $string;
 }
 
 
@@ -117,150 +176,6 @@ if( !function_exists( 'setup_pull_the_whole_content' ) ) {
         //      $content = apply_filters( 'the_content', $content );
         //      return str_replace( ']]>', ']]&gt;', $content );
         return setup_pull_apply_filters_to_content( $content );
-
-    }
-
-}
-
-
-// Loop through the pulled information
-if( !function_exists( 'setup_pull_loop_though_each_field' ) ) {
-
-    function setup_pull_loop_though_each_field( $array, $field, $slug_or_title = NULL, $block = NULL ) {
-
-        $fieldz = explode( ',', $field );
-        /*foreach( $fieldz as $f ) {
-            $fields[] = trim( $f ); // remove spaces before and after each value
-        }*/
-        $fields = array_map( 'trim', $fieldz );
-        
-        $return = ''; // initialize variable
-        $ret = array();
-        //var_dump( $array );
-        foreach( $array as $key => $val ) {
-            
-            if( empty( $slug_or_title ) ) {
-                // ID is used to pull the entry
-
-                //echo '<h1>'.$key.'</h1>'; // show all fields pulled
-                if( in_array( $key, $fields ) ) {
-
-                    // apply filters if content is being pulled
-                    if( $key == 'content' ) {
-
-                        if( empty( $block ) ) {
-                        
-                            // return wp-content
-                            $ret[ $key ] = setup_pull_apply_filters_to_content( $val[ 'rendered' ] );
-
-                        } else {
-
-                            // parse blocks
-                            $ret[ $key ] = setup_pull_parse_blocks( $val[ 'rendered' ], $block );
-
-                        }
-                        
-                    } else {
-
-                        if( is_array( $val ) && array_key_exists( 'rendered', $val ) ) {
-
-                            $ret[ $key ] = $val[ 'rendered' ];
-
-                        } else {
-
-                            $ret[ $key ] = $val;
-                            
-                        }
-                        
-                    }
-                    
-                }
-
-            } else {
-                
-                // page name (slug) or title is being used to pull information           
-                if( $val[ 'slug' ] == $slug_or_title || $val[ 'title'][ 'rendered' ] == $slug_or_title ) {
-
-                    foreach( $val as $v_key => $v_value ) {
-
-                        // Filter fields
-                        //echo $v_key.' | '.$v_value.'<br />';
-                        if( in_array( $v_key, $fields ) ) {
-
-                            // apply filters if content is being pulled
-                            if( $v_key == 'content' ) {
-                                
-                                $ret[ $v_key ] = setup_pull_apply_filters_to_content( $v_value[ 'rendered' ] );
-                                
-                            } else {
-                                
-                                if( is_array( $v_value ) && array_key_exists( 'rendered', $v_value ) ) {
-
-                                    $ret[ $v_key ] = $v_value[ 'rendered' ];
-
-                                } else {
-
-                                    $ret[ $v_key ] = $v_value;
-
-                                }
-                                
-                            }
-
-                        } // if( in_array( $v_key, $fields ) ) {
-
-                        // get the modified date of the entry
-                        if( $v_key == 'modified' ) {
-                            //echo $v_key.' | '.$v_value.'<br />';
-                            $entry_mod_date = $v_value;
-                        }
-
-                        // get the link to the source
-                        if( $v_key == 'link' ) {
-                            $entry_link = $v_value;
-                        }
-                        
-                    } // foreach( $val as $v_key => $v_value ) {
-
-                }/* else {
-                    echo '<h1>ENTRY NOT FOUND!</h1>';
-                }*/
-
-            } // if( empty( $slug_or_title ) ) {
-
-        }
-        
-        if( empty( $ret ) ) {
-            $entry_mod_date = '';
-            $entry_link = '';
-        }
-
-        // arrange the layout based on how the fields are listed
-        //if( count( $fields ) > 1 ) {
-            $return_out = ''; // initialize variable
-            foreach( $fields as $ff ) {
-                $return_out .= $ret[ $ff ];
-            }
-            
-        /*} else {
-            
-            // only 1 field being pulled
-            $return_out = $fields[0];
-        }*/
-
-        // no entry found
-        if( empty( $return_out ) ) {
-            $return = 'No entry found. Please validate the source.';
-        } else {
-
-            $return = array(
-                'output'        => $return_out,
-                'mod_date'      => $entry_mod_date,
-                'entry_link'    => $entry_link,
-            );
-
-        }
-
-        return $return;
 
     }
 

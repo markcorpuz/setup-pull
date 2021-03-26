@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // include file
 include_once( 'setup-pull-functions.php' );
-include_once( 'setup-pull-rest.php' );
+include_once( 'setup-pull-variables.php' );
 
 
 add_action( 'genesis_setup', 'setup_cta_fn', 15 );

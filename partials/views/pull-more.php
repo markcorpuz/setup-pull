@@ -63,7 +63,7 @@ if( $pull_filter == 'subsite' ) {
 
 }
 
-/*  =================================
+
 // PULL FROM EXTERNAL SITE
 if( $pull_filter == 'rest' ) {
 
@@ -80,40 +80,55 @@ if( $pull_filter == 'rest' ) {
 
 	$out = setup_pull_rest_api( $args );
 
-}=================================*/
+}
 
 /*if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
 // container wrap
 echo '<div class="'.join( ' ', $classes ).'">';
 
 echo '</div>';*/
-/* =================================
-if( empty( strip_tags( $out ) ) && empty( $log_innerblock ) ) {
+
+if( is_array( $out ) && array_key_exists( 'output', $out ) && empty( strip_tags( $out[ 'output' ] ) ) && empty( $log_innerblock ) ) {
 	// show default notification that the block exists
 	//SETUP-LOG | Template: All-In | Show: Title Summary InnerBlock
-	$out = 'SETUP-PULL | Template: '.get_field( 'pull_layout' );
+	$outs = 'SETUP-PULL | Template: '.get_field( 'pull_layout' );
 } else {
 
-	$showsource = get_field( 'pull_source' );
-	if( $showsource == 'show' && is_user_logged_in() ) {
+	if( is_array( $out ) && array_key_exists( 'output', $out ) ) {
 
-		// show this optional field
-		if( !empty( $pull_field ) ) {
-			$show_the_field_source = '<div>Field(s): '.$pull_field.'</div>';
+		$showsource = get_field( 'pull_source' );
+		if( $showsource == 'show' && is_user_logged_in() ) {
+
+			// DATE | catch error if no information available
+			if( empty( $out[ 'mod_date' ] ) ) {
+				$timestamp = 'No date available';	
+			} else{
+				$timestamp = date( 'ymd', strtotime( $out[ 'mod_date' ] ) );
+			}
+			
+			// LINK | catch error if no information available
+			if( empty( $out[ 'entry_link' ] ) ) {
+				$link_stamp = $pull_from_article;
+			} else {
+				$link_stamp = '<a href="'.$out[ "entry_link" ].'" target="_blank">'.$pull_from_article.'</a>';
+			}
+
+			// SET the URL
+			$this_url = urldecode( $pull_from_website ); // CLEAN UP URL
+			$this_url = preg_replace( "{/$}", "", $this_url ); // REMOVE THE / AT THE END OF THE URL
+			$this_url = preg_replace( "#^[^:/.]*[:/]+#i", "", $this_url ); // REMOVE THE HTTP://WWW or HTTPS
+
+			$outs = $out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
+
 		} else {
-			$show_the_field_source = '';
+			$outs = $out[ 'output' ];
 		}
 
-		$out = $out.'<div style="background-color:gray;">
-					<div>Source: <a href="'.$pull_from_website.'" target="_blank">'.$pull_from_website.'</a></div>
-					<div>Article: '.$pull_from_article.'</div>
-					'.$show_the_field_source.'
-				</div>';
-
+	} else {
+		$outs = $out;
 	}
 
 }
 
 // OUTPUT
-echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap">'.$out.'</div></div>';
-================================= */
+echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap">'.$outs.'</div></div>';
