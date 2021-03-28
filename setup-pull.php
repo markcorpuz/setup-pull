@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 // include file
-include_once( 'setup-pull-functions.php' );
-include_once( 'setup-pull-variables.php' );
+include_once( 'lib/setup-pull-functions.php' );
+include_once( 'lib/setup-pull-variables.php' );
 
 
 add_action( 'genesis_setup', 'setup_cta_fn', 15 );
 function setup_cta_fn() {
-	include_once( plugin_dir_path( __FILE__ ).'setup-pull-acf.php' );
+	include_once( plugin_dir_path( __FILE__ ).'lib/setup-pull-acf.php' );
 }
 
 // Enqueue Style
@@ -45,4 +45,17 @@ function setup_pull_enqueue_scripts() {
 
 if ( !is_admin() ) {
     add_action( 'wp_enqueue_scripts', 'setup_pull_enqueue_scripts', 20 );
+}
+
+
+// include required functions that needs to be executed in the main directory
+class SetupPullPluginDirectory {
+
+    // simply return this plugin's main directory
+    public function setup_plugin_dir_path() {
+
+        return plugin_dir_path( __FILE__ );
+
+    }
+
 }

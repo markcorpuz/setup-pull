@@ -40,12 +40,14 @@ function setup_block_categories_fn_pull( $categories ) {
 add_action( 'acf/init', 'setup_pull_block_acf_init' );
 function setup_pull_block_acf_init() {
 
+    $z = new SetupPullPluginDirectory();
+
     $blocks = array(
 
         'pull' => array(
             'name'                  => 'pull',
             'title'                 => __('Pull'),
-            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-flex.php',
+            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-flex.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -61,7 +63,7 @@ function setup_pull_block_acf_init() {
         'pull_url' => array(
             'name'                  => 'pull_url',
             'title'                 => __('Pull URL'),
-            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-url.php',
+            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-url.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -77,7 +79,7 @@ function setup_pull_block_acf_init() {
         'pull_local' => array(
             'name'                  => 'pull_local',
             'title'                 => __('Pull Local'),
-            'render_template'       => plugin_dir_path( __FILE__ ).'partials/blocks/setup-pull-local.php',
+            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-local.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -105,23 +107,28 @@ function setup_pull_block_acf_init() {
 
 
 /**
- * Auto fill Select options
+ * Auto fill Select options for VIEWS (HTML)
  *
  */
-add_filter( 'acf/load_field/name=pull_layout', 'acf_setup_load_template_choices_pull' );
+add_filter( 'acf/load_field/name=pull_html_view', 'acf_setup_load_template_choices_pull' );
 function acf_setup_load_template_choices_pull( $field ) {
     
-    // get all files found in VIEWS folder
-    $view_dir = plugin_dir_path( __FILE__ ).'partials/views/';
+    $z = new SetupPullPluginDirectory();
 
-    $data_from_database = setup_pull_view_files( $view_dir );
+    $file_extn = 'html';
+
+    // get all files found in VIEWS folder
+    $view_dir = $z->setup_plugin_dir_path().'partials/views/';
+
+    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
 
     $field['choices'] = array();
 
     //Loop through whatever data you are using, and assign a key/value
-    if( is_array( $data_from_database ) ) {
+    if( is_array( $data_from_dir ) ) {
 
-        foreach( $data_from_database as $field_key => $field_value ) {
+        foreach( $data_from_dir as $field_key => $field_value ) {
+            
             $field['choices'][$field_key] = $field_value;
         }
 
@@ -133,13 +140,48 @@ function acf_setup_load_template_choices_pull( $field ) {
 
 
 /**
- * Get VIEW template | this function is called by SETUP-LOG-FLEX.PHP found in PARTIALS/BLOCKS folder
+ * Auto fill Select options
+ *
+ */
+add_filter( 'acf/load_field/name=pull_layout', 'acf_setup_load_view_html_template_choices' );
+function acf_setup_load_view_html_template_choices( $field ) {
+    
+    $z = new SetupPullPluginDirectory();
+
+    $file_extn = 'php';
+
+    // get all files found in VIEWS folder
+    $view_dir = $z->setup_plugin_dir_path().'partials/views/';
+
+    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
+
+    $field['choices'] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $data_from_dir ) ) {
+
+        foreach( $data_from_dir as $field_key => $field_value ) {
+            $field['choices'][$field_key] = $field_value;
+        }
+
+        return $field;
+
+    }
+    
+}
+
+
+/**
+ * Get VIEW template | this function is called by SETUP-PULL-FLEX.PHP found in PARTIALS/BLOCKS folder
+ *
  */
 if( !function_exists( 'setup_acf_pull_view_template_pulls' ) ) {
 
 	function setup_acf_pull_view_template_pulls( $layout, $args = FALSE ) {
 
-	    $layout_file = plugin_dir_path( __FILE__ ).'partials/views/'.$layout;
+        $z = new SetupPullPluginDirectory();
+
+	    $layout_file = $z->setup_plugin_dir_path().'partials/views/'.$layout;
 	    
 	    if( $args ) {
 
@@ -179,27 +221,38 @@ if( !function_exists( 'setup_acf_pull_view_template_pulls' ) ) {
 }
 
 
-// pull all files found in $directory but get rid of the dots that scandir() picks up in Linux environments
-if( !function_exists( 'setup_pull_view_files' ) ) {
+/**
+ * Pull all files found in $directory but get rid of the dots that scandir() picks up in Linux environments
+ *
+ */
+if( !function_exists( 'setup_pulls_view_files' ) ) {
 
-    function setup_pull_view_files( $directory ) {
+    function setup_pulls_view_files( $directory, $file_extn ) {
 
         $out = array();
         
         // get all files inside the directory but remove unnecessary directories
         $ss_plug_dir = array_diff( scandir( $directory ), array( '..', '.' ) );
-        
-        foreach ($ss_plug_dir as $value) {
+
+        foreach( $ss_plug_dir as $filename ) {
+            
+            if( pathinfo( $filename, PATHINFO_EXTENSION ) == $file_extn ) {
+                $out[ $filename ] = pathinfo( $filename, PATHINFO_FILENAME );
+            }
+
+        }
+
+        /*foreach ($ss_plug_dir as $value) {
             
             // combine directory and filename
-            $file = basename( $directory.$value, ".php" );
-
+            $file = basename( $directory.$value, $file_extn );
+            
             // filter files to include
             if( $file ) {
                 $out[ $value ] = $file;
             }
 
-        }
+        }*/
 
         // Return an array of files (without the directory)
         return $out;
@@ -208,3 +261,17 @@ if( !function_exists( 'setup_pull_view_files' ) ) {
     
 }
 
+
+/**
+ * Get VIEW template (INCLUDE)
+ *
+ */
+function setup_pull_get_html_template_contents( $layout ) {
+
+    $z = new SetupPullPluginDirectory();
+
+    $layout_file = $z->setup_plugin_dir_path().'partials/views/'.$layout;
+
+    return file_get_contents( $layout_file );
+
+}

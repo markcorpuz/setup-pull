@@ -22,6 +22,10 @@ if( $pull_post_type == 'other' ) {
 	// either posts or pages
 	$pull_post_type = get_field( 'pull_post_type_specific' );
 }
+$pull_html_view = get_field( 'pull_html_view' );
+if( empty( $pull_html_view ) ) {
+	$pull_html_view = 'default-view.html';
+}
 
 $args = array(
 	'url'			=>	$pull_from_website,
@@ -64,18 +68,35 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 	$this_url = preg_replace( "{/$}", "", $this_url ); // REMOVE THE / AT THE END OF THE URL
 	$this_url = preg_replace( "#^[^:/.]*[:/]+#i", "", $this_url ); // REMOVE THE HTTP://WWW or HTTPS
 
-	$outs = $btn_ops.'<hr />'.$out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
+	//$outs = $btn_ops.'<hr />'.$out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
+	$replace_array = array(
+				'{@buttons}' 			=> '<div class="pull-buttons">'.$btn_ops.'</div>',
+				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+				'{@date_modified}'		=> '<div class="pull-datemod">'.$timestamp.'</div>',
+				'{@slugid}'				=> '<div class="pull-slugid">'.$link_stamp.'</div>',
+				'{@url}'				=> '<div class="pull-url">'.$this_url.'</div>',
+			);
 
 } else {
 
 	if( is_array( $out ) && array_key_exists( 'output', $out ) ) {
-		$outs = $out[ 'output' ];
+		///$outs = $out[ 'output' ];
+		$replace_array = array(
+				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+			);
 	} else {
-		$outs = $out;
+		//$outs = $out;
+		$replace_array = array(
+				'{@output}' 			=> '<div class="pull-output">'.$out.'</div>',
+			);
 	}
 	
 }
 
 
 // OUTPUT
-echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap entry-content">'.$outs.'</div></div>';
+echo '<div class="'.join( ' ', $classes ).'">
+		<div class="module-wrap entry-content">'.
+			strtr( setup_pull_get_html_template_contents( $pull_html_view ), $replace_array )
+		.'</div>
+	</div>';
