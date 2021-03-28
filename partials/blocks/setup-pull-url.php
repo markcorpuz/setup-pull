@@ -5,7 +5,8 @@ if( ! defined( 'ABSPATH' ) ) {
 }
 
 // set global variable for css selectors
-global $block_css;
+global $block_css, $block_counter;
+$block_counter++;
 
 // add more class selectors here
 $classes = array();
@@ -28,12 +29,18 @@ $args = array(
 //	'pull_filter'	=>	$pull_filter,
 	'post_type'		=>	$pull_post_type,
 );
-
-$btn_ops = '<button onclick="ShowMe">Show Raw</button>
-			<button onclick="copyToClipboard(\'#copyme\')">Copy to clipboard</button>';
-
 $out = setup_pull_rest_api( $args );
 //var_dump( $out );
+
+
+// set admin buttons and raw code
+$btn_ops = '<div>
+				<button class="buttons" id="show_raw__'.$block_counter.'">Show Raw</button>
+				<button class="buttons" id="copy_to_clipboard__'.$block_counter.'">Copy to clipboard</button>
+			</div>
+			<div class="hidden box-it" id="output_pre_container__'.$block_counter.'">'.$out[ "output_pre" ].'</div>';
+			// <button class="buttons" onclick="BtncopyToClipboard(\'#copyme\')">Copy to clipboard</button>
+
 
 $showsource = get_field( 'pull_source' );
 if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
@@ -68,6 +75,7 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 	}
 	
 }
+
 
 // OUTPUT
 echo '<div class="'.join( ' ', $classes ).'"><div class="module-wrap entry-content">'.$outs.'</div></div>';

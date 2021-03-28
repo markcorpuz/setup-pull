@@ -1,0 +1,14 @@
+.hidden {
+  display: none;
+}
+
+.buttons {
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.box-it {
+	border: 10px solid #333642;
+	background-color: #1d1e22;
+	color: #86b38a;
+}

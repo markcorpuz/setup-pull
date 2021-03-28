@@ -13,7 +13,7 @@ if( ! defined( 'ABSPATH' ) ) {
 function setup_pull_through( $array, $block = NULL, $id = NULL ) {
 
 	//$fieldz = explode( ',', $field );
-        
+    
 	// remove spaces in each array value
 	//$fields = array_map( 'trim', $fieldz );
 

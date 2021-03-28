@@ -25,7 +25,7 @@ function setup_cta_fn() {
 }
 
 // Enqueue Style
-/*function setup_log_function() {
+function setup_pull_enqueue_scripts() {
 
 	// 'jquery-effects-core', 'jquery-effects-fade', 'jquery-ui-accordion'
 	$scripts = array( 'jquery-ui-core', 'jquery-effects-slide' );
@@ -36,23 +36,13 @@ function setup_cta_fn() {
 	}
 
     // last arg is true - will be placed before </body>
-    wp_enqueue_script( 'setup_log_script', plugins_url( 'js/asset.js', __FILE__ ), NULL, NULL, TRUE );
+    wp_enqueue_script( 'setup-pull-script', plugins_url( 'js/asset.js', __FILE__ ), NULL, NULL, TRUE );
 	
     // enqueue styles
-    wp_enqueue_style( 'setup_log_style', plugins_url( 'css/setup_log_style.css', __FILE__ ) );
-
-}*/
-
-/**
- * NOTE: Temporarily disabling plugin based styling due to the repetitive nature of reusing styles.
- * Remove comments below to allow if we want the styles to be independent but at the moment, we're using the default child theme styles
- * 
- */
-/*
-if ( !is_admin() ) {
-
-    // ENQUEUE SCRIPTS
-    add_action( 'wp_enqueue_scripts', 'setup_log_function', 20 );
+    wp_enqueue_style( 'setup-pull-style', plugins_url( 'css/style.css', __FILE__ ) );
 
 }
-*/
+
+if ( !is_admin() ) {
+    add_action( 'wp_enqueue_scripts', 'setup_pull_enqueue_scripts', 20 );
+}
