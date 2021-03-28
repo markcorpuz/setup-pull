@@ -10,11 +10,9 @@ $block_counter++;
 
 // add more class selectors here
 $classes = array();
-
 $classes = array_merge( $classes, explode( ' ', $block_css ) );
 
-// https://data.basestructure.com/
-//types-of-text-content
+// set variables
 $pull_from_website = get_field( 'pull_from_website' );
 $pull_from_article = get_field( 'pull_from_article' );
 $pull_post_type = get_field( 'pull_post_type' );

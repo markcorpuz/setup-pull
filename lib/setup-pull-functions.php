@@ -26,7 +26,7 @@ function setup_pull_through( $array, $block = NULL, $id = NULL ) {
 	    // apply filters if content is being pulled
 	    if( $key == 'content' ) {
 
-	        if( empty( $block ) ) {
+	        //if( empty( $block ) ) {
 	        	
 	        	/* **********************
 	        	 * return wp-content
@@ -42,12 +42,12 @@ function setup_pull_through( $array, $block = NULL, $id = NULL ) {
 	        	$entry_content = setup_pull_apply_filters_to_content( $pulled_content );
 	        	$entry_content_pre = '<pre id="copyme">'.setup_pull_display_code_pre( $pulled_content ).'</pre>';
 
-	        } else {
-
+	        /*} else {
+				// PULLING BLOCKS FROM PULLED WP-CONTENT THRU REST IS NOT YET READY
 	            // parse blocks
 	            $entry_content = setup_pull_parse_blocks( $val[ 'rendered' ], $block );
 
-	        }
+	        }*/
 	        
 	    }
 
@@ -113,31 +113,10 @@ if( !function_exists( 'setup_pull_parse_blocks' ) ) {
         $out = ''; // initialize variable to avoid the issue of undeclared variable
         
         foreach( parse_blocks( $content ) as $val ) {
-            
-            /*foreach( $val as $keyz => $valuez ) {
 
-                //echo '<h1>'.$keyz.'</h1>';
-                if( $keyz == 'innerHTML' ) {
-                    var_dump( $valuez ); echo '<hr /><hr />';
-
-                    //$html = 'html contents or file <img src="smiley.gif" alt="Smiley face" height="42" width="42">';
-                    / *$html = $valuez;
-                    $doc = new DOMDocument();
-                    $doc->loadHTML($html);
-
-                    $tags = $doc->getElementsByTagName( 'div' );
-                    echo count( $tags ).'<br />';
-                    foreach ($tags as $tag) {
-                     echo $tag->getAttribute('src');
-                    }
-                    var_dump($tags);
-                    * /
-                }
-
-            }*/
             // filter variable
             if( array_key_exists( 'attrs', $val ) && is_array( $val[ 'attrs' ] ) ) {
-
+            	//var_dump( $val[ 'attrs' ] );
                 // filter and match to target block (css selector)
                 if( array_key_exists( 'className', $val[ 'attrs' ] ) && $val[ 'attrs' ][ 'className' ] == $get_this_block ) {
 
