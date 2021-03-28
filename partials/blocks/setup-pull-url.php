@@ -82,12 +82,20 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 	if( is_array( $out ) && array_key_exists( 'output', $out ) ) {
 		///$outs = $out[ 'output' ];
 		$replace_array = array(
+				'{@buttons}'			=> '',
 				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+				'{@date_modified}'		=> '',
+				'{@slugid}'				=> '',
+				'{@url}'				=> '',
 			);
 	} else {
 		//$outs = $out;
 		$replace_array = array(
+				'{@buttons}'			=> '',
 				'{@output}' 			=> '<div class="pull-output">'.$out.'</div>',
+				'{@date_modified}'		=> '',
+				'{@slugid}'				=> '',
+				'{@url}'				=> '',
 			);
 	}
 	

@@ -32,6 +32,15 @@ if( empty( $get_this_block ) ) {
 }
 
 
+// set admin buttons and raw code
+$btn_ops = '<div>
+				<button class="buttons" id="show_raw__'.$block_counter.'">Show Raw</button>
+				<button class="buttons" id="copy_to_clipboard__'.$block_counter.'">Copy to clipboard</button>
+			</div>
+			<div class="hidden box-it" id="output_pre_container__'.$block_counter.'">'.$out[ "output_pre" ].'</div>';
+			// <button class="buttons" onclick="BtncopyToClipboard(\'#copyme\')">Copy to clipboard</button>
+
+
 $showsource = get_field( 'pull_source' );
 if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 
@@ -68,12 +77,20 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 	if( is_array( $out ) && array_key_exists( 'output', $out ) ) {
 		///$outs = $out[ 'output' ];
 		$replace_array = array(
+				'{@buttons}'			=> '',
 				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+				'{@date_modified}'		=> '',
+				'{@slugid}'				=> '',
+				'{@url}'				=> '',
 			);
 	} else {
 		//$outs = $out;
 		$replace_array = array(
+				'{@buttons}'			=> '',
 				'{@output}' 			=> '<div class="pull-output">'.$out.'</div>',
+				'{@date_modified}'		=> '',
+				'{@slugid}'				=> '',
+				'{@url}'				=> '',
 			);
 	}
 	
