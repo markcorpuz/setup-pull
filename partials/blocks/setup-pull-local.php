@@ -14,7 +14,7 @@ $classes = array();
 $classes = array_merge( $classes, explode( ' ', $block_css ) );
 
 // set variables
-$pull_from = get_field( 'pull_from' )[0];
+$pull_from = get_field( 'pull_from' )[0]; // POST ID
 $pull_html_view = get_field( 'pull_html_view' );
 if( empty( $pull_html_view ) ) {
 	$pull_html_view = 'default-view.html';
@@ -28,8 +28,7 @@ if( empty( $get_this_block ) ) {
 	$out[ 'output_pre' ] = '<pre id="copyme">'.setup_pull_display_code_pre( $out[ 'output' ] ).'</pre>';
 
 } else {
-	//var_dump( parse_blocks( setup_pull_parse_blocks( setup_pull_apply_filters_to_content( get_the_content( NULL, FALSE, $pull_from ) ), $get_this_block ) ) );
-	//var_dump(parse_blocks(get_the_content( NULL, FALSE, $pull_from )));
+
 	$out[ 'output' ] = setup_pull_parse_blocks( get_the_content( NULL, FALSE, $pull_from ), $get_this_block );
 	$out[ 'output_pre' ] = '<pre id="copyme">'.setup_pull_display_code_pre( $out[ 'output' ] ).'</pre>';
 
@@ -56,7 +55,7 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 		$link_stamp = $pull_from_article;
 	} else{
 		//$timestamp = date( 'ymd', strtotime( $out[ 'mod_date' ] ) );
-		$timestamp = get_the_modified_date( 'ymd',  );
+		$timestamp = get_the_modified_date( 'ymd', $pull_from );
 		$link_stamp = '<a href="'.$pull_from_perma.'" target="_blank">'.$pull_from.'</a>';
 	}
 	
@@ -79,6 +78,16 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 				'{@date_modified}'		=> '<div class="pull-datemod">'.$timestamp.'</div>',
 				'{@slugid}'				=> '<div class="pull-slugid">'.$link_stamp.'</div>',
 				'{@url}'				=> '<div class="pull-url">'.$this_url.'</div>',
+				'{@group_start}'		=> '<div class="fontsize-smaller" style="display:flex;flex-direction:row;">
+												<span class="fontsize-tiny" style="background-color: red;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;">START</span>
+												&nbsp;|&nbsp;'.$timestamp.'
+												&nbsp;|&nbsp;'.$this_url.'
+												&nbsp;|&nbsp;'.$link_stamp.'
+											</div>',
+				'{@group_end}'			=> '<div class="fontsize-smaller" style="display:flex;flex-direction:row;">
+												<span class="fontsize-tiny" style="background-color: red;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;">END</span>
+												&nbsp;|&nbsp;'.$link_stamp.'
+											</div>',
 			);
 
 } else {
@@ -91,6 +100,8 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 				'{@date_modified}'		=> '',
 				'{@slugid}'				=> '',
 				'{@url}'				=> '',
+				'{@group_start}'		=> '',
+				'{@group_end}'			=> '',
 			);
 	} else {
 		//$outs = $out;
@@ -100,6 +111,8 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 				'{@date_modified}'		=> '',
 				'{@slugid}'				=> '',
 				'{@url}'				=> '',
+				'{@group_start}'		=> '',
+				'{@group_end}'			=> '',
 			);
 	}
 	

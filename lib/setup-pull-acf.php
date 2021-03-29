@@ -92,6 +92,22 @@ function setup_pull_block_acf_init() {
             ],            
         ),
 
+        'pull_multisite' => array(
+            'name'                  => 'pull_multisite',
+            'title'                 => __('Pull Multisite'),
+            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-multisite.php',
+            'category'              => 'setup',
+            'icon'                  => 'pressthis',
+            'mode'                  => 'edit',
+            'keywords'              => array( 'pull', 'get', 'content', 'multisite' ),
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        ),
+
     );
 
     // Bail out if function doesn’t exist or no blocks available to register.
