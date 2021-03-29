@@ -1,0 +1,577 @@
+[
+    {
+        "key": "group_5f8bcc6a5b879",
+        "title": "Pull",
+        "fields": [
+            {
+                "key": "field_5f8bd3590183c",
+                "label": "Pull Layout",
+                "name": "pull_layout",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "60",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "pull-all.php": "pull-all",
+                    "pull-more.php": "pull-more",
+                    "pull-test.php": "pull-test",
+                    "pull-two.php": "pull-two"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_5fe41005c2328",
+                "label": "Pull Filter",
+                "name": "pull_filter",
+                "type": "button_group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "40",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "local": "Local",
+                    "subsite": "Sub Site",
+                    "rest": "REST API"
+                },
+                "allow_null": 0,
+                "default_value": "local : Local",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5f8bcc76b0147",
+                "label": "Pull From",
+                "name": "pull_from",
+                "type": "relationship",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "local"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": "",
+                "taxonomy": "",
+                "filters": [
+                    "search",
+                    "post_type",
+                    "taxonomy"
+                ],
+                "elements": "",
+                "min": "",
+                "max": "",
+                "return_format": "id"
+            },
+            {
+                "key": "field_5fe4302b7eb28",
+                "label": "Pull From Website",
+                "name": "pull_from_website",
+                "type": "url",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": ""
+            },
+            {
+                "key": "field_5fe430ab7eb29",
+                "label": "Pull From Article",
+                "name": "pull_from_article",
+                "type": "text",
+                "instructions": "Accepts post ID, post name (slug) or post title.",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5fe4695eff1e8",
+                "label": "Pull Field",
+                "name": "pull_field",
+                "type": "text",
+                "instructions": "Input field name. If more than 1 fields, separate them with commas (,). Click <a href=\"https:\/\/github.com\/markcorpuz\/setup-pull\/blob\/master\/field_list.txt\" target=\"_blank\">here<\/a> for the list of fields to pull.",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5fe5e03f51095",
+                "label": "Pull Post Type",
+                "name": "pull_post_type",
+                "type": "text",
+                "instructions": "Choose from <span style=\"color:blue\">posts<\/span>, <span style=\"color:blue\">pages<\/span>, etc",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "posts",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5fe5e08b27e8d",
+                "label": "Pull REST Version",
+                "name": "pull_rest_version",
+                "type": "text",
+                "instructions": "<span style=\"color:blue\">v2<\/span> - for WordPress<br \/>\r\n<span style=\"color:blue\">v3<\/span> - for Advanced Custom Fields",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "35",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "v2",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5fe5e0ca27e8e",
+                "label": "Pull API Extension",
+                "name": "pull_api_extension",
+                "type": "text",
+                "instructions": "\"<span style='color:blue'>wp<\/span>\" (WordPress) if native fields or \"<span style='color:blue'>acf<\/span>\" (Advanced Custom Fields) if pulling custom fields.",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5fe41005c2328",
+                            "operator": "==",
+                            "value": "rest"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "35",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "wp",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5fe3469bc9eb2",
+                "label": "Pull Block",
+                "name": "pull_block",
+                "type": "text",
+                "instructions": "Leave field blank to pull the entire wp-content if pulling the content.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Input the class selector for the specific block (selector should be unique).",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_60022afadf50b",
+                "label": "Pull Source",
+                "name": "pull_source",
+                "type": "button_group",
+                "instructions": "Show link to source if user logged in?",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "hide": "Hide",
+                    "show": "Show"
+                },
+                "allow_null": 0,
+                "default_value": "hide",
+                "layout": "horizontal",
+                "return_format": "value"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "block",
+                    "operator": "==",
+                    "value": "acf\/pull"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_60607c21896bd",
+        "title": "Pull Local",
+        "fields": [
+            {
+                "key": "field_6060d0c7c9346",
+                "label": "Pull HTML View",
+                "name": "pull_html_view",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "default-view.html": "default-view",
+                    "second-view.html": "second-view"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_60607dd3aa063",
+                "label": "Pull From",
+                "name": "pull_from",
+                "type": "relationship",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": "",
+                "taxonomy": "",
+                "filters": [
+                    "search",
+                    "post_type",
+                    "taxonomy"
+                ],
+                "elements": "",
+                "min": "",
+                "max": 1,
+                "return_format": "id"
+            },
+            {
+                "key": "field_60607e0eaa064",
+                "label": "Pull Block",
+                "name": "pull_block",
+                "type": "text",
+                "instructions": "Leave field blank to pull the entire wp-content if pulling the content.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Input the class selector for the specific block (selector should be unique).",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_60607e797cd62",
+                "label": "Pull Source",
+                "name": "pull_source",
+                "type": "button_group",
+                "instructions": "Show link to source if user logged in?",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "hide": "Hide",
+                    "show": "Show"
+                },
+                "allow_null": 0,
+                "default_value": "hide",
+                "layout": "horizontal",
+                "return_format": "value"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "block",
+                    "operator": "==",
+                    "value": "acf\/pull-local"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_6044abf340d78",
+        "title": "Pull URL",
+        "fields": [
+            {
+                "key": "field_6060ad07ee599",
+                "label": "Pull HTML View",
+                "name": "pull_html_view",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "default-view.html": "default-view",
+                    "second-view.html": "second-view"
+                },
+                "default_value": "default-view.html",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_6044ac03b212d",
+                "label": "Pull From Website",
+                "name": "pull_from_website",
+                "type": "url",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": ""
+            },
+            {
+                "key": "field_6044ac21b212e",
+                "label": "Pull From Article",
+                "name": "pull_from_article",
+                "type": "text",
+                "instructions": "Accepts post ID or post name (slug)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_6058887445f45",
+                "label": "Pull Post Type",
+                "name": "pull_post_type",
+                "type": "button_group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "posts": "Posts",
+                    "pages": "Pages",
+                    "other": "Other"
+                },
+                "allow_null": 0,
+                "default_value": "posts : Posts",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_6044e044daf8a",
+                "label": "Pull Source",
+                "name": "pull_source",
+                "type": "button_group",
+                "instructions": "Show link to source if user logged in?",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "hide": "Hide",
+                    "show": "Show"
+                },
+                "allow_null": 0,
+                "default_value": "",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_605889e393826",
+                "label": "Specify Post Type",
+                "name": "pull_post_type_specific",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_6058887445f45",
+                            "operator": "==",
+                            "value": "other"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "block",
+                    "operator": "==",
+                    "value": "acf\/pull-url"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    }
+]
