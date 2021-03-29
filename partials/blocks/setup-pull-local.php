@@ -74,7 +74,7 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 	//$outs = $btn_ops.'<hr />'.$out[ 'output' ].'<hr />'.$timestamp.' | '.$link_stamp.' | '.$this_url;
 	$replace_array = array(
 				'{@buttons}' 			=> '<div class="pull-buttons">'.$btn_ops.'</div>',
-				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+				'{@output}' 			=> $out[ 'output' ],
 				'{@date_modified}'		=> '<div class="pull-datemod">'.$timestamp.'</div>',
 				'{@slugid}'				=> '<div class="pull-slugid">'.$link_stamp.'</div>',
 				'{@url}'				=> '<div class="pull-url">'.$this_url.'</div>',
