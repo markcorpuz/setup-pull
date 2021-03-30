@@ -34,14 +34,22 @@ $args = array(
 $out = setup_pull_rest_api( $args );
 //var_dump( $out );
 
+// validate pulled information and show controls when logged in
+if( is_array( $out ) && array_key_exists( 'output_pre', $out ) ) {
 
-// set admin buttons and raw code
-$btn_ops = '<div>
-				<button class="buttons" id="show_raw__'.$block_counter.'">Show Raw</button>
-				<button class="buttons" id="copy_to_clipboard__'.$block_counter.'">Copy to clipboard</button>
-			</div>
-			<div class="hidden box-it" id="output_pre_container__'.$block_counter.'">'.$out[ "output_pre" ].'</div>';
-			// <button class="buttons" onclick="BtncopyToClipboard(\'#copyme\')">Copy to clipboard</button>
+	// set admin buttons and raw code
+	$btn_ops = '<div>
+					<button class="buttons" id="show_raw__'.$block_counter.'">Show Raw</button>
+					<button class="buttons" id="copy_to_clipboard__'.$block_counter.'">Copy to clipboard</button>
+				</div>
+				<div class="hidden box-it" id="output_pre_container__'.$block_counter.'">'.$out[ "output_pre" ].'</div>';
+				// <button class="buttons" onclick="BtncopyToClipboard(\'#copyme\')">Copy to clipboard</button>
+
+} else {
+
+	$btn_ops = '';
+
+}
 
 
 $showsource = get_field( 'pull_source' );

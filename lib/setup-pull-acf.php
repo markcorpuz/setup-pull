@@ -188,6 +188,55 @@ function acf_setup_load_view_html_template_choices( $field ) {
 
 
 /**
+ * Auto fill Select options | pull_from_site
+ *
+ */
+add_filter( 'acf/load_field/name=pull_from_site', 'acf_setup_subsite_choices' );
+function acf_setup_subsite_choices( $field ) {
+    
+    $field['choices'] = array();
+
+    $sites = get_sites();
+    foreach ($sites as $key => $value) {
+//        echo '<h1>'.$key.'</h1>';
+        /*echo $value->blog_id;
+        echo ' | ';
+        echo $value->domain;
+        echo ' | ';
+        echo $value->path;*/
+
+//        var_dump( $value );
+
+        $field['choices'][$value->blog_id] = $value->domain.$value->path;
+    }
+    /*$z = new SetupPullPluginDirectory();
+
+    $file_extn = 'php';
+
+    // get all files found in VIEWS folder
+    $view_dir = $z->setup_plugin_dir_path().'partials/views/';
+
+    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
+
+    $field['choices'] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $data_from_dir ) ) {
+
+        foreach( $data_from_dir as $field_key => $field_value ) {
+            $field['choices'][$field_key] = $field_value;
+        }
+
+        return $field;
+
+    }*/
+
+    return $field;
+    
+}
+
+
+/**
  * Get VIEW template | this function is called by SETUP-PULL-FLEX.PHP found in PARTIALS/BLOCKS folder
  *
  */
