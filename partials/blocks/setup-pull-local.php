@@ -87,15 +87,15 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 				'{@date_modified}'		=> '<div class="pull-datemod">'.$timestamp.'</div>',
 				'{@slugid}'				=> '<div class="pull-slugid">'.$link_stamp.'</div>',
 				'{@url}'				=> '<div class="pull-url">'.$this_url.'</div>',
-				'{@group_start}'		=> '<div class="fontsize-smaller" style="display:flex;flex-direction:row;">
-												<span class="fontsize-tiny" style="background-color: red;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;">START</span>
-												&nbsp;|&nbsp;'.$timestamp.'
-												&nbsp;|&nbsp;'.$this_url.'
-												&nbsp;|&nbsp;'.$link_stamp.'
+				'{@group_start}'		=> '<div class="fontsize-smaller">
+												<span class="fontsize-tiny" style="background-color: orange;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;margin-right:0.5rem;">START</span>
+												'.$timestamp.'
+												&nbsp;'.$this_url.'
+												&nbsp;'.$link_stamp.'
 											</div>',
-				'{@group_end}'			=> '<div class="fontsize-smaller" style="display:flex;flex-direction:row;">
-												<span class="fontsize-tiny" style="background-color: red;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;">END</span>
-												&nbsp;|&nbsp;'.$link_stamp.'
+				'{@group_end}'			=> '<div class="fontsize-smaller">
+												<span class="fontsize-tiny" style="background-color: orange;color:#fff;padding:2px 5px;border-radius:5px;font-weight:600;margin-right:0.5rem;">END</span>
+												'.$link_stamp.'
 											</div>',
 			);
 
