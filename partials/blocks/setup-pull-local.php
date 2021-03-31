@@ -105,7 +105,7 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 		///$outs = $out[ 'output' ];
 		$replace_array = array(
 				'{@buttons}'			=> '',
-				'{@output}' 			=> '<div class="pull-output">'.$out[ 'output' ].'</div>',
+				'{@output}' 			=> $out[ 'output' ],
 				'{@date_modified}'		=> '',
 				'{@slugid}'				=> '',
 				'{@url}'				=> '',
@@ -116,7 +116,7 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 		//$outs = $out;
 		$replace_array = array(
 				'{@buttons}'			=> '',
-				'{@output}' 			=> '<div class="pull-output">'.$out.'</div>',
+				'{@output}' 			=> $out,
 				'{@date_modified}'		=> '',
 				'{@slugid}'				=> '',
 				'{@url}'				=> '',

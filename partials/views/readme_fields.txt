@@ -1,0 +1,17 @@
+AVAILABLE FIELDS:
+1. {@output} ==> this is the main output of the block
+2. {@buttons} ==> currently, the buttons are show/hide raw code and copy to clipboard
+3. {@date_modified} ==> the post/page entry's latest date modified
+4. {@slugid} ==> this displays either the page ID or slug which is also the link to the actual source
+5. {@url} ==> the source's URL but only shows the second and top levels domain (setup-be.basestructure.com)
+6. {@group_start} ==> a DIV with contents before the actual content (marker)
+7. {@group_end} ==> a DIV with contents after the actual content (marker)
+
+	----------
+
+CSS SELECTORS:
+1. {@output} ==> pull-output
+2. {@buttons} ==> pull-buttons
+3. {@date_modified} ==> pull-datemod
+4. {@slugid} ==> pull-slugid
+5. {@url} ==> pull-url
