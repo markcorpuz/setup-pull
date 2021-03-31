@@ -5,13 +5,13 @@ if( ! defined( 'ABSPATH' ) ) {
 }
 
 // set global variable for css selectors
-global $block_css, $block_counter;
+global $block_counter; //$block_css, 
 $block_counter++;
 $out = array();
 
 // add more class selectors here
-$classes = array();
-$classes = array_merge( $classes, explode( ' ', $block_css ) );
+//$classes = array();
+//$classes = array_merge( $classes, explode( ' ', $block_css ) );
 
 // set variables
 $pull_from = get_field( 'pull_from' )[0]; // POST ID
@@ -129,8 +129,9 @@ if( $showsource == 'show' && is_user_logged_in() && is_array( $out ) ) {
 
 
 // OUTPUT
-echo '<div class="'.join( ' ', $classes ).'">
+/*echo '<div class="'.join( ' ', $classes ).'">
 		<div class="module-wrap entry-content">'.
 			strtr( setup_pull_get_html_template_contents( $pull_html_view ), $replace_array )
 		.'</div>
-	</div>';
+	</div>';*/
+echo strtr( setup_pull_get_html_template_contents( $pull_html_view ), $replace_array );
