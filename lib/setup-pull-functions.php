@@ -1,148 +1,98 @@
 <?php
 
-if( ! defined( 'ABSPATH' ) ) {
+
+if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-/*
-	1. pull local and block specific - not yet done
-*/
+global $gcounter;
+
+class SetupPullMain {
 
 
-// PULL THROUGH REST API USING POST/PAGE ID
-function setup_pull_through( $array, $block = NULL, $id = NULL ) {
+	/**
+	 * Main function call
+	 */
+	public function setup_pull_main( $block ) {
 
-	//$fieldz = explode( ',', $field );
+        global $bars;
+		
+        $pull_from = get_field( 'pull-from' );
+        if( is_array( $pull_from ) && count( $pull_from ) >= 1 ) {
+
+            $bars = array(
+                'pid'               => $pull_from[ 0 ], // // get the post ID
+                'source'            => get_field( 'pull-source' ),
+                'title'             => get_field( 'pull-title' ),
+                'credit'            => get_field( 'pull-credit' ),
+                'summary'           => get_field( 'pull-summary' ),
+                'wrap_sel'          => get_field( 'pull-section-class' ),
+                'wrap_sty'          => get_field( 'pull-section-style' ),
+                'block_class'       => $block[ 'className' ],
+            );
+            
+            $out = $this->setup_pull_view_template( get_field( 'pull-template' ), 'views' );
+            
+        }
+
+        echo $out;
+
+	}
     
-	// remove spaces in each array value
-	//$fields = array_map( 'trim', $fieldz );
 
-	$return = ''; // initialize variable
-	$ret = array();
-	
-	foreach( $array as $key => $val ) {
-		//echo '<h1>'.$key.'</h1>'; var_dump( $val );
+    /**
+     * Get VIEW template
+     */
+    public function setup_pull_view_template( $layout, $dir_ext ) {
 
-	    // apply filters if content is being pulled
-	    if( $key == 'content' ) {
+        $o = new SetupPullVariables();
 
-	        //if( empty( $block ) ) {
-	        	
-	        	/* **********************
-	        	 * return wp-content
-	        	 * if pulled by slug, the rendered content is
-	        	 * still hidden in another layer of array
-	        	 * ******************* */
-	        	if( is_numeric( $id ) ) {
-	        		$pulled_content = $val[ 'rendered' ];
-	        	} else {
-	        		$pulled_content = $val[ 'content' ][ 'rendered' ];
-	        	}
+        $layout_file = $o->setup_plugin_dir_path().'templates/'.$dir_ext.'/'.$layout;
 
-	        	$entry_content = setup_pull_apply_filters_to_content( $pulled_content );
-	        	$entry_content_pre = '<pre id="copyme">'.setup_pull_display_code_pre( $pulled_content ).'</pre>';
+        if( is_file( $layout_file ) ) {
 
-	        /*} else {
-				// PULLING BLOCKS FROM PULLED WP-CONTENT THRU REST IS NOT YET READY
-	            // parse blocks
-	            $entry_content = setup_pull_parse_blocks( $val[ 'rendered' ], $block );
+            ob_start();
 
-	        }*/
-	        
-	    }
+            include $layout_file;
 
-		// get the modified date of the entry
-		if( $key == 'modified' ) {
-			
-			if( is_numeric( $id ) ) {
-				// pulled using post ID
-		    	$entry_mod_date = $val;
-		    } else {
-		    	// pulled using post slug
-		    	$entry_mod_date = $val[ "modified" ];
-		    }
+            $new_output = ob_get_clean();
 
-		}
+            if( !empty( $new_output ) )
+                $output = $new_output;
 
-		// get the link to the source
-		if( $key == 'link' ) {
-			
-			if( is_numeric( $id ) ) {
-				// pulled using post ID
-		    	$entry_link = $val;
-		    } else {
-		    	// pulled using post slug
-		    	$entry_link = $val[ "link" ];
-		    }
+        } else {
 
-		}
-
-	}
-
-	// no entry found
-	if( empty( $entry_content ) ) {
-	    $return = 'No entry found. Please validate the source.';
-	} else {
-
-	    $return = array(
-	        'output'        => $entry_content,
-	        'output_pre'	=> $entry_content_pre,
-	        'mod_date'      => $entry_mod_date,
-	        'entry_link'    => $entry_link,
-	    );
-
-	}
-
-	return $return;
-
-}
-
-
-function setup_pull_display_code_pre( $string ) {
-	$string = str_replace( "<", "&lt;", $string );
-	$string = str_replace( ">", "&gt;", $string );
-	return $string;
-}
-
-
-// separate the blocks within the WP-CONTENT
-if( !function_exists( 'setup_pull_parse_blocks' ) ) {
-
-    function setup_pull_parse_blocks( $content, $get_this_block ) {
-
-        $out = ''; // initialize variable to avoid the issue of undeclared variable
-        
-        foreach( parse_blocks( $content ) as $val ) {
-
-            // filter variable
-            if( array_key_exists( 'attrs', $val ) && is_array( $val[ 'attrs' ] ) ) {
-            	//var_dump( $val[ 'attrs' ] );
-                // filter and match to target block (css selector)
-                if( array_key_exists( 'className', $val[ 'attrs' ] ) && $val[ 'attrs' ][ 'className' ] == $get_this_block ) {
-
-                    //echo $val[ 'blockName' ].'<br /><br />';
-                    $out = $val[ 'innerHTML' ]; // or $val[ 'innerContent' ]
-                    //echo $val[ 'attrs' ][ 'className' ];
-
-                    //break; // exit loop
-
-                }
-
-            }
+            $output = FALSE;
 
         }
 
-        return $out;
+        return $output;
 
     }
 
-}
+
+    /**
+     * Array validation
+     */
+    public function setup_array_validation( $needles, $haystacks, $args = FALSE ) {
+
+        if( is_array( $haystacks ) && array_key_exists( $needles, $haystacks ) && !empty( $haystacks[ $needles ] ) ) {
+
+            return $haystacks[ $needles ];
+
+        } else {
+
+            return FALSE;
+
+        }
+
+    }
 
 
-// Pull the whole WP-CONTENT
-if( !function_exists( 'setup_pull_the_whole_content' ) ) {
-
-    function setup_pull_the_whole_content( $pid ) {
+    /**
+     * Apply filters to WP-CONTENT
+     */
+    public function setup_pull_apply_filters_to_content( $pid ) {
 
         $content = get_the_content( NULL, FALSE, $pid );
         /**
@@ -152,22 +102,10 @@ if( !function_exists( 'setup_pull_the_whole_content' ) ) {
          *
          * @param string $content Content of the current post.
          */
-        //      $content = apply_filters( 'the_content', $content );
-        //      return str_replace( ']]>', ']]&gt;', $content );
-        return setup_pull_apply_filters_to_content( $content );
-
-    }
-
-}
-
-
-// Apply filters to wp-content
-if( !function_exists( 'setup_pull_apply_filters_to_content' ) ) {
-
-    function setup_pull_apply_filters_to_content( $content ) {
-
         $content = apply_filters( 'the_content', $content );
-        return str_replace( ']]>', ']]&gt;', $content );
+        $content = str_replace( ']]>', ']]&gt;', $content );
+
+        return $content;
 
     }
 

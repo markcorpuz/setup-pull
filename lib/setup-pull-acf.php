@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @ return array
  */
-add_filter( 'block_categories', 'setup_block_categories_fn_pull' );
+add_filter( 'block_categories_all', 'setup_block_categories_fn_pull' );
 function setup_block_categories_fn_pull( $categories ) {
 
     $category_slugs = wp_list_pluck( $categories, 'slug' );
@@ -40,14 +40,14 @@ function setup_block_categories_fn_pull( $categories ) {
 add_action( 'acf/init', 'setup_pull_block_acf_init' );
 function setup_pull_block_acf_init() {
 
-    $z = new SetupPullPluginDirectory();
+    $z = new SetupPullVariables();
 
     $blocks = array(
 
-        'pull' => array(
+        /*'pull' => array(
             'name'                  => 'pull',
             'title'                 => __('Pull'),
-            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-flex.php',
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-flex.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -63,7 +63,7 @@ function setup_pull_block_acf_init() {
         'pull_url' => array(
             'name'                  => 'pull_url',
             'title'                 => __('Pull URL'),
-            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-url.php',
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-url.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -74,14 +74,14 @@ function setup_pull_block_acf_init() {
                 'customClassName'   => true,
                 'jsx'               => true,
             ],            
-        ),
+        ),*/
 
-        'pull_local' => array(
-            'name'                  => 'pull_local',
+        'pull_single_local' => array(
+            'name'                  => 'pull_single_local',
             'title'                 => __('Pull Local'),
-            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-local.php',
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-single-local.php',
             'category'              => 'setup',
-            'icon'                  => 'pressthis',
+            'icon'                  => 'embed-post',
             'mode'                  => 'edit',
             'keywords'              => array( 'pull', 'get', 'content', 'url' ),
             'supports'              => [
@@ -91,11 +91,11 @@ function setup_pull_block_acf_init() {
                 'jsx'               => true,
             ],            
         ),
-
+        /*
         'pull_multisite' => array(
             'name'                  => 'pull_multisite',
             'title'                 => __('Pull Multisite'),
-            'render_template'       => $z->setup_plugin_dir_path().'partials/blocks/setup-pull-multisite.php',
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-multisite.php',
             'category'              => 'setup',
             'icon'                  => 'pressthis',
             'mode'                  => 'edit',
@@ -106,7 +106,7 @@ function setup_pull_block_acf_init() {
                 'customClassName'   => true,
                 'jsx'               => true,
             ],            
-        ),
+        ),*/
 
     );
 
@@ -126,15 +126,15 @@ function setup_pull_block_acf_init() {
  * Auto fill Select options for VIEWS (HTML)
  *
  */
-add_filter( 'acf/load_field/name=pull_html_view', 'acf_setup_load_template_choices_pull' );
+/*add_filter( 'acf/load_field/name=pull_html_view', 'acf_setup_load_template_choices_pull' );
 function acf_setup_load_template_choices_pull( $field ) {
     
-    $z = new SetupPullPluginDirectory();
+    $z = new SetupPullVariables();
 
     $file_extn = 'html';
 
     // get all files found in VIEWS folder
-    $view_dir = $z->setup_plugin_dir_path().'partials/views/';
+    $view_dir = $z->setup_plugin_dir_path().'templates/views/';
 
     $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
 
@@ -152,22 +152,22 @@ function acf_setup_load_template_choices_pull( $field ) {
 
     }
     
-}
+}*/
 
 
 /**
  * Auto fill Select options
  *
  */
-add_filter( 'acf/load_field/name=pull_layout', 'acf_setup_load_view_html_template_choices' );
+add_filter( 'acf/load_field/name=pull-template', 'acf_setup_load_view_html_template_choices' );
 function acf_setup_load_view_html_template_choices( $field ) {
     
-    $z = new SetupPullPluginDirectory();
+    $z = new SetupPullVariables();
 
     $file_extn = 'php';
 
     // get all files found in VIEWS folder
-    $view_dir = $z->setup_plugin_dir_path().'partials/views/';
+    $view_dir = $z->setup_plugin_dir_path().'templates/views/';
 
     $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
 
@@ -209,7 +209,7 @@ function acf_setup_subsite_choices( $field ) {
 
         $field['choices'][$value->blog_id] = $value->domain.$value->path;
     }
-    /*$z = new SetupPullPluginDirectory();
+    /*$z = new SetupPullVariables();
 
     $file_extn = 'php';
 
@@ -244,7 +244,7 @@ if( !function_exists( 'setup_acf_pull_view_template_pulls' ) ) {
 
 	function setup_acf_pull_view_template_pulls( $layout, $args = FALSE ) {
 
-        $z = new SetupPullPluginDirectory();
+        $z = new SetupPullVariables();
 
 	    $layout_file = $z->setup_plugin_dir_path().'partials/views/'.$layout;
 	    
@@ -331,12 +331,12 @@ if( !function_exists( 'setup_pulls_view_files' ) ) {
  * Get VIEW template (INCLUDE)
  *
  */
-function setup_pull_get_html_template_contents( $layout ) {
+/*function setup_pull_get_html_template_contents( $layout ) {
 
-    $z = new SetupPullPluginDirectory();
+    $z = new SetupPullVariables();
 
     $layout_file = $z->setup_plugin_dir_path().'partials/views/'.$layout;
 
     return file_get_contents( $layout_file );
 
-}
+}*/
