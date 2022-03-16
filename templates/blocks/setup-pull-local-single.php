@@ -5,5 +5,5 @@ if( ! defined( 'ABSPATH' ) ) {
 }
 
 $a = new SetupPullMain();
-echo $a->setup_pull_main( $block );
+echo $a->setup_pull_single( $block );
 // EOF

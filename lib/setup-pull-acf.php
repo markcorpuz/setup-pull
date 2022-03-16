@@ -76,14 +76,30 @@ function setup_pull_block_acf_init() {
             ],            
         ),*/
 
-        'pull_single_local' => array(
-            'name'                  => 'pull_single_local',
-            'title'                 => __('Pull Local'),
-            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-single-local.php',
+        'pull_local_single' => array(
+            'name'                  => 'pull_local_single',
+            'title'                 => __('Pull Single'),
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-local-single.php',
             'category'              => 'setup',
             'icon'                  => 'embed-post',
             'mode'                  => 'edit',
-            'keywords'              => array( 'pull', 'get', 'content', 'url' ),
+            'keywords'              => array( 'pull', 'get', 'single' ),
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        ),
+
+        'pull_local_multi' => array(
+            'name'                  => 'pull_local_multi',
+            'title'                 => __('Pull Multi'),
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-local-multi.php',
+            'category'              => 'setup',
+            'icon'                  => 'embed-post',
+            'mode'                  => 'edit',
+            'keywords'              => array( 'pull', 'get', 'multi' ),
             'supports'              => [
                 'align'             => false,
                 'anchor'            => true,
@@ -156,11 +172,13 @@ function acf_setup_load_template_choices_pull( $field ) {
 
 
 /**
- * Auto fill Select options
+ * Auto fill Select options | ENTRIES
  *
  */
-add_filter( 'acf/load_field/name=pull-template', 'acf_setup_load_view_html_template_choices' );
-function acf_setup_load_view_html_template_choices( $field ) {
+add_filter( 'acf/load_field/name=pull-template', 'acf_setup_load_view_template_choices' ); // SINGLE
+add_filter( 'acf/load_field/name=pull-template-global', 'acf_setup_load_view_template_choices' ); // MULTI - GLOBAL
+add_filter( 'acf/load_field/name=pull-template-multi', 'acf_setup_load_view_template_choices' ); // MULTI - ENTRIES
+function acf_setup_load_view_template_choices( $field ) {
     
     $z = new SetupPullVariables();
 
@@ -188,10 +206,42 @@ function acf_setup_load_view_html_template_choices( $field ) {
 
 
 /**
+ * Auto fill Select options | DETAILS
+ *
+ */
+add_filter( 'acf/load_field/name=pull-details-template-global', 'acf_setup_load_details_template_choices' ); // MULTI - ENTRIES
+function acf_setup_load_details_template_choices( $field ) {
+    
+    $z = new SetupPullVariables();
+
+    $file_extn = 'php';
+
+    // get all files found in VIEWS folder
+    $view_dir = $z->setup_plugin_dir_path().'templates/details/';
+
+    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
+
+    $field['choices'] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $data_from_dir ) ) {
+
+        foreach( $data_from_dir as $field_key => $field_value ) {
+            $field['choices'][$field_key] = $field_value;
+        }
+
+        return $field;
+
+    }
+    
+}
+
+
+/**
  * Auto fill Select options | pull_from_site
  *
  */
-add_filter( 'acf/load_field/name=pull_from_site', 'acf_setup_subsite_choices' );
+//add_filter( 'acf/load_field/name=pull_from_site', 'acf_setup_subsite_choices' );
 function acf_setup_subsite_choices( $field ) {
     
     $field['choices'] = array();
