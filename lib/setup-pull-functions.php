@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-global $gcounter;
+//global $gcounter;
 
 class SetupPullMain {
 
@@ -44,57 +44,58 @@ class SetupPullMain {
             // loop through flexible content field
             foreach( $pull_from as $pulls ) {
 
-                // ENTRY
+                // ENTRIES
                 if( 'pull-entry' == $pulls[ 'acf_fc_layout' ] ) {
 
-                    if( $this->setup_array_validation( 'pull-from-multi', $pulls ) && is_array( $pulls[ 'pull-from-multi' ] ) ) {
+                    // source
+                    $esource = $pulls[ 'pull-show-source-multi' ];
+                    if( $esource === 'show' ) {
+                        $bars[ 'sources' ] = TRUE;
+                    } else {
+                        $bars[ 'sources' ] = FALSE;
+                    }
 
-                        // source
-                        $esource = $pulls[ 'pull-show-source-multi' ];
-                        if( $esource === 'show' ) {
-                            $bars[ 'sources' ] = TRUE;
+                    // class
+                    $eclass = $pulls[ 'pull-section-class-multi' ];
+                    if( !empty( $tge_class ) && !empty( $eclass ) ) {
+
+                        $bars[ 'wrap_sel' ] = $tge_class.' '.$eclass;
+
+                    } else {
+
+                        if( !empty( $tge_class ) && empty( $eclass ) ) {
+                            $bars[ 'wrap_sel' ] = $tge_class;
                         } else {
-                            $bars[ 'sources' ] = FALSE;
+                            $bars[ 'wrap_sel' ] = $eclass;
                         }
 
-                        // class
-                        $eclass = $pulls[ 'pull-section-class-multi' ];
-                        if( !empty( $tge_class ) && !empty( $eclass ) ) {
+                    }
 
-                            $bars[ 'wrap_sel' ] = $tge_class.' '.$eclass;
+                    // style
+                    $estyle = $pulls[ 'pull-section-style-multi' ];
+                    if( !empty( $tge_style ) && !empty( $estyle ) ) {
 
+                        $bars[ 'wrap_sty' ] = $tge_style.' '.$estyle;
+
+                    } else {
+
+                        if( !empty( $tge_style ) && empty( $estyle ) ) {
+                            $bars[ 'wrap_sty' ] = $tge_style;
                         } else {
-
-                            if( !empty( $tge_class ) && empty( $eclass ) ) {
-                                $bars[ 'wrap_sel' ] = $tge_class;
-                            } else {
-                                $bars[ 'wrap_sel' ] = $eclass;
-                            }
-
+                            $bars[ 'wrap_sty' ] = $estyle;
                         }
 
-                        // style
-                        $estyle = $pulls[ 'pull-section-style-multi' ];
-                        if( !empty( $tge_style ) && !empty( $estyle ) ) {
+                    }
 
-                            $bars[ 'wrap_sty' ] = $tge_style.' '.$estyle;
+                    // determine what template to use | global or override
+                    if( $this->setup_array_validation( 'pull-override-global', $pulls ) ) {
+                        $etemplate = $pulls[ 'pull-template-multi' ];
+                    } else {
+                        $etemplate = $tge_template;
+                    }
 
-                        } else {
-
-                            if( !empty( $tge_style ) && empty( $estyle ) ) {
-                                $bars[ 'wrap_sty' ] = $tge_style;
-                            } else {
-                                $bars[ 'wrap_sty' ] = $estyle;
-                            }
-
-                        }
-
-                        // determine what template to use | global or override
-                        if( $this->setup_array_validation( 'pull-override-global', $pulls ) ) {
-                            $etemplate = $pulls[ 'pull-template-multi' ];
-                        } else {
-                            $etemplate = $tge_template;
-                        }
+                    // PULL ENTRY | RELATIONSHIP FIELD
+                    if( $this->setup_array_validation( 'pull-from-multi', $pulls ) && is_array( $pulls[ 'pull-from-multi' ] ) ) {                
                         
                         // loop through the RELATIONSHIP field
                         foreach( $pulls[ 'pull-from-multi' ] as $pid ) {
@@ -104,6 +105,61 @@ class SetupPullMain {
                             $out .= $this->setup_pull_view_template( $etemplate, 'views' );
 
                         }
+                        
+                    }
+
+                    // loop through the TAXONOMY field
+                    if( $this->setup_array_validation( 'pull-tax-group', $pulls ) && is_array( $pulls[ 'pull-tax-group' ] ) ) {
+
+                        $pids = array(); // declare empty variable
+
+                        $pt_group = $pulls[ 'pull-tax-group' ];
+
+                        // tax variable
+                        $ptm = $pt_group[ 'pull-taxonomy-multi' ];
+
+                        if( $this->setup_array_validation( 'pull-post-type', $pt_group ) && is_array( $pt_group[ 'pull-post-type' ] ) ) {
+
+                            // Post Type loop
+                            foreach( $pt_group[ 'pull-post-type' ] as $pt_id ) {
+
+                                // Tax Type loop
+                                foreach( $ptm as $tax ) {
+
+                                    $args = array(
+                                        'post_type'         => $pt_id,
+                                        'post_status'       => 'publish',
+                                        'posts_per_page'    => -1,
+                                        'post__not_in'      => $pids, // variable must be array
+                                        'orderby'           => 'date',
+                                        'order'             => 'DESC',
+                                        'tax_query'         => array(
+                                            array(
+                                                'taxonomy'      => $tax->taxonomy,
+                                                'field'         => 'term_id',
+                                                'terms'         => $tax->term_taxonomy_id,
+                                            ),
+                                        ),
+                                    );
+
+                                    $pids = array_unique( array_merge( $pids, $this->spull_wpquery( $args ) ) );
+                                    
+                                }
+
+                            }
+
+                        }
+                        
+                        // handle taxonomy output
+                        if( count( $pids ) > 0 ) {
+                            foreach( $pids as $ids ) {
+
+                                $bars[ 'pid' ] = $ids;
+
+                                $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+                            }
+                        }
 
                     }
 
@@ -111,32 +167,40 @@ class SetupPullMain {
 
                 // DETAILS
                 if( 'pull-details' == $pulls[ 'acf_fc_layout' ] ) {
-
-                    //$bars = array();
                     
                     $dtitle = $pulls[ 'pull-title-multi' ];
                     if( !empty( $dtitle ) ) {
                         $bars[ 'title' ] = $dtitle;
+                    } else {
+                        $bars[ 'title' ] = '';
                     }
 
                     $dcredit = $pulls[ 'pull-credit-multi' ];
                     if( !empty( $dcredit ) ) {
                         $bars[ 'credit' ] = $dcredit;
+                    } else {
+                        $bars[ 'credit' ] = '';
                     }
 
                     $dsummary = $pulls[ 'pull-summary-multi' ];
                     if( !empty( $dsummary ) ) {
                         $bars[ 'summary' ] = $dsummary;
+                    } else {
+                        $bars[ 'summary' ] = '';
                     }
 
                     // class
                     if( !empty( $tgd_class ) ) {
                         $bars[ 'wrap_sel' ] = $tgd_class;
+                    } else {
+                        $bars[ 'wrap_sel' ] = '';
                     }
 
                     // selector
                     if( !empty( $tgd_style ) ) {
                         $bars[ 'wrap_sty' ] = $tgd_style;
+                    } else {
+                        $bars[ 'wrap_sty' ] = '';
                     }
                     
                     $out .= $this->setup_pull_view_template( $tgd_template, 'details' );
@@ -152,14 +216,7 @@ class SetupPullMain {
 
             // block class
             $bclass = $this->setup_array_validation( 'className', $block );
-            /*echo $bclass;
-            
-            // wrap class
-            if( empty( $class_global ) ) {
-                $wrap_class = '';
-            } else {
-                $wrap_class = ' class="'.$class_global.'"';
-            }*/
+ 
             if( !empty( $bclass ) && !empty( $class_global ) ) {
                 $wrap_class = ' class="'.$bclass.' '.$class_global.'"';
             } else {
@@ -191,7 +248,7 @@ class SetupPullMain {
 	/**
 	 * Main SINGLE function call
 	 */
-	public function setup_pull_single( $block, $return = FALSE ) {
+	public function setup_pull_single( $block ) {
 
         global $bars;
 		
@@ -229,11 +286,7 @@ class SetupPullMain {
 
         if( !empty( $out ) ) {
 
-            if( $return ) {
-                return $out;
-            } else {
-                echo $out;
-            }
+            echo $out;
             
         }
         
@@ -354,6 +407,33 @@ class SetupPullMain {
             }
 
         }
+
+    }
+
+
+    /**
+     * WP_Query
+     */
+    public function spull_wpquery( $args ) {
+
+        $pid = array();
+        
+        // query
+        $loop = new WP_Query( $args );
+        
+        // loop
+        if( $loop->have_posts() ):
+
+            // get all post IDs
+            while( $loop->have_posts() ): $loop->the_post();
+                
+                $pid[] = get_the_ID();
+                
+            endwhile;
+
+        endif;
+
+        return $pid;
 
     }
 

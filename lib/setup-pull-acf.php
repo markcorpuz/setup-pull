@@ -390,3 +390,35 @@ if( !function_exists( 'setup_pulls_view_files' ) ) {
     return file_get_contents( $layout_file );
 
 }*/
+
+/**
+ * Auto fill Select options | DETAILS
+ *
+ */
+add_filter( 'acf/load_field/name=pull-post-type', 'acf_setup_load_posttype_choices' ); // MULTI - ENTRIES
+function acf_setup_load_posttype_choices( $field ) {
+    
+    $z = new SetupPullVariables();
+
+    $post_types = get_post_types( '', 'names' ); 
+
+    $field[ 'choices' ] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $post_types ) ) {
+
+        foreach( $post_types as $key => $post_type ) {
+
+            if( !in_array( $post_type, $z->setup_not_from_these_posttypes() ) ) {
+
+                $field[ 'choices' ][ $key ] = $post_type;
+                
+            }
+            
+        }
+
+        return $field;
+
+    }
+    
+}

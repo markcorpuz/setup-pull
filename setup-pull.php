@@ -49,6 +49,31 @@ class SetupPullVariables {
 
     }
 
+    // list of excluded post types from MULTI option
+    public function setup_not_from_these_posttypes() {
+
+        return array(
+            'attachment',
+            'revision',
+            'nav_menu_item',
+            'custom_css',
+            'customize_changeset',
+            'oembed_cache',
+            'user_request',
+            'wp_block',
+            'wp_template',
+            'wp_template_part',
+            'wp_global_styles',
+            'wp_navigation',
+            'acf-field-group',
+            'acf-field',
+            '_pods_pod',
+            '_pods_group',
+            '_pods_field',
+        );
+
+    }
+
 }
 
 
