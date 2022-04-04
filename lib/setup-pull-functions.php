@@ -35,20 +35,16 @@ class SetupPullMain {
         $tgd_style = $template_global_details[ 'pull-details-style-global' ];
         
 
-        $pull_from = get_field( 'pull-flexi' );
-        if( is_array( $pull_from ) ) {
+        if( have_rows( 'pull-flexi' ) ):
+            while( have_rows( 'pull-flexi' ) ) : the_row();
 
-            // declare empty block class to tell the template that this is multi pull
-            $bars[ 'block_class' ] = '';
-
-            // loop through flexible content field
-            foreach( $pull_from as $pulls ) {
+                $bars = array(); // declare empty variable to clear all information gathered from the loop
 
                 // ENTRIES
-                if( 'pull-entry' == $pulls[ 'acf_fc_layout' ] ) {
+                if( get_row_layout() == 'pull-entry' ):
 
                     // source
-                    $esource = $pulls[ 'pull-show-source-multi' ];
+                    $esource = get_sub_field( 'pull-show-source-multi' );
                     if( $esource === 'show' ) {
                         $bars[ 'sources' ] = TRUE;
                     } else {
@@ -56,7 +52,7 @@ class SetupPullMain {
                     }
 
                     // class
-                    $eclass = $pulls[ 'pull-section-class-multi' ];
+                    $eclass = get_sub_field( 'pull-section-class-multi' );
                     if( !empty( $tge_class ) && !empty( $eclass ) ) {
 
                         $bars[ 'wrap_sel' ] = $tge_class.' '.$eclass;
@@ -72,7 +68,7 @@ class SetupPullMain {
                     }
 
                     // style
-                    $estyle = $pulls[ 'pull-section-style-multi' ];
+                    $estyle = get_sub_field( 'pull-section-style-multi' );
                     if( !empty( $tge_style ) && !empty( $estyle ) ) {
 
                         $bars[ 'wrap_sty' ] = $tge_style.' '.$estyle;
@@ -88,17 +84,21 @@ class SetupPullMain {
                     }
 
                     // determine what template to use | global or override
-                    if( $this->setup_array_validation( 'pull-override-global', $pulls ) ) {
-                        $etemplate = $pulls[ 'pull-template-multi' ];
+                    //if( $this->setup_array_validation( 'pull-override-global', $pulls ) ) {
+                    $poglobal = get_sub_field( 'pull-override-global' );
+                    if( $poglobal === TRUE ) {
+                        $etemplate = get_sub_field( 'pull-template-multi' );
                     } else {
                         $etemplate = $tge_template;
                     }
 
                     // PULL ENTRY | RELATIONSHIP FIELD
-                    if( $this->setup_array_validation( 'pull-from-multi', $pulls ) && is_array( $pulls[ 'pull-from-multi' ] ) ) {                
+                    //if( $this->setup_array_validation( 'pull-from-multi', $pulls ) && is_array( $pulls[ 'pull-from-multi' ] ) ) {
+                    $pfm = get_sub_field( 'pull-from-multi' );
+                    if( is_array( $pfm ) ) {
                         
                         // loop through the RELATIONSHIP field
-                        foreach( $pulls[ 'pull-from-multi' ] as $pid ) {
+                        foreach( $pfm as $pid ) {
                             
                             $bars[ 'pid' ] = $pid;
 
@@ -109,80 +109,113 @@ class SetupPullMain {
                     }
 
                     // loop through the TAXONOMY field
-                    if( $this->setup_array_validation( 'pull-tax-group', $pulls ) && is_array( $pulls[ 'pull-tax-group' ] ) ) {
+                    $ptg = get_sub_field( 'pull-tax-group' );
+                    if( empty( $ptg[ 'pull-post-type' ] ) && !empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
 
-                        $pids = array(); // declare empty variable
+                        // no post type selected
+                        $out .= '<div class="item-missing">Please specify the <b>post type</b> to pull from</div>';
 
-                        $pt_group = $pulls[ 'pull-tax-group' ];
+                    } elseif( !empty( $ptg[ 'pull-post-type' ] ) && empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
 
-                        // tax variable
-                        $ptm = $pt_group[ 'pull-taxonomy-multi' ];
+                        // no taxonomy selected
+                        $out .= '<div class="item-missing">Please specify the <b>taxonomy</b> to pull from</div>';
 
-                        if( $this->setup_array_validation( 'pull-post-type', $pt_group ) && is_array( $pt_group[ 'pull-post-type' ] ) ) {
+                    } else {
 
-                            // Post Type loop
-                            foreach( $pt_group[ 'pull-post-type' ] as $pt_id ) {
+                        // filter selected post type and taxonomy
+                        if( !empty( $ptg[ 'pull-post-type' ] ) && !empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
 
-                                // Tax Type loop
-                                foreach( $ptm as $tax ) {
+                            // loop through the tax field
+                            foreach( $ptg[ 'pull-taxonomy-multi' ] as $tax ) {
 
-                                    $args = array(
-                                        'post_type'         => $pt_id,
-                                        'post_status'       => 'publish',
-                                        'posts_per_page'    => -1,
-                                        'post__not_in'      => $pids, // variable must be array
-                                        'orderby'           => 'date',
-                                        'order'             => 'DESC',
-                                        'tax_query'         => array(
-                                            array(
-                                                'taxonomy'      => $tax->taxonomy,
-                                                'field'         => 'term_id',
-                                                'terms'         => $tax->term_taxonomy_id,
-                                            ),
-                                        ),
-                                    );
+                                /*array_push( $arrays, array(
+                                    'taxonomy'      => $tax->taxonomy,
+                                    'field'         => 'slug',
+                                    'terms'         => $tax->slug,
+                                    'operator'      => 'IN',
+                                ) );*/
 
-                                    $pids = array_unique( array_merge( $pids, $this->spull_wpquery( $args ) ) );
+                                /*if( array_key_exists( $tax->taxonomy, $arrays ) ) {
+
+                                    array_push( $arrays[ $tax->taxonomy ], $tax->slug );
+
+                                } else {
+
+                                    $arrays[ $tax->taxonomy ] = array( $tax->slug );
+
+                                }*/
+
+                                // capture the taxonomy
+                                if( empty( $taxes_tax ) )
+                                    $taxes_tax = $tax->taxonomy;
+
+                                $taxes[] = $tax->slug;
+                                //$arrays[ $tax->taxonomy ] = $tax->slug;
+
+                            }
+
+                            $argz = array(
+                                'post_type'     => $ptg[ 'pull-post-type' ],
+                                'post_status'   => 'publish',
+                                'tax_query'     => array(
+                                    array(
+                                        'taxonomy'      => $taxes_tax,
+                                        'field'         => 'slug',
+                                        'terms'         => $taxes,
+                                    ),
+                                ),
+                            );
+
+                            $loop = new WP_Query( $argz );
+                            
+                            // loop
+                            if( $loop->have_posts() ):
+
+                                // get all post IDs
+                                while( $loop->have_posts() ): $loop->the_post();
                                     
-                                }
+                                    //$pid = get_the_ID();
+//                                    echo get_the_ID().' | '.get_the_title();
+//                                    echo '<br />';
+                                    $bars[ 'pid' ] = get_the_ID();
+                                    $bars[ 'taxonomy' ] = $taxes_tax;
 
-                            }
+                                    $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+                                    //$output .= '<div'.$selector.'><a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>'.$dtn.'</div>';
+                                    
+                                endwhile;
 
-                        }
-                        
-                        // handle taxonomy output
-                        if( count( $pids ) > 0 ) {
-                            foreach( $pids as $ids ) {
+                                /* Restore original Post Data 
+                                 * NB: Because we are using new WP_Query we aren't stomping on the 
+                                 * original $wp_query and it does not need to be reset.
+                                */
+                                wp_reset_postdata();
 
-                                $bars[ 'pid' ] = $ids;
-
-                                $out .= $this->setup_pull_view_template( $etemplate, 'views' );
-
-                            }
+                            endif;
                         }
 
                     }
 
-                }
+                endif;
 
                 // DETAILS
-                if( 'pull-details' == $pulls[ 'acf_fc_layout' ] ) {
-                    
-                    $dtitle = $pulls[ 'pull-title-multi' ];
+                if( get_row_layout() == 'pull-details' ):
+
+                    $dtitle = get_sub_field( 'pull-title-multi' );
                     if( !empty( $dtitle ) ) {
                         $bars[ 'title' ] = $dtitle;
                     } else {
                         $bars[ 'title' ] = '';
                     }
 
-                    $dcredit = $pulls[ 'pull-credit-multi' ];
+                    $dcredit = get_sub_field( 'pull-credit-multi' );
                     if( !empty( $dcredit ) ) {
                         $bars[ 'credit' ] = $dcredit;
                     } else {
                         $bars[ 'credit' ] = '';
                     }
 
-                    $dsummary = $pulls[ 'pull-summary-multi' ];
+                    $dsummary = get_sub_field( 'pull-summary-multi' );
                     if( !empty( $dsummary ) ) {
                         $bars[ 'summary' ] = $dsummary;
                     } else {
@@ -205,11 +238,10 @@ class SetupPullMain {
                     
                     $out .= $this->setup_pull_view_template( $tgd_template, 'details' );
 
-                }
-                
-            }
+                endif;
 
-        }
+            endwhile;
+        endif; // ACF Flexible Content Field - END
 
         // output container
         if( !empty( $out ) ) {

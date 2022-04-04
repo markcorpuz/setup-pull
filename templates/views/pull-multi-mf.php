@@ -26,9 +26,16 @@ $inline_style = $mfunc->setup_pull_combine_styles( $ss );
 
 // WRAP | OPEN
 echo '<div class="'.$classes.'"'.$inline_style.'>';
-
+	
 	// pull wp title
 	echo '<div class="item-title-native"><b>WP TITLE - MULTI:</b> '.get_the_title( $pid ).'</div>';
+
+	// this is just an extra and can be removed
+	$ta = $mfunc->setup_array_validation( 'taxonomy', $bars );
+	if( !empty( $ta ) ) {
+		$taxi = get_the_terms( $pid, $ta );
+		echo '<div class="item-taxonomy"><b>TAXONOMY:</b> '.$taxi[ 0 ]->name.'</div>';
+	}
 
 	/*
 	// pull wp-content
