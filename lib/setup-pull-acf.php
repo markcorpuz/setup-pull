@@ -44,37 +44,21 @@ function setup_pull_block_acf_init() {
 
     $blocks = array(
 
-        /*'pull' => array(
-            'name'                  => 'pull',
-            'title'                 => __('Pull'),
-            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-flex.php',
+        'pull_remote' => array(
+            'name'                  => 'pull_remote',
+            'title'                 => __('Pull Remote'),
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-remote.php',
             'category'              => 'setup',
-            'icon'                  => 'pressthis',
+            'icon'                  => 'embed-post',
             'mode'                  => 'edit',
-            'keywords'              => array( 'pull', 'get' ),
-            'supports'              => [
-                'align'             => false,
-                'anchor'            => true,
-                'customClassName'   => true,
-                'jsx'               => true,
-            ],
-        ),
-
-        'pull_url' => array(
-            'name'                  => 'pull_url',
-            'title'                 => __('Pull URL'),
-            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-url.php',
-            'category'              => 'setup',
-            'icon'                  => 'pressthis',
-            'mode'                  => 'edit',
-            'keywords'              => array( 'pull', 'get', 'content', 'url' ),
+            'keywords'              => array( 'pull', 'get', 'remote', 'rest api', 'api', 'rest', 'url' ),
             'supports'              => [
                 'align'             => false,
                 'anchor'            => true,
                 'customClassName'   => true,
                 'jsx'               => true,
             ],            
-        ),*/
+        ),
 
         'pull_local_single' => array(
             'name'                  => 'pull_local_single',
@@ -178,6 +162,7 @@ function acf_setup_load_template_choices_pull( $field ) {
 add_filter( 'acf/load_field/name=pull-template', 'acf_setup_load_view_template_choices' ); // SINGLE
 add_filter( 'acf/load_field/name=pull-template-global', 'acf_setup_load_view_template_choices' ); // MULTI - GLOBAL
 add_filter( 'acf/load_field/name=pull-template-multi', 'acf_setup_load_view_template_choices' ); // MULTI - ENTRIES
+add_filter( 'acf/load_field/name=pull-template-remote', 'acf_setup_load_view_template_choices' ); // REMOTE
 function acf_setup_load_view_template_choices( $field ) {
     
     $z = new SetupPullVariables();

@@ -286,7 +286,7 @@ class SetupPullMain {
 		
         $pull_from = get_field( 'pull-from' );
         if( is_array( $pull_from ) && count( $pull_from ) >= 1 ) {
-
+            
             $pid = $pull_from[ 0 ];
 
             $bars = array(
@@ -446,7 +446,7 @@ class SetupPullMain {
     /**
      * WP_Query
      */
-    public function spull_wpquery( $args ) {
+    /*public function spull_wpquery( $args ) {
 
         $pid = array();
         
@@ -466,6 +466,241 @@ class SetupPullMain {
         endif;
 
         return $pid;
+
+    }*/
+
+
+    /**
+     * REMOTE | REST API
+     */
+    public function setup_pull_remote( $block ) {
+
+        /*
+            5a. Possibly a list of categories 
+            5b. and tags
+        */
+        /*
+            var_dump( $block[ 'className' ] );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-url-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-post-type-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-post-id-slug-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-fields-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-featured-image-size' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-template-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-section-class-remote' ) );
+            ?><hr /><?php
+            var_dump( get_field( 'pull-section-style-remote' ) );
+        */
+
+        $id = get_field( 'pull-post-id-slug-remote' ); // this can be slug or ID of the entry
+
+        $url_raw = get_field( 'pull-url-remote' ); // URL
+
+        $rest_api_url_extension = 'wp'; // or ACF
+
+        $version = 'v2';
+
+        $post_type = get_field( 'pull-post-type-remote' ); // post type
+
+        $get_fields = get_field( 'pull-fields-remote' ); // array of fields to be pulled
+
+        $pull_fields = ''; // initialize variable
+        
+        $max_count = count( $get_fields )-1;
+        
+        // loop through the array
+        for( $x=0; $x<=$max_count; $x++ ) {
+
+            // add & after each field but not at the end
+            if( $x == $max_count ) {
+                $ampersand = '';
+            } else {
+                $ampersand = '&';
+            }
+
+            $pull_fields .= '_fields[]='.trim( $get_fields[ $x ] ).$ampersand;
+
+        }
+
+        // combine the URL
+        $url_v = rtrim( $url_raw, "/" ).'/wp-json/'.$rest_api_url_extension.'/'.$version.'/';
+        $url_combined = $url_v.$post_type.'/';
+        //echo '<h1>'.$url_combined.'</h1>';
+
+        if( $this->setup_check_for_404( $url_combined ) ) {
+
+            // prep variables        
+            $layouts = array(
+                'template'          => get_field( 'pull-template-remote' ),
+                'section_class'     => get_field( 'pull-section-class-remote' ),
+                'section_style'     => get_field( 'pull-section-style-remote' ),
+                'block_class'       => $block[ 'className' ],
+                'url_target'        => $url_v,
+                'img_size'          => get_field( 'pull-featured-image-size' ),
+            );
+
+            if( is_numeric( $id ) ) {
+
+                // pull using post ID and decode
+                $array = json_decode( file_get_contents( $url_combined.$id.'?'.$pull_fields ), TRUE, 512 );
+                /*
+                    https://setup-video.basestructure.com/wp-json/wp/v2/posts/
+                    https://setup-video.basestructure.com/wp-json/wp/v2/posts/1534?_fields[]=title&_fields[]=content&_fields[]=excerpt&_fields[]=featured-image&_fields[]=date-modified
+                */
+                //var_dump( $url_combined.$id.'?'.$pull_fields );
+                //var_dump( $array );
+                //echo '<hr /><hr />';
+            } else {
+
+                // pull using slug and decode
+                $array = json_decode( file_get_contents( $url_combined.'?slug='.$id.'&'.$pull_fields ), TRUE, 512 );
+                //var_dump( $array );
+
+            }
+
+            echo $this->setup_process_restapi( $array, $layouts );
+
+        } else {
+
+            //return 'Error 404 - URL does not exist.';
+            echo 'Please check your URL and variables. URL does not seem to exist.';
+
+        }
+
+    }
+
+
+    /**
+     * Process data pulled through REST API
+     */
+    private function setup_process_restapi( $array, $layouts ) {
+
+        global $bars;
+
+        //var_dump( $array );
+
+        
+        /*
+        ?><hr /><?php
+        $feat_img = json_decode( file_get_contents( 'https://setup-video.basestructure.com/wp-json/wp/v2/media/742?_fields[]=link&_fields[]=media_details' ), TRUE, 512 );
+        var_dump( $feat_img );
+        ?><hr /><?php
+        */
+
+        /*for( $m=0; $m<=count( $array ); $m++ ) {
+            var_dump( $array[ $m ] );
+            ?><hr /><?php
+        }*/
+        if( is_array( $array ) ) {
+            
+            /**
+             * TERNARY OPERATOR
+             *
+             * (Condition)?(thing's to do if condition true):(thing's to do if condition false);
+             *
+             * SAMPLE 1: echo ($requestVars->_name == '') ? $redText : '';
+             *
+             * SAMPLE 2: ($var > 2 ? echo "greater" : echo "smaller")
+             */ 
+
+            $bars = array(
+                'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array ) ) ? $array[ 'title' ][ 'rendered' ] : $array[ 0 ][ 'title' ][ 'rendered' ],
+                'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array ) ) ? $array[ 'content' ][ 'rendered' ] : $array[ 0 ][ 'content' ][ 'rendered' ],
+                'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array ) ) ? $array[ 'excerpt' ][ 'rendered' ] : $array[ 0 ][ 'excerpt' ][ 'rendered' ],
+                'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array ) ? $array[ 'featured_media' ] : $array[ 0 ][ 'featured_media' ] ), $layouts[ 'url_target'], $layouts[ 'img_size' ] ),
+                'date-modified'     => $this->setup_array_validation( 'modified', $array ) ? $array[ 'modified' ] : $array[ 0 ][ 'modified' ],
+                //'title'             => $array[ 'title' ][ 'rendered' ],
+                //'content'           => $array[ 'content' ][ 'rendered' ],
+                //'excerpt'           => $array[ 'excerpt' ][ 'rendered' ],
+                //'featured-image'    => $this->setup_pull_featured_image( $array[ 'featured_media' ], $layouts[ 'url_target'] ),
+                //'date-modified'     => $array[ 'modified' ],
+                'block_class'       => $layouts[ 'block_class' ],
+                'wrap_sel'          => $layouts[ 'section_class' ],
+                'wrap_sty'          => $layouts[ 'section_style' ],
+            );
+
+            /*echo '<h2>'.$array[ 'title' ][ 'rendered' ].'</h2>';
+            foreach( $array as $key => $value ) {
+                echo $key.'<br />';
+                var_dump( $value );
+                echo '<hr />';
+            } // end of foreach( $array as $key => $value ) {
+            */
+            return $this->setup_pull_view_template( $layouts[ 'template' ], 'views' );
+        }
+
+    }
+
+
+    /**
+     * Pull featured image
+     */
+    private function setup_pull_featured_image( $media_id, $url_target, $img_size = FALSE ) {
+        // featured media
+        /*
+            https://setup-video.basestructure.com/wp-json/wp/v2/media/742
+
+            // get normal size
+            https://setup-video.basestructure.com/wp-json/wp/v2/media/742?_fields[]=media_details
+
+            // with sizes
+            https://setup-video.basestructure.com/wp-json/wp/v2/media/742?_fields[]=link&_fields[]=media_details
+        */
+        $murl = $url_target.'media/'.$media_id.'?_fields[]=media_details';
+        //echo (string) file_get_contents( $murl );
+        $marray = json_decode( file_get_contents( $murl ), TRUE, 512 );
+
+        // assign default size
+        if( empty( $img_size ) ) {
+            $img_size = 'full';
+        }
+
+        $stringz = $marray[ 'media_details' ][ 'sizes' ][ $img_size ][ 'source_url' ];
+        //echo '<h1>'.$stringz.'</h1>';
+        
+        /*foreach( $marray[ 'media_details' ][ 'sizes' ][ $img_size ] as $key => $value) {
+            echo '<b>'.$key.'</b>';
+            var_dump( $value );
+            echo '<hr />';
+        }*/
+
+        return $media_id;
+
+    }
+
+
+    /**
+     * Validate URL if accessible
+     */
+    private function setup_check_for_404( $url ) {
+
+        // Getting page header data 
+        $array = @get_headers($url); 
+
+        if( is_array( $array ) ) {
+            // Storing value at 1st position because 
+            // that is only what we need to check 
+            $string = $array[0]; 
+
+            // 404 for error, 200 for no error 
+            if(strpos($string, "200")) { 
+                //echo 'Specified URL Exists'; 
+                return TRUE;
+            } else { 
+                //echo 'Specified URL does not exist'; 
+                return FALSE;
+            }
+
+        } else {
+            return FALSE;
+        }
 
     }
 

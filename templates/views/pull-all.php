@@ -15,10 +15,11 @@ $classes = $mfunc->setup_pull_combine_classes( $cs );
 
 // styles
 $ss = array(
-	'manual_style'		=> 'color:red;',
+	'manual_style'		=> '',
 	'item_style' 		=> $mfunc->setup_array_validation( 'wrap_sty', $bars ),
 );
 $inline_style = $mfunc->setup_pull_combine_styles( $ss );
+
 /**
  * CONTENT | START
  */
