@@ -1,0 +1,49 @@
+{
+    "meta": {
+        "version": "2.8.10",
+        "build": 1649422216
+    },
+    "pods": [
+        {
+            "name": "movie_trailer",
+            "id": 1455,
+            "label": "Movie Trailers",
+            "description": "",
+            "type": "taxonomy",
+            "storage": "meta",
+            "label_singular": "Movie Trailer",
+            "public": "1",
+            "show_ui": "1",
+            "hierarchical": "1",
+            "rest_enable": "1",
+            "_migrated_28": "1",
+            "show_in_menu": "1",
+            "menu_location": "default",
+            "menu_position": "0",
+            "show_in_nav_menus": "1",
+            "show_tagcloud": "1",
+            "show_tagcloud_in_edit": "1",
+            "show_in_quick_edit": "1",
+            "show_admin_column": "1",
+            "built_in_post_types_video": "1",
+            "rewrite": "1",
+            "rewrite_with_front": "1",
+            "rewrite_hierarchical": "1",
+            "capability_type": "default",
+            "capability_type_custom": "movie_trailer",
+            "query_var": "0",
+            "sort": "0",
+            "built_in_post_types_post": "1",
+            "groups": [
+                {
+                    "name": "more_fields",
+                    "id": 1456,
+                    "label": "More Fields",
+                    "description": "",
+                    "weight": 0,
+                    "fields": []
+                }
+            ]
+        }
+    ]
+}
