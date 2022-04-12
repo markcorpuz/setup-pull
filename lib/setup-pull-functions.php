@@ -536,69 +536,20 @@ class SetupPullMain {
 
         if( $this->setup_check_for_404( $url_combined ) ) {
 
-            // prep variables        
-            $layouts = array(
-                'template'          => get_field( 'pull-template-remote' ),
-                'section_class'     => get_field( 'pull-section-class-remote' ),
-                'section_style'     => get_field( 'pull-section-style-remote' ),
-                'block_class'       => $block[ 'className' ],
-                'url_target'        => $url_v,
-                'img_size'          => get_field( 'pull-featured-image-size' ),
-            );
+            $o = new SetupPullVariables();
+
+            // image size
+            $img_size = get_field( 'pull-featured-image-size' );
+
+            global $bars;
 
             if( is_numeric( $id ) ) {
-
                 // pull using post ID and decode
                 $array = json_decode( file_get_contents( $url_combined.$id.'?'.$pull_fields ), TRUE, 512 );
-                /*
-                    https://setup-video.basestructure.com/wp-json/wp/v2/posts/
-                    https://setup-video.basestructure.com/wp-json/wp/v2/posts/1534?_fields[]=title&_fields[]=content&_fields[]=excerpt&_fields[]=featured-image&_fields[]=date-modified
-                */
-                //var_dump( $url_combined.$id.'?'.$pull_fields );
-                //var_dump( $array );
-                //echo '<hr /><hr />';
             } else {
-
                 // pull using slug and decode
                 $array = json_decode( file_get_contents( $url_combined.'?slug='.$id.'&'.$pull_fields ), TRUE, 512 );
-                //var_dump( $array );
-
             }
-
-            echo $this->setup_process_restapi( $array, $layouts );
-
-        } else {
-
-            //return 'Error 404 - URL does not exist.';
-            echo 'Please check your URL and variables. URL does not seem to exist.';
-
-        }
-
-    }
-
-
-    /**
-     * Process data pulled through REST API
-     */
-    private function setup_process_restapi( $array, $layouts ) {
-
-        global $bars;
-
-        //var_dump( $array );
-
-        
-        /*
-        ?><hr /><?php
-        $feat_img = json_decode( file_get_contents( 'https://setup-video.basestructure.com/wp-json/wp/v2/media/742?_fields[]=link&_fields[]=media_details' ), TRUE, 512 );
-        var_dump( $feat_img );
-        ?><hr /><?php
-        */
-
-        /*for( $m=0; $m<=count( $array ); $m++ ) {
-            var_dump( $array[ $m ] );
-            ?><hr /><?php
-        }*/
-        if( is_array( $array ) ) {
             
             /**
              * TERNARY OPERATOR
@@ -608,32 +559,48 @@ class SetupPullMain {
              * SAMPLE 1: echo ($requestVars->_name == '') ? $redText : '';
              *
              * SAMPLE 2: ($var > 2 ? echo "greater" : echo "smaller")
-             */ 
+             * 
+             * SAMPLE 3: $var > 2 ? echo "greater" : echo "smaller"
+             */
+            
+            if( count( $array ) == 1 && is_array( $array[ 0 ] ) ) {
+                /*var_dump( $array );
+                $title_zero         =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array[ 0 ] ) ) ? $array[ 0 ][ 'title' ][ 'rendered' ] : '';
+                $content_zero       =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array[ 0 ] ) ) ? $array[ 0 ][ 'content' ][ 'rendered' ] : '';
+                $content_excerpt    =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array[ 0 ] ) ) ? $array[ 0 ][ 'excerpt' ][ 'rendered' ] : '';
+                $content_feat_img   =   $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array[ 0 ] ) ? $array[ 0 ][ 'featured_media' ] : '' ), $url_v, $img_size );
+                $content_modified   =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array[ 0 ] ) ) ? $array[ 0 ][ 'modified' ][ 'rendered' ] : '';
+                */
+                $bars = array(
+                    'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array[ 0 ] ) ) ? $array[ 0 ][ 'title' ][ 'rendered' ] : '',
+                    'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array[ 0 ] ) ) ? $array[ 0 ][ 'content' ][ 'rendered' ] : '',
+                    'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array[ 0 ] ) ) ? $array[ 0 ][ 'excerpt' ][ 'rendered' ] : '',
+                    'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array[ 0 ] ) ? $array[ 0 ][ 'featured_media' ] : '' ), $url_v, $img_size ),
+                    'date-modified'     => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array[ 0 ] ) ) ? $array[ 0 ][ 'modified' ][ 'rendered' ] : '',
+                );
+            } else {
+                $bars = array(
+                    'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array ) ) ? $array[ 'title' ][ 'rendered' ] : '',
+                    'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array ) ) ? $array[ 'content' ][ 'rendered' ] : '',
+                    'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array ) ) ? $array[ 'excerpt' ][ 'rendered' ] : '',
+                    'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array ) ? $array[ 'featured_media' ] : '' ), $url_v, $img_size ),
+                    'date-modified'     => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array ) ) ? $array[ 'modified' ][ 'rendered' ] : '',
+                );
+            }
+            
+            $bars[ 'block_class' ]  = !empty( $block[ 'className' ] ) ? $block[ 'className' ] : '';
+            $bars[ 'wrap_sel' ]     = get_field( 'pull-section-class-remote' );
+            $bars[ 'wrap_sty' ]     = get_field( 'pull-section-style-remote' );
+            
 
-            $bars = array(
-                'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array ) ) ? $array[ 'title' ][ 'rendered' ] : $array[ 0 ][ 'title' ][ 'rendered' ],
-                'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array ) ) ? $array[ 'content' ][ 'rendered' ] : $array[ 0 ][ 'content' ][ 'rendered' ],
-                'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array ) ) ? $array[ 'excerpt' ][ 'rendered' ] : $array[ 0 ][ 'excerpt' ][ 'rendered' ],
-                'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array ) ? $array[ 'featured_media' ] : $array[ 0 ][ 'featured_media' ] ), $layouts[ 'url_target'], $layouts[ 'img_size' ] ),
-                'date-modified'     => $this->setup_array_validation( 'modified', $array ) ? $array[ 'modified' ] : $array[ 0 ][ 'modified' ],
-                //'title'             => $array[ 'title' ][ 'rendered' ],
-                //'content'           => $array[ 'content' ][ 'rendered' ],
-                //'excerpt'           => $array[ 'excerpt' ][ 'rendered' ],
-                //'featured-image'    => $this->setup_pull_featured_image( $array[ 'featured_media' ], $layouts[ 'url_target'] ),
-                //'date-modified'     => $array[ 'modified' ],
-                'block_class'       => $layouts[ 'block_class' ],
-                'wrap_sel'          => $layouts[ 'section_class' ],
-                'wrap_sty'          => $layouts[ 'section_style' ],
-            );
+            include( $o->setup_plugin_dir_path().'templates/views/'.get_field( 'pull-template-remote' ) );
+            //echo $this->setup_pull_view_template( get_field( 'pull-template-remote' ), 'views' );
 
-            /*echo '<h2>'.$array[ 'title' ][ 'rendered' ].'</h2>';
-            foreach( $array as $key => $value ) {
-                echo $key.'<br />';
-                var_dump( $value );
-                echo '<hr />';
-            } // end of foreach( $array as $key => $value ) {
-            */
-            return $this->setup_pull_view_template( $layouts[ 'template' ], 'views' );
+        } else {
+
+            //return 'Error 404 - URL does not exist.';
+            echo 'Please check your URL and variables. URL does not seem to exist.';
+
         }
 
     }
@@ -662,9 +629,19 @@ class SetupPullMain {
             $img_size = 'full';
         }
 
-        $stringz = $marray[ 'media_details' ][ 'sizes' ][ $img_size ][ 'source_url' ];
-        //echo '<h1>'.$stringz.'</h1>';
+//        $stringz = $marray[ 'media_details' ][ 'sizes' ][ $img_size ][ 'source_url' ];
+        /*echo '<h1>'.urldecode( $stringz ).'</h1>';
+        ?><hr /><h1><?php
+        echo '&#215';
+        ?></h1><?php
+        */
         
+
+        //echo utf8_encode( '%C3%97' );
+        //echo utf8_decode( '×' );
+//        echo mb_convert_encoding( '×', 'UTF-32', 'UTF-8' );
+        //echo mb_convert_encoding( '&#215', 'UTF-8', "auto");
+
         /*foreach( $marray[ 'media_details' ][ 'sizes' ][ $img_size ] as $key => $value) {
             echo '<b>'.$key.'</b>';
             var_dump( $value );

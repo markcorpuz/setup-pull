@@ -42,6 +42,19 @@ if ( !is_admin() ) {
 // include required functions that needs to be executed in the main directory
 class SetupPullVariables {
 
+    // list of remote fields to pull
+    public function setup_pull_remote_fields() {
+
+        return array(
+            'title'             => 'WP Title',
+            'content'           => 'WP Content',
+            'excerpt'           => 'Excerpt',
+            'featured_media'    => 'Featured Image',
+            'modified'          => 'Date Modified',
+        );
+
+    }
+
     // simply return this plugin's main directory
     public function setup_plugin_dir_path() {
 

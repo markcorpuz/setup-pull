@@ -223,6 +223,51 @@ function acf_setup_load_details_template_choices( $field ) {
 
 
 /**
+ * Auto fill Checkbox options | Fields to Pull | Remote
+ *
+ */
+add_filter( 'acf/load_field/name=pull-fields-remote', 'acf_setup_load_field_choices' ); // MULTI - ENTRIES
+function acf_setup_load_field_choices( $field ) {
+    
+    $z = new SetupPullVariables();
+
+    $field['choices'] = array();
+
+    $fielders = $z->setup_pull_remote_fields();
+    if( is_array( $fielders ) ) :
+        
+        foreach( $fielders as $key => $value ) {
+            $field['choices'][$key] = $value;
+        }
+
+        return $field;
+
+    endif;
+
+    /*$file_extn = 'php';
+
+    // get all files found in VIEWS folder
+    $view_dir = $z->setup_plugin_dir_path().'templates/details/';
+
+    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
+
+    $field['choices'] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $data_from_dir ) ) {
+
+        foreach( $data_from_dir as $field_key => $field_value ) {
+            $field['choices'][$field_key] = $field_value;
+        }
+
+        return $field;
+
+    }*/
+    
+}
+
+
+/**
  * Auto fill Select options | pull_from_site
  *
  */
