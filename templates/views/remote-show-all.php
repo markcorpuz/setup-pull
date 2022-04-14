@@ -57,11 +57,13 @@ echo '<div class="'.$classes.'"'.$inline_style.'>';
 	}
 
 	// SOURCE
-	$e_source = $mfunc->setup_array_validation( "sources", $bars );
+	$e_source = $mfunc->setup_array_validation( "sourced", $bars );
 	if( !empty( $e_source ) ) {
-		$link = '<a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>';
+		$link = '<a href="'.$e_source.'" target="_blank">'.$e_source.'</a>';
 		echo '<div class="item-entry-source"><b>SOURCE:</b> '.$link.'</div>';
 	}
+
+	echo '<div class="item-innerblock"><InnerBlocks /></div>';
 
 // WRAP | CLOSE
 echo '</div>';

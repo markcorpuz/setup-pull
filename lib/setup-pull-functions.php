@@ -479,25 +479,6 @@ class SetupPullMain {
             5a. Possibly a list of categories 
             5b. and tags
         */
-        /*
-            var_dump( $block[ 'className' ] );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-url-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-post-type-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-post-id-slug-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-fields-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-featured-image-size' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-template-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-section-class-remote' ) );
-            ?><hr /><?php
-            var_dump( get_field( 'pull-section-style-remote' ) );
-        */
 
         $id = get_field( 'pull-post-id-slug-remote' ); // this can be slug or ID of the entry
 
@@ -564,33 +545,42 @@ class SetupPullMain {
              */
             
             if( count( $array ) == 1 && is_array( $array[ 0 ] ) ) {
-                /*var_dump( $array );
-                $title_zero         =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array[ 0 ] ) ) ? $array[ 0 ][ 'title' ][ 'rendered' ] : '';
-                $content_zero       =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array[ 0 ] ) ) ? $array[ 0 ][ 'content' ][ 'rendered' ] : '';
-                $content_excerpt    =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array[ 0 ] ) ) ? $array[ 0 ][ 'excerpt' ][ 'rendered' ] : '';
-                $content_feat_img   =   $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array[ 0 ] ) ? $array[ 0 ][ 'featured_media' ] : '' ), $url_v, $img_size );
-                $content_modified   =   $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array[ 0 ] ) ) ? $array[ 0 ][ 'modified' ][ 'rendered' ] : '';
-                */
+                // pull using entry SLUG
                 $bars = array(
                     'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array[ 0 ] ) ) ? $array[ 0 ][ 'title' ][ 'rendered' ] : '',
                     'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array[ 0 ] ) ) ? $array[ 0 ][ 'content' ][ 'rendered' ] : '',
                     'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array[ 0 ] ) ) ? $array[ 0 ][ 'excerpt' ][ 'rendered' ] : '',
                     'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array[ 0 ] ) ? $array[ 0 ][ 'featured_media' ] : '' ), $url_v, $img_size ),
-                    'date-modified'     => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array[ 0 ] ) ) ? $array[ 0 ][ 'modified' ][ 'rendered' ] : '',
+                    'date-modified'     => $this->setup_array_validation( 'modified', $array[ 0 ] ) ? $array[ 0 ][ 'modified' ] : '',
                 );
             } else {
+                // pull using entry ID
                 $bars = array(
                     'title'             => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'title', $array ) ) ? $array[ 'title' ][ 'rendered' ] : '',
                     'content'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'content', $array ) ) ? $array[ 'content' ][ 'rendered' ] : '',
                     'excerpt'           => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'excerpt', $array ) ) ? $array[ 'excerpt' ][ 'rendered' ] : '',
                     'featured-image'    => $this->setup_pull_featured_image( ( $this->setup_array_validation( 'featured_media', $array ) ? $array[ 'featured_media' ] : '' ), $url_v, $img_size ),
-                    'date-modified'     => $this->setup_array_validation( 'rendered', $this->setup_array_validation( 'modified', $array ) ) ? $array[ 'modified' ][ 'rendered' ] : '',
+                    'date-modified'     => $this->setup_array_validation( 'modified', $array ) ? $array[ 'modified' ] : '',
                 );
             }
-            
+
             $bars[ 'block_class' ]  = !empty( $block[ 'className' ] ) ? $block[ 'className' ] : '';
             $bars[ 'wrap_sel' ]     = get_field( 'pull-section-class-remote' );
             $bars[ 'wrap_sty' ]     = get_field( 'pull-section-style-remote' );
+
+            // SOURCE
+            $sources = get_field( 'pull-show-source' );
+            if( $sources === TRUE ) {
+
+                if( is_numeric( $id ) ) {
+                    $bars[ 'sourced' ] = rtrim( $url_raw, "/" ).'/'.$post_type.'/?page_id='.$id;
+                } else {
+                    $bars[ 'sourced' ] = rtrim( $url_raw, "/" ).'/'.$id;
+                }
+                
+            } else {
+                $bars[ 'sourced' ] = '';
+            }
             
 
             include( $o->setup_plugin_dir_path().'templates/views/'.get_field( 'pull-template-remote' ) );
