@@ -91,6 +91,22 @@ function setup_pull_block_acf_init() {
                 'jsx'               => true,
             ],            
         ),
+
+        'pull_local_multi_flex' => array(
+            'name'                  => 'pull_local_multi_flex',
+            'title'                 => __('Pull Multi Flex'),
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/setup-pull-local-multi-flex.php',
+            'category'              => 'setup',
+            'icon'                  => 'embed-post',
+            'mode'                  => 'edit',
+            'keywords'              => array( 'pull', 'get', 'multi', 'flex' ),
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        ),
         /*
         'pull_multisite' => array(
             'name'                  => 'pull_multisite',
@@ -162,6 +178,7 @@ function acf_setup_load_template_choices_pull( $field ) {
 add_filter( 'acf/load_field/name=pull-template', 'acf_setup_load_view_template_choices' ); // SINGLE
 add_filter( 'acf/load_field/name=pull-template-global', 'acf_setup_load_view_template_choices' ); // MULTI - GLOBAL
 add_filter( 'acf/load_field/name=pull-template-multi', 'acf_setup_load_view_template_choices' ); // MULTI - ENTRIES
+add_filter( 'acf/load_field/name=pull-template-flex', 'acf_setup_load_view_template_choices' ); // MULTI - FLEX
 add_filter( 'acf/load_field/name=pull-template-remote', 'acf_setup_load_view_template_choices' ); // REMOTE
 function acf_setup_load_view_template_choices( $field ) {
     
@@ -425,7 +442,8 @@ if( !function_exists( 'setup_pulls_view_files' ) ) {
  * Auto fill Select options | DETAILS
  *
  */
-add_filter( 'acf/load_field/name=pull-post-type', 'acf_setup_load_posttype_choices' ); // MULTI - ENTRIES
+add_filter( 'acf/load_field/name=pull-post-type-flex', 'acf_setup_load_posttype_choices' ); // MULTI FLEX - ENTRIES
+add_filter( 'acf/load_field/name=pull-post-type-multi', 'acf_setup_load_posttype_choices' ); // MULTI - ENTRIES
 function acf_setup_load_posttype_choices( $field ) {
     
     $z = new SetupPullVariables();

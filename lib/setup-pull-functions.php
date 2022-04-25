@@ -11,9 +11,9 @@ class SetupPullMain {
 
 
     /**
-     * Main MULTI PULL function call
+     * Main MULTI PULL FLEXIBLE function call
      */
-    public function setup_pull_multi( $block ) {
+    public function setup_pull_multi_flex( $block ) {
 
         global $bars;
 
@@ -34,188 +34,187 @@ class SetupPullMain {
         $tgd_class = $template_global_details[ 'pull-details-class-global' ];
         $tgd_style = $template_global_details[ 'pull-details-style-global' ];
         
-
+        // loop through 
         if( have_rows( 'pull-flexi' ) ):
             while( have_rows( 'pull-flexi' ) ) : the_row();
 
-                $bars = array(); // declare empty variable to clear all information gathered from the loop
+                //$bars = array(); // declare empty variable to clear all information gathered from the loop
 
                 // ENTRIES
                 if( get_row_layout() == 'pull-entry' ):
+                    
+                    // check if included or not
+                    if( get_sub_field( 'pull-exclude-flex' ) === FALSE ) {
 
-                    // source
-                    $esource = get_sub_field( 'pull-show-source-multi' );
-                    if( $esource === 'show' ) {
-                        $bars[ 'sources' ] = TRUE;
-                    } else {
-                        $bars[ 'sources' ] = FALSE;
-                    }
+                        /*$sptp = new SetupPullTaxonomyPull();
 
-                    // class
-                    $eclass = get_sub_field( 'pull-section-class-multi' );
-                    if( !empty( $tge_class ) && !empty( $eclass ) ) {
+                        $args = array(
+                            'esource'           => get_sub_field( 'pull-show-source-flex' ),
+                            'eclass'            => get_sub_field( 'pull-section-class-flex' ),
+                            'tge_class'         => $tge_class,
+                            'estyle'            => get_sub_field( 'pull-section-style-flex' ),
+                            'tge_style'         => $tge_style,
+                            'poglobal'          => get_sub_field( 'pull-override-global-flex' ),
+                            'etemplate'         => get_sub_field( 'pull-template-flex' ),
+                            'tge_template'      => $tge_template,
+                            'pull_from_flex'    => get_sub_field( 'pull-from-flex' ),
+                            'ptg'               => get_sub_field( 'pull-tax-group-flex' ),
+                        );
 
-                        $bars[ 'wrap_sel' ] = $tge_class.' '.$eclass;
+                        $out .= $sptp->sp_pull_taxes( $args );*/
 
-                    } else {
-
-                        if( !empty( $tge_class ) && empty( $eclass ) ) {
-                            $bars[ 'wrap_sel' ] = $tge_class;
-                        } else {
-                            $bars[ 'wrap_sel' ] = $eclass;
-                        }
-
-                    }
-
-                    // style
-                    $estyle = get_sub_field( 'pull-section-style-multi' );
-                    if( !empty( $tge_style ) && !empty( $estyle ) ) {
-
-                        $bars[ 'wrap_sty' ] = $tge_style.' '.$estyle;
-
-                    } else {
-
-                        if( !empty( $tge_style ) && empty( $estyle ) ) {
-                            $bars[ 'wrap_sty' ] = $tge_style;
-                        } else {
-                            $bars[ 'wrap_sty' ] = $estyle;
-                        }
-
-                    }
-
-                    // determine what template to use | global or override
-                    //if( $this->setup_array_validation( 'pull-override-global', $pulls ) ) {
-                    $poglobal = get_sub_field( 'pull-override-global' );
-                    if( $poglobal === TRUE ) {
-                        $etemplate = get_sub_field( 'pull-template-multi' );
-                    } else {
-                        $etemplate = $tge_template;
-                    }
-
-                    // PULL ENTRY | RELATIONSHIP FIELD
-                    //if( $this->setup_array_validation( 'pull-from-multi', $pulls ) && is_array( $pulls[ 'pull-from-multi' ] ) ) {
-                    $pfm = get_sub_field( 'pull-from-multi' );
-                    if( is_array( $pfm ) ) {
                         
-                        // loop through the RELATIONSHIP field
-                        foreach( $pfm as $pid ) {
-                            
-                            $bars[ 'pid' ] = $pid;
-
-                            $out .= $this->setup_pull_view_template( $etemplate, 'views' );
-
+                        // source
+                        $esource = get_sub_field( 'pull-show-source-flex' );
+                        if( $esource === 'show' ) {
+                            $bars[ 'sources' ] = TRUE;
+                        } else {
+                            $bars[ 'sources' ] = FALSE;
                         }
-                        
-                    }
 
-                    // loop through the TAXONOMY field
-                    $ptg = get_sub_field( 'pull-tax-group' );
-                    if( empty( $ptg[ 'pull-post-type' ] ) && !empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
+                        // class
+                        $eclass = get_sub_field( 'pull-section-class-flex' );
+                        if( !empty( $tge_class ) && !empty( $eclass ) ) {
 
-                        // no post type selected
-                        $out .= '<div class="item-missing">Please specify the <b>post type</b> to pull from</div>';
+                            $bars[ 'wrap_sel' ] = $tge_class.' '.$eclass;
 
-                    } elseif( !empty( $ptg[ 'pull-post-type' ] ) && empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
+                        } else {
 
-                        // no taxonomy selected
-                        $out .= '<div class="item-missing">Please specify the <b>taxonomy</b> to pull from</div>';
-
-                    } else {
-
-                        // filter selected post type and taxonomy
-                        if( !empty( $ptg[ 'pull-post-type' ] ) && !empty( $ptg[ 'pull-taxonomy-multi' ] ) ) {
-
-                            // loop through the tax field
-                            foreach( $ptg[ 'pull-taxonomy-multi' ] as $tax ) {
-
-                                /*array_push( $arrays, array(
-                                    'taxonomy'      => $tax->taxonomy,
-                                    'field'         => 'slug',
-                                    'terms'         => $tax->slug,
-                                    'operator'      => 'IN',
-                                ) );*/
-
-                                /*if( array_key_exists( $tax->taxonomy, $arrays ) ) {
-
-                                    array_push( $arrays[ $tax->taxonomy ], $tax->slug );
-
-                                } else {
-
-                                    $arrays[ $tax->taxonomy ] = array( $tax->slug );
-
-                                }*/
-
-                                // capture the taxonomy
-                                if( empty( $taxes_tax ) )
-                                    $taxes_tax = $tax->taxonomy;
-
-                                $taxes[] = $tax->slug;
-                                //$arrays[ $tax->taxonomy ] = $tax->slug;
-
+                            if( !empty( $tge_class ) && empty( $eclass ) ) {
+                                $bars[ 'wrap_sel' ] = $tge_class;
+                            } else {
+                                $bars[ 'wrap_sel' ] = $eclass;
                             }
 
-                            $argz = array(
-                                'post_type'     => $ptg[ 'pull-post-type' ],
-                                'post_status'   => 'publish',
-                                'tax_query'     => array(
-                                    array(
-                                        'taxonomy'      => $taxes_tax,
-                                        'field'         => 'slug',
-                                        'terms'         => $taxes,
-                                    ),
-                                ),
-                            );
-
-                            $loop = new WP_Query( $argz );
-                            
-                            // loop
-                            if( $loop->have_posts() ):
-
-                                // get all post IDs
-                                while( $loop->have_posts() ): $loop->the_post();
-                                    
-                                    //$pid = get_the_ID();
-//                                    echo get_the_ID().' | '.get_the_title();
-//                                    echo '<br />';
-                                    $bars[ 'pid' ] = get_the_ID();
-                                    $bars[ 'taxonomy' ] = $taxes_tax;
-
-                                    $out .= $this->setup_pull_view_template( $etemplate, 'views' );
-                                    //$output .= '<div'.$selector.'><a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>'.$dtn.'</div>';
-                                    
-                                endwhile;
-
-                                /* Restore original Post Data 
-                                 * NB: Because we are using new WP_Query we aren't stomping on the 
-                                 * original $wp_query and it does not need to be reset.
-                                */
-                                wp_reset_postdata();
-
-                            endif;
                         }
 
-                    }
+                        // style
+                        $estyle = get_sub_field( 'pull-section-style-flex' );
+                        if( !empty( $tge_style ) && !empty( $estyle ) ) {
+
+                            $bars[ 'wrap_sty' ] = $tge_style.' '.$estyle;
+
+                        } else {
+
+                            if( !empty( $tge_style ) && empty( $estyle ) ) {
+                                $bars[ 'wrap_sty' ] = $tge_style;
+                            } else {
+                                $bars[ 'wrap_sty' ] = $estyle;
+                            }
+
+                        }
+
+                        // determine what template to use | global or override
+                        $poglobal = get_sub_field( 'pull-override-global-flex' );
+                        if( $poglobal === TRUE ) {
+                            $etemplate = get_sub_field( 'pull-template-flex' );
+                        } else {
+                            $etemplate = $tge_template;
+                        }
+                        
+                        // PULL ENTRY | RELATIONSHIP FIELD
+                        $pfm = get_sub_field( 'pull-from-flex' );
+                        if( is_array( $pfm ) && !empty( $pfm ) ) {
+                            
+                            // loop through the RELATIONSHIP field
+                            foreach( $pfm as $pid ) {
+
+                                $bars[ 'pid' ] = $pid;
+
+                                $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+                            }
+                            
+                        }
+
+                        // loop through the TAXONOMY field
+                        $ptg = get_sub_field( 'pull-tax-group-flex' );
+                        if( empty( $ptg[ 'pull-post-type-flex' ] ) && !empty( $ptg[ 'pull-taxonomy-flex' ] ) ) {
+
+                            // no post type selected
+                            $out .= '<div class="item-missing">Please specify the <b>post type</b> to pull from</div>';
+
+                        } elseif( !empty( $ptg[ 'pull-post-type-flex' ] ) && empty( $ptg[ 'pull-taxonomy-flex' ] ) ) {
+
+                            // no taxonomy selected
+                            $out .= '<div class="item-missing">Please specify the <b>taxonomy</b> to pull from</div>';
+
+                        } else {
+
+                            // filter selected post type and taxonomy
+                            if( !empty( $ptg[ 'pull-post-type-flex' ] ) && !empty( $ptg[ 'pull-taxonomy-flex' ] ) ) {
+
+                                // loop through the tax field
+                                foreach( $ptg[ 'pull-taxonomy-flex' ] as $tax ) {
+
+                                    // capture the taxonomy
+                                    if( empty( $taxes_tax ) )
+                                        $taxes_tax = $tax->taxonomy;
+
+                                    $taxes[] = $tax->slug;
+
+                                }
+
+                                $argz = array(
+                                    'post_type'     => $ptg[ 'pull-post-type-flex' ],
+                                    'post_status'   => 'publish',
+                                    'tax_query'     => array(
+                                        array(
+                                            'taxonomy'      => $taxes_tax,
+                                            'field'         => 'slug',
+                                            'terms'         => $taxes,
+                                        ),
+                                    ),
+                                );
+
+                                $loop = new WP_Query( $argz );
+                                
+                                // loop
+                                if( $loop->have_posts() ):
+
+                                    // get all post IDs
+                                    while( $loop->have_posts() ): $loop->the_post();
+                                        
+                                        $bars[ 'pid' ] = get_the_ID();
+                                        $bars[ 'taxonomy' ] = $taxes_tax;
+
+                                        $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+                                        
+                                    endwhile;
+
+                                    /* Restore original Post Data 
+                                     * NB: Because we are using new WP_Query we aren't stomping on the 
+                                     * original $wp_query and it does not need to be reset.
+                                    */
+                                    wp_reset_postdata();
+
+                                endif;
+                            }
+
+                        }
+
+                    } // if( get_sub_field( 'pull-exclude-flex' ) === FALSE ) {
 
                 endif;
 
                 // DETAILS
                 if( get_row_layout() == 'pull-details' ):
 
-                    $dtitle = get_sub_field( 'pull-title-multi' );
+                    $dtitle = get_sub_field( 'pull-title-flex' );
                     if( !empty( $dtitle ) ) {
                         $bars[ 'title' ] = $dtitle;
                     } else {
                         $bars[ 'title' ] = '';
                     }
 
-                    $dcredit = get_sub_field( 'pull-credit-multi' );
+                    $dcredit = get_sub_field( 'pull-credit-flex' );
                     if( !empty( $dcredit ) ) {
                         $bars[ 'credit' ] = $dcredit;
                     } else {
                         $bars[ 'credit' ] = '';
                     }
 
-                    $dsummary = get_sub_field( 'pull-summary-multi' );
+                    $dsummary = get_sub_field( 'pull-summary-flex' );
                     if( !empty( $dsummary ) ) {
                         $bars[ 'summary' ] = $dsummary;
                     } else {
@@ -327,6 +326,146 @@ class SetupPullMain {
 
 
     /**
+     * Main MULTI PULL function call
+     */
+    public function setup_pull_multi( $block ) {
+
+        $out = ''; // declare empty variable
+
+        $o = new SetupPullVariables();
+
+        global $bars;
+
+        $etemplate = get_field( 'pull-template-multi' );
+
+        // check if there's a block class and add to array if true
+        $bclass = $this->setup_array_validation( 'className', $block );
+        if( !empty( $bclass ) ) {
+            $bars[ 'block_class' ] = $bclass;
+        } else {
+            $bars[ 'block_class' ] = '';
+        }
+        
+        // ENTRIES
+        $entries = get_field( 'pull-entries-multi' );
+        if( is_array( $entries ) ) {
+            
+            // loop through the RELATIONSHIP field
+            foreach( $entries as $pid ) {
+
+                $bars[ 'pid' ] = $pid;
+
+                $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+            }
+
+        }
+
+        // TAXONOMY
+        $tax_post = get_field( 'pull-post-type-multi' );
+        $tax_type = get_field( 'pull-taxonomy-multi' );
+        if( !empty( $tax_post ) && !empty( $tax_type ) ) {
+
+            // loop through the tax field
+            foreach( $tax_type as $tax ) {
+
+                // capture the taxonomy
+                if( empty( $taxes_tax ) )
+                    $taxes_tax = $tax->taxonomy;
+
+                $taxes[] = $tax->slug;
+
+            }
+
+            $argz = array(
+                'post_type'     => $tax_post,
+                'post_status'   => 'publish',
+                'tax_query'     => array(
+                    array(
+                        'taxonomy'      => $taxes_tax,
+                        'field'         => 'slug',
+                        'terms'         => $taxes,
+                    ),
+                ),
+            );
+            
+            $loop = new WP_Query( $argz );
+
+            // loop
+            if( $loop->have_posts() ):
+
+                $post_ids = array();
+
+                // get all post IDs
+                while( $loop->have_posts() ): $loop->the_post();
+                    
+                    if( !in_array( get_the_ID(), $post_ids ) ) {
+
+                        $post_ids[] = get_the_ID();
+
+                        $bars[ 'pid' ] = get_the_ID();
+                    
+                        $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+                    }
+                    
+                endwhile;
+
+                /* Restore original Post Data 
+                 * NB: Because we are using new WP_Query we aren't stomping on the 
+                 * original $wp_query and it does not need to be reset.
+                */
+                wp_reset_postdata();
+
+            endif;
+
+        } else {
+
+            if( empty( $tax_post ) && !empty( $tax_type ) ) {
+                $out .= '<div class="item-missing">Please specify the <b>post type</b> to pull from</div>';
+            }
+
+            if( !empty( $tax_post ) && empty( $tax_type ) ) {
+                $out .= '<div class="item-missing">Please specify the <b>taxonomy</b> to pull from</div>';
+            }
+
+        }
+        
+
+        // SECTION CLASS
+        $section_class = array(
+            'block_class'               => $this->setup_array_validation( 'className', $block ) ? $block[ 'className' ] : '',
+            'item_class'                => get_field( 'pull-section-class-multi' ),
+            'manual_class'              => '',
+        );
+        $sec_class = $this->setup_pull_combine_classes( $section_class );
+        if( !empty( $sec_class ) ) {
+            $sc = ' class="'.$sec_class.'"';
+        } else {
+            $sc = '';
+        }
+
+        // SECTION STYLE
+        $section_styles = array(
+            'item_style'                => get_field( 'pull-section-style-multi' ),
+            'manual_style'              => '',
+        );
+        $sec_style = $this->setup_pull_combine_styles( $section_styles );
+        if( !empty( $sec_style ) ) {
+            $ss = ' style="'.$sec_style.'"';
+        } else {
+            $ss = '';
+        }
+
+
+        echo '<div'.$sc.$ss.'>';
+            echo $out;
+        echo '</div>';
+
+    }
+
+
+    /**
      * Get VIEW template
      */
     public function setup_pull_view_template( $layout, $dir_ext ) {
@@ -401,11 +540,13 @@ class SetupPullMain {
      */
     public function setup_pull_combine_classes( $classes ) {
 
-        $block_class = $classes[ 'block_class' ];
-        $item_class = $classes[ 'item_class' ];
-        $manual_class = $classes[ 'manual_class' ];
+        $block_class = !empty( $classes[ 'block_class' ] ) ? $classes[ 'block_class' ] : '';
+        $item_class = !empty( $classes[ 'item_class' ] ) ? $classes[ 'item_class' ] : '';
+        $manual_class = !empty( $classes[ 'manual_class' ] ) ? $classes[ 'manual_class' ] : '';
 
-        if( !empty( $block_class ) ) {
+        $return = '';
+
+        /*if( !empty( $block_class ) ) {
             // PULL | SINGLE
             if( is_numeric( $block_class ) ) {
                 return $manual_class.' '.$item_class;   
@@ -415,7 +556,23 @@ class SetupPullMain {
         } else {
             // PULL | MULTI
             return $item_class; 
+        }*/
+        $ar = array( $block_class, $item_class, $manual_class );
+        for( $z=0; $z<=( count( $ar ) - 1 ); $z++ ) {
+
+            if( !empty( $ar[ $z ] ) ) {
+
+                $return .= $ar[ $z ];
+
+                if( $z != ( count( $ar ) - 1 ) ) {
+                    $return .= ' ';
+                }
+
+            }
+
         }
+
+        return $return;
 
     }
 
@@ -429,13 +586,13 @@ class SetupPullMain {
         $item_style = $styles[ 'item_style' ];
 
         if( !empty( $manual_style ) && !empty( $item_style ) ) {
-                return ' style="'.$manual_style.' '.$item_style.'"';
+                return $manual_style.' '.$item_style;
         } else {
 
             if( empty( $manual_style ) && !empty( $item_style ) ) {
-                return ' style="'.$item_style.'"';
+                return $item_style;
             } else {
-                return ' style="'.$manual_style.'"';
+                return $manual_style;
             }
 
         }
