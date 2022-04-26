@@ -37,6 +37,11 @@ echo '<div'.$classes.$inline_style.'>';
 	echo $mfunc->setup_pull_apply_filters_to_content( $pid );
 	echo '</div>';
 
+	$feat_img = get_the_post_thumbnail_url( $pid, "large" );
+	if( !empty( $feat_img ) ) {
+		echo '<div class="item-thumbnail"><img src="'.$feat_img.'" border="0" /></a></div>';
+	}
+
 	// ACF | Title
 	$acf_title = $mfunc->setup_array_validation( "title", $bars );
 	if( !empty( $acf_title ) ) {
