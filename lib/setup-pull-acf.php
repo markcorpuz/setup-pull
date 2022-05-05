@@ -139,39 +139,6 @@ function setup_pull_block_acf_init() {
 
 
 /**
- * Auto fill Select options for VIEWS (HTML)
- *
- */
-/*add_filter( 'acf/load_field/name=pull_html_view', 'acf_setup_load_template_choices_pull' );
-function acf_setup_load_template_choices_pull( $field ) {
-    
-    $z = new SetupPullVariables();
-
-    $file_extn = 'html';
-
-    // get all files found in VIEWS folder
-    $view_dir = $z->setup_plugin_dir_path().'templates/views/';
-
-    $data_from_dir = setup_pulls_view_files( $view_dir, $file_extn );
-
-    $field['choices'] = array();
-
-    //Loop through whatever data you are using, and assign a key/value
-    if( is_array( $data_from_dir ) ) {
-
-        foreach( $data_from_dir as $field_key => $field_value ) {
-            
-            $field['choices'][$field_key] = $field_value;
-        }
-
-        return $field;
-
-    }
-    
-}*/
-
-
-/**
  * Auto fill Select options | ENTRIES
  *
  */
@@ -281,6 +248,60 @@ function acf_setup_load_field_choices( $field ) {
 
     }*/
     
+}
+
+
+/**
+ * Auto fill Checkbox options | Fields to Pull | Local
+ *
+ */
+add_filter( 'acf/load_field/name=pull-show-fields-multi', 'acf_setup_local_field_choices' ); // MULTI - ENTRIES
+function acf_setup_local_field_choices( $field ) {
+    
+    $z = new SetupPullVariables();
+
+    $field['choices'] = array();
+
+    $fielders = $z->setup_pull_local_fields();
+    if( is_array( $fielders ) ) :
+        
+        foreach( $fielders as $key => $value ) {
+            $field['choices'][$key] = $value;
+            //$field['disabled'] = 1;
+        }
+
+        return $field;
+
+    endif;
+    
+}
+
+/*$member_id = 'content'; // variable in script to be passed coming from object (could be any variable.)
+add_filter('acf/load_field/name=pull-show-fields-multi',
+     function($field) use ($member_id) { 
+    // the variable after 'use' ($member_id) indicates that it is the one to 'use' from the main script.  $field is coming from 'acf/load_field'. 
+     $field['default_value'] = $member_id;
+     return $field;
+ }
+);*/
+add_filter('acf/load_field/name=pull-show-fields-multi', 'acf_setup_local_field_default' );
+function acf_setup_local_field_default( $field ) {
+
+    $x = new SetupPullVariables();
+    $q = '';
+    foreach ($x->setup_pull_local_default_fields() as $f ) {
+
+        // the next 2 lines below works in adding the fields BUT ACF cannot read them
+//        $q .= trim( $f ).'
+//';
+        
+        $q .= $f;
+    }
+
+    $field['default_value'] = $q;
+
+    return $field;
+
 }
 
 

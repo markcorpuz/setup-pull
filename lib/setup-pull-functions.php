@@ -63,7 +63,6 @@ class SetupPullMain {
 
                         $out .= $sptp->sp_pull_taxes( $args );*/
 
-                        
                         // source
                         $esource = get_sub_field( 'pull-show-source-flex' );
                         if( $esource === 'show' ) {
@@ -345,6 +344,14 @@ class SetupPullMain {
         } else {
             $bars[ 'block_class' ] = '';
         }
+
+        // control which fields to show
+        $fs = get_field( 'pull-show-fields-multi' );
+        if( !empty( $fs ) ) {
+            $bars[ 'field_control' ] = $fs;
+        } else {
+            $bars[ 'field_control' ] = '';
+        }
         
         // ENTRIES
         $entries = get_field( 'pull-entries-multi' );
@@ -431,7 +438,6 @@ class SetupPullMain {
 
         }
         
-
         // SECTION CLASS
         $section_class = array(
             'block_class'               => $this->setup_array_validation( 'className', $block ) ? $block[ 'className' ] : '',
@@ -457,10 +463,34 @@ class SetupPullMain {
             $ss = '';
         }
 
+        // INFO TAB
+        $info_title = get_field( 'info-title-multi' );
+        if( !empty( $info_title ) ) {
+            $info_out = '<div class="item-info-title">'.$info_title.'</div>';
+        } else {
+            $info_out = ''; // declare empty variable for summary
+        }
 
-        echo '<div'.$sc.$ss.'>';
-            echo $out;
-        echo '</div>';
+        $info_summary = get_field( 'info-summary-multi' );
+        if( !empty( $info_summary ) ) {
+            $info_out .= '<div class="item-info-summary">'.$info_summary.'</div>';
+        }
+        
+        if( !empty( $info_title ) || !empty( $info_summary ) ) {
+
+            // check position
+            if( 'top' == get_field( 'info-position-multi' ) ) {
+                echo '<div'.$sc.$ss.'>'.$info_out.$out.'</div>';
+            } else {
+                echo '<div'.$sc.$ss.'>'.$out.$info_out.'</div>';
+            }
+
+        } else {
+
+            echo '<div'.$sc.$ss.'>'.$out.'</div>';
+
+        }
+        
 
     }
 
@@ -827,5 +857,6 @@ class SetupPullMain {
         }
 
     }
+    
 
 }

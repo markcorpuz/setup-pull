@@ -1,4 +1,4 @@
- <?php
+<?php
 
 global $bars;
 
@@ -29,21 +29,46 @@ $inline_style = !empty( $stayls ) ? ' style="'.$stayls.'"' : '';
 // WRAP | OPEN
 echo '<div'.$classes.$inline_style.'>';
 
-	// pull wp title
-	echo '<div class="item-title-native"><b>WP TITLE:</b> '.get_the_title( $pid ).'</div>';
+	// wp-title
+	$wp_title = get_the_title( $pid );
+	if( !empty( $wp_title ) && in_array( 'title', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-title-native"><b>WP TITLE:</b> '.$wp_title.'</div>';	
+	}
+	
+	// wp-content
+	$wp_content = $mfunc->setup_pull_apply_filters_to_content( $pid );
+	if( !empty( $wp_content ) && in_array( 'content', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-content-native"><b>WP CONTENT:</b> ';
+			echo $wp_content;
+		echo '</div>';
+	}
 
-	// pull wp-content
-	echo '<div class="item-content-native"><b>WP CONTENT:</b> ';
-	echo $mfunc->setup_pull_apply_filters_to_content( $pid );
-	echo '</div>';
-
+	// featured media/image
 	$feat_img = get_the_post_thumbnail_url( $pid, "large" );
-	if( !empty( $feat_img ) ) {
-		echo '<div class="item-thumbnail"><img src="'.$feat_img.'" border="0" /></a></div>';
+	if( !empty( $feat_img ) && in_array( 'featured_media', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-thumbnail"><b>FEATURED IMAGE:</b><br />
+			<img src="'.$feat_img.'" border="0" />
+		</div>';
+	}
+
+	// wp-excerpt
+	$wp_excerpt = get_the_excerpt( $pid );
+	if( !empty( $wp_excerpt ) && in_array( 'excerpt', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-excerpt"><b>WP EXCERPT:</b> '.$wp_excerpt.'</div>';
+	}
+
+	// date modified
+	if( in_array( 'modified', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-modified"><b>MODIFIED:</b> '.get_the_modified_date( "F j, Y, g:i a", $pid ).'</div>';
+	}
+	
+	// date published
+	if( in_array( 'date_published', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+		echo '<div class="item-published"><b>PUBLISHED:</b> '.get_the_date( "F j, Y, g:i a", $pid ).'</div>';
 	}
 
 	// ACF | Title
-	$acf_title = $mfunc->setup_array_validation( "title", $bars );
+	/*$acf_title = $mfunc->setup_array_validation( "title", $bars );
 	if( !empty( $acf_title ) ) {
 		echo '<div class="item-acf-title"><b>ACF TITLE:</b> '.$acf_title.'</div>';
 	}
@@ -77,7 +102,7 @@ echo '<div'.$classes.$inline_style.'>';
 	$acf_summary = $mfunc->setup_array_validation( "summary", $bars );
 	if( !empty( $acf_summary ) ) {
 		echo '<div class="item-acf-summary"><b>ACF SUMMARY:</b> '.$acf_summary.'</div>';
-	}
+	}*/
 
 	// SOURCE
 	$e_source = $mfunc->setup_array_validation( "sources", $bars );
