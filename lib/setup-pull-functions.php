@@ -386,6 +386,7 @@ class SetupPullMain {
 
             $argz = array(
                 'post_type'     => $tax_post,
+                'posts_per_page' => -1,
                 'post_status'   => 'publish',
                 'tax_query'     => array(
                     array(
