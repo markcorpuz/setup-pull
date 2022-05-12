@@ -110,6 +110,60 @@
                 "allow_null": 0
             },
             {
+                "key": "field_62712a3ea7f44",
+                "label": "Info",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62712a61a7f45",
+                "label": "Title",
+                "name": "pull-info-title-multi",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_62712a87a7f46",
+                "label": "Summary",
+                "name": "pull-info-summary-multi",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 1,
+                "delay": 0
+            },
+            {
                 "key": "field_62712de1d4aa4",
                 "label": "Fields",
                 "name": "",
@@ -144,7 +198,9 @@
                     "excerpt": "Excerpt",
                     "featured_media": "Featured Image",
                     "modified": "Date Modified",
-                    "date_published": "Date Published"
+                    "date_published": "Date Published",
+                    "info-title": "Title (Info)",
+                    "info-summary": "Summary (Info)"
                 },
                 "allow_custom": 0,
                 "default_value": "title",
@@ -154,63 +210,9 @@
                 "save_custom": 0
             },
             {
-                "key": "field_62712a3ea7f44",
-                "label": "Info",
-                "name": "",
-                "type": "tab",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "placement": "top",
-                "endpoint": 0
-            },
-            {
-                "key": "field_62712a61a7f45",
-                "label": "Title",
-                "name": "info-title-multi",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_62712a87a7f46",
-                "label": "Summary",
-                "name": "info-summary-multi",
-                "type": "wysiwyg",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "tabs": "all",
-                "toolbar": "full",
-                "media_upload": 1,
-                "delay": 0
-            },
-            {
                 "key": "field_6273df2e7a1dc",
                 "label": "Info Position",
-                "name": "info-position-multi",
+                "name": "pull-info-position-multi",
                 "type": "button_group",
                 "instructions": "Control whether the Title & Summary appears on the top or bottom of the pulled entries.",
                 "required": 0,
@@ -338,7 +340,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "",
+                    "width": "50",
                     "class": "",
                     "id": ""
                 },
@@ -347,6 +349,27 @@
                 "ui": 0,
                 "ui_on_text": "",
                 "ui_off_text": ""
+            },
+            {
+                "key": "field_627bd6af4c238",
+                "label": "Taxonomy Max Entries",
+                "name": "pull-tax-max-multi",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": -1,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
             }
         ],
         "location": [
