@@ -21,14 +21,15 @@ class SetupPullVariables {
     public function setup_pull_local_fields() {
 
         return array(
-            'title'                 => 'WP Title',
-            'content'               => 'WP Content',
-            'excerpt'               => 'Excerpt',
-            'featured_media'        => 'Featured Image',
-            'modified'              => 'Date Modified',
-            'date_published'        => 'Date Published',
-            'info-title'            => 'Title (Info)',
-            'info-summary'          => 'Summary (Info)',
+            'title'                         => 'WP Title',
+            'content'                       => 'WP Content',
+            'excerpt'                       => 'Excerpt',
+            'featured_media'                => 'Featured Image',
+            'featured_media_link'           => 'Featured Image Link',
+            'modified'                      => 'Date Modified',
+            'date_published'                => 'Date Published',
+//            'info-title'                    => 'Title (Info)',
+//            'info-summary'                  => 'Summary (Info)',
         );
 
     }
