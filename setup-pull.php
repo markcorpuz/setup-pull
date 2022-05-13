@@ -40,6 +40,22 @@ class SetupPullVariables {
         return array( 'title' );
     }
 
+    // list of info tab (block) fields to pull
+    public function setup_info_block_fields() {
+
+        return array(
+            'title'             => 'Title',
+            'summary'           => 'Summary',
+        );
+
+    }
+
+    // list of local default fields to pull
+    public function setup_info_block_default_fields() {
+        //return array( 'title', 'content' );
+        return array( 'title' );
+    }
+
     // list of remote fields to pull
     public function setup_pull_remote_fields() {
 

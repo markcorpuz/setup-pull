@@ -306,6 +306,51 @@ function acf_setup_local_field_default( $field ) {
 
 
 /**
+ * Auto fill Checkbox options | Fields to Show | INFO TAB
+ *
+ */
+add_filter( 'acf/load_field/name=pull-info-show-fields', 'acf_setup_infotab_field_choices' ); // MULTI - ENTRIES
+function acf_setup_infotab_field_choices( $field ) {
+    
+    $z = new SetupPullVariables();
+
+    $field['choices'] = array();
+
+    $fielders = $z->setup_info_block_fields();
+    if( is_array( $fielders ) ) :
+        
+        foreach( $fielders as $key => $value ) {
+            $field['choices'][$key] = $value;
+        }
+
+        return $field;
+
+    endif;
+    
+}
+
+
+/**
+ * Auto select Checkbox options | Fields to Show | INFO TAB
+ *
+ */
+add_filter('acf/load_field/name=pull-info-show-fields', 'acf_setup_infotab_field_default' );
+function acf_setup_infotab_field_default( $field ) {
+
+    $x = new SetupPullVariables();
+    $q = '';
+    foreach ($x->setup_info_block_default_fields() as $f ) {
+        $q .= $f;
+    }
+
+    $field['default_value'] = $q;
+
+    return $field;
+
+}
+
+
+/**
  * Auto fill Select options | pull_from_site
  *
  */

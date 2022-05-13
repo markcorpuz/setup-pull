@@ -110,6 +110,51 @@
                 "allow_null": 0
             },
             {
+                "key": "field_62712de1d4aa4",
+                "label": "Fields",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62712e2ed4aa5",
+                "label": "Select fields to show",
+                "name": "pull-show-fields-multi",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "WP Title",
+                    "content": "WP Content",
+                    "excerpt": "Excerpt",
+                    "featured_media": "Featured Image",
+                    "featured_media_link": "Featured Image Link",
+                    "modified": "Date Modified",
+                    "date_published": "Date Published"
+                },
+                "allow_custom": 0,
+                "default_value": "title",
+                "layout": "horizontal",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
                 "key": "field_62712a3ea7f44",
                 "label": "Info",
                 "name": "",
@@ -164,43 +209,21 @@
                 "delay": 0
             },
             {
-                "key": "field_62712de1d4aa4",
-                "label": "Fields",
-                "name": "",
-                "type": "tab",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "placement": "top",
-                "endpoint": 0
-            },
-            {
-                "key": "field_62712e2ed4aa5",
-                "label": "Select fields to show",
-                "name": "pull-show-fields-multi",
+                "key": "field_627dd47e80dca",
+                "label": "Select Info fields to show",
+                "name": "pull-info-show-fields",
                 "type": "checkbox",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "",
+                    "width": "70",
                     "class": "",
                     "id": ""
                 },
                 "choices": {
-                    "title": "WP Title",
-                    "content": "WP Content",
-                    "excerpt": "Excerpt",
-                    "featured_media": "Featured Image",
-                    "modified": "Date Modified",
-                    "date_published": "Date Published",
-                    "info-title": "Title (Info)",
-                    "info-summary": "Summary (Info)"
+                    "title": "Title",
+                    "summary": "Summary"
                 },
                 "allow_custom": 0,
                 "default_value": "title",
@@ -210,26 +233,23 @@
                 "save_custom": 0
             },
             {
-                "key": "field_6273df2e7a1dc",
-                "label": "Info Position",
-                "name": "pull-info-position-multi",
-                "type": "button_group",
-                "instructions": "Control whether the Title & Summary appears on the top or bottom of the pulled entries.",
+                "key": "field_627dd4c780dcb",
+                "label": "Hide all fields",
+                "name": "pull-info-hide-all-fields",
+                "type": "true_false",
+                "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "",
+                    "width": "30",
                     "class": "",
                     "id": ""
                 },
-                "choices": {
-                    "top": "Top",
-                    "bottom": "Bottom"
-                },
-                "allow_null": 0,
-                "default_value": "top",
-                "layout": "horizontal",
-                "return_format": "value"
+                "message": "",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
             },
             {
                 "key": "field_6263d8cf3279d",
@@ -261,6 +281,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
@@ -370,6 +391,28 @@
                 "min": "",
                 "max": "",
                 "step": ""
+            },
+            {
+                "key": "field_6273df2e7a1dc",
+                "label": "Info Position",
+                "name": "pull-info-position-multi",
+                "type": "button_group",
+                "instructions": "Control whether the Title & Summary appears on the top or bottom of the pulled entries.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "top": "Top",
+                    "bottom": "Bottom"
+                },
+                "allow_null": 0,
+                "default_value": "top",
+                "layout": "horizontal",
+                "return_format": "value"
             }
         ],
         "location": [
@@ -683,6 +726,7 @@
                                     "id": ""
                                 },
                                 "choices": {
+                                    "atl-featureditem.php": "atl-featureditem",
                                     "line-textwcta.php": "line-textwcta",
                                     "pull-all.php": "pull-all",
                                     "pull-multi-mf.php": "pull-multi-mf",
@@ -864,6 +908,7 @@
                             "id": ""
                         },
                         "choices": {
+                            "atl-featureditem.php": "atl-featureditem",
                             "line-textwcta.php": "line-textwcta",
                             "pull-all.php": "pull-all",
                             "pull-multi-mf.php": "pull-multi-mf",
@@ -1205,6 +1250,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
@@ -1437,6 +1483,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
