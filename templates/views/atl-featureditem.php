@@ -44,7 +44,7 @@ echo '<div class="items-info">';
 	// wp-title
 	$wp_title = get_the_title( $pid );
 	if( !empty( $wp_title ) && !empty( $mfunc->setup_field_control_validation( 'title', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
-		echo '<div class="item-title">'.$wp_title.'</div>';	
+		echo '<div class="item-title"><a href="'.get_the_permalink( $pid ).'">'.$wp_title.'</a></div>';	
 	}
 	
 	// wp-content
@@ -70,6 +70,8 @@ echo '<div class="items-info">';
 	if( !empty( $mfunc->setup_field_control_validation( 'date_published', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-published">'.get_the_date( "F j, Y, g:i a", $pid ).'</div>';
 	}
+
+	echo '<div class="item-cta"><a href="'.get_the_permalink( $pid ).'">MORE INFO</a></div>';
 
 	// ACF | Title
 	/*$acf_title = $mfunc->setup_array_validation( "title", $bars );
