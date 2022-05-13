@@ -337,20 +337,37 @@ class SetupPullMain {
 
         $etemplate = get_field( 'pull-template-multi' );
 
-        // check if there's a block class and add to array if true
-        $bclass = $this->setup_array_validation( 'className', $block );
-        if( !empty( $bclass ) ) {
-            $bars[ 'block_class' ] = $bclass;
-        } else {
-            $bars[ 'block_class' ] = '';
-        }
-
-        // control which fields to show
+        // FIELDS TO SHOW
         $fs = get_field( 'pull-show-fields-multi' );
         if( !empty( $fs ) ) {
             $bars[ 'field_control' ] = $fs;
         } else {
-            $bars[ 'field_control' ] = '';
+            $bars[ 'field_control' ] = array( 'none' );
+        }
+
+        // INFO TAB | TITLE
+        $info_title = get_field( 'pull-info-title-multi' );
+        if( !empty( $info_title ) && $this->setup_field_control_validation( 'info-title', $fs ) ) {
+            $info_out = '<div class="item-info-title">'.$info_title.'</div>';
+        } else {
+            $info_out = ''; // declare empty variable for summary
+        }
+
+        // INFO TAB | SUMMARY
+        $info_summary = get_field( 'pull-info-summary-multi' );
+        if( !empty( $info_summary ) && $this->setup_field_control_validation( 'info-summary', $fs ) ) {
+            $info_out .= '<div class="item-info-summary">'.$info_summary.'</div>';
+        }
+
+        // INFO TAB | POSITION
+        $itpos = get_field( 'pull-info-position-multi' );
+
+        // SOURCE
+        $esource = get_field( 'pull-show-source-multi' );
+        if( !empty( $esource ) ) {
+            $bars[ 'sources' ] = TRUE;
+        } else {
+            $bars[ 'sources' ] = FALSE;
         }
         
         // ENTRIES
@@ -371,6 +388,7 @@ class SetupPullMain {
         // TAXONOMY
         $tax_post = get_field( 'pull-post-type-multi' );
         $tax_type = get_field( 'pull-taxonomy-multi' );
+        $max_e = get_field( 'pull-tax-max-multi' );
         if( !empty( $tax_post ) && !empty( $tax_type ) ) {
 
             // loop through the tax field
@@ -384,10 +402,18 @@ class SetupPullMain {
 
             }
 
+            // post per page count (max entries to show)
+            if( $max_e <= 0 ) {
+                $max_ppp = -1;
+            } else {
+                $max_ppp = $max_e;
+            }
+
             $argz = array(
-                'post_type'     => $tax_post,
-                'post_status'   => 'publish',
-                'tax_query'     => array(
+                'post_type'         => $tax_post,
+                'post_status'       => 'publish',
+                'posts_per_page'    => $max_ppp,
+                'tax_query'         => array(
                     array(
                         'taxonomy'      => $taxes_tax,
                         'field'         => 'slug',
@@ -462,24 +488,12 @@ class SetupPullMain {
         } else {
             $ss = '';
         }
-
-        // INFO TAB
-        $info_title = get_field( 'info-title-multi' );
-        if( !empty( $info_title ) ) {
-            $info_out = '<div class="item-info-title">'.$info_title.'</div>';
-        } else {
-            $info_out = ''; // declare empty variable for summary
-        }
-
-        $info_summary = get_field( 'info-summary-multi' );
-        if( !empty( $info_summary ) ) {
-            $info_out .= '<div class="item-info-summary">'.$info_summary.'</div>';
-        }
         
+        // OUTPUT
         if( !empty( $info_title ) || !empty( $info_summary ) ) {
 
-            // check position
-            if( 'top' == get_field( 'info-position-multi' ) ) {
+            // info tab available | check position
+            if( 'top' == $itpos ) {
                 echo '<div'.$sc.$ss.'>'.$info_out.$out.'</div>';
             } else {
                 echo '<div'.$sc.$ss.'>'.$out.$info_out.'</div>';
@@ -487,6 +501,7 @@ class SetupPullMain {
 
         } else {
 
+            // info tab empty
             echo '<div'.$sc.$ss.'>'.$out.'</div>';
 
         }
@@ -856,6 +871,28 @@ class SetupPullMain {
             return FALSE;
         }
 
+    }
+
+
+    /**
+     * Field Control Array Validation
+     */
+    public function setup_field_control_validation( $field, $array ) {
+
+        if( is_array( $array ) ) {
+
+            if( in_array( $field, $array ) ) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+
+        } else {
+
+            return FALSE;
+
+        }
+        
     }
     
 

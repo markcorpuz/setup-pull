@@ -31,13 +31,13 @@ echo '<div'.$classes.$inline_style.'>';
 
 	// wp-title
 	$wp_title = get_the_title( $pid );
-	if( !empty( $wp_title ) && in_array( 'title', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $wp_title ) && !empty( $mfunc->setup_field_control_validation( 'title', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-title-native"><b>WP TITLE:</b> '.$wp_title.'</div>';	
 	}
 	
 	// wp-content
 	$wp_content = $mfunc->setup_pull_apply_filters_to_content( $pid );
-	if( !empty( $wp_content ) && in_array( 'content', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $wp_content ) && !empty( $mfunc->setup_field_control_validation( 'content', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-content-native"><b>WP CONTENT:</b> ';
 			echo $wp_content;
 		echo '</div>';
@@ -45,7 +45,7 @@ echo '<div'.$classes.$inline_style.'>';
 
 	// featured media/image
 	$feat_img = get_the_post_thumbnail_url( $pid, "large" );
-	if( !empty( $feat_img ) && in_array( 'featured_media', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $feat_img ) && !empty( $mfunc->setup_field_control_validation( 'featured_media', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-thumbnail"><b>FEATURED IMAGE:</b><br />
 			<img src="'.$feat_img.'" border="0" />
 		</div>';
@@ -53,17 +53,17 @@ echo '<div'.$classes.$inline_style.'>';
 
 	// wp-excerpt
 	$wp_excerpt = get_the_excerpt( $pid );
-	if( !empty( $wp_excerpt ) && in_array( 'excerpt', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $wp_excerpt ) && !empty( $mfunc->setup_field_control_validation( 'excerpt', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-excerpt"><b>WP EXCERPT:</b> '.$wp_excerpt.'</div>';
 	}
 
 	// date modified
-	if( in_array( 'modified', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $mfunc->setup_field_control_validation( 'modified', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-modified"><b>MODIFIED:</b> '.get_the_modified_date( "F j, Y, g:i a", $pid ).'</div>';
 	}
 	
 	// date published
-	if( in_array( 'date_published', $mfunc->setup_array_validation( "field_control", $bars ) ) ) {
+	if( !empty( $mfunc->setup_field_control_validation( 'date_published', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-published"><b>PUBLISHED:</b> '.get_the_date( "F j, Y, g:i a", $pid ).'</div>';
 	}
 
@@ -106,7 +106,7 @@ echo '<div'.$classes.$inline_style.'>';
 
 	// SOURCE
 	$e_source = $mfunc->setup_array_validation( "sources", $bars );
-	if( !empty( $e_source ) ) {
+	if( !empty( $e_source ) && $e_source === TRUE ) {
 		$link = '<a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>';
 		echo '<div class="item-entry-source"><b>SOURCE:</b> '.$link.'</div>';
 	}
