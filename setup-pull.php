@@ -21,20 +21,37 @@ class SetupPullVariables {
     public function setup_pull_local_fields() {
 
         return array(
-            'title'                 => 'WP Title',
-            'content'               => 'WP Content',
-            'excerpt'               => 'Excerpt',
-            'featured_media'        => 'Featured Image',
-            'modified'              => 'Date Modified',
-            'date_published'        => 'Date Published',
-            'info-title'            => 'Title (Info)',
-            'info-summary'          => 'Summary (Info)',
+            'title'                         => 'WP Title',
+            'content'                       => 'WP Content',
+            'excerpt'                       => 'Excerpt',
+            'featured_media'                => 'Featured Image',
+            'featured_media_link'           => 'Featured Image Link',
+            'modified'                      => 'Date Modified',
+            'date_published'                => 'Date Published',
+//            'info-title'                    => 'Title (Info)',
+//            'info-summary'                  => 'Summary (Info)',
         );
 
     }
 
     // list of local default fields to pull
     public function setup_pull_local_default_fields() {
+        //return array( 'title', 'content' );
+        return array( 'title' );
+    }
+
+    // list of info tab (block) fields to pull
+    public function setup_info_block_fields() {
+
+        return array(
+            'title'             => 'Title',
+            'summary'           => 'Summary',
+        );
+
+    }
+
+    // list of local default fields to pull
+    public function setup_info_block_default_fields() {
         //return array( 'title', 'content' );
         return array( 'title' );
     }

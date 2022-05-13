@@ -344,19 +344,31 @@ class SetupPullMain {
         } else {
             $bars[ 'field_control' ] = array( 'none' );
         }
+        
+        // INFO TAB
+        if( get_field( 'pull-info-hide-all-fields' ) === TRUE ) {
 
-        // INFO TAB | TITLE
-        $info_title = get_field( 'pull-info-title-multi' );
-        if( !empty( $info_title ) && $this->setup_field_control_validation( 'info-title', $fs ) ) {
-            $info_out = '<div class="item-info-title">'.$info_title.'</div>';
+            $info_out = ''; // declare empty variable for the output
+
         } else {
-            $info_out = ''; // declare empty variable for summary
-        }
 
-        // INFO TAB | SUMMARY
-        $info_summary = get_field( 'pull-info-summary-multi' );
-        if( !empty( $info_summary ) && $this->setup_field_control_validation( 'info-summary', $fs ) ) {
-            $info_out .= '<div class="item-info-summary">'.$info_summary.'</div>';
+            // INFO TAB | FIELDS TO SHOW
+            $fs_i = get_field( 'pull-info-show-fields' );
+
+            // INFO TAB | TITLE
+            $info_title = get_field( 'pull-info-title-multi' );
+            if( !empty( $info_title ) && $this->setup_field_control_validation( 'title', $fs_i ) ) {
+                $info_out = '<div class="item-info-title">'.$info_title.'</div>';
+            } else {
+                $info_out = ''; // declare empty variable for summary
+            }
+
+            // INFO TAB | SUMMARY
+            $info_summary = get_field( 'pull-info-summary-multi' );
+            if( !empty( $info_summary ) && $this->setup_field_control_validation( 'summary', $fs_i ) ) {
+                $info_out .= '<div class="item-info-summary">'.$info_summary.'</div>';
+            }
+
         }
 
         // INFO TAB | POSITION
