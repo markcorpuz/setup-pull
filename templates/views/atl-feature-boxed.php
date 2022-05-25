@@ -163,7 +163,8 @@ echo '<div'.$classes.$inline_style.'>';
 	}
 	//$feat_img = get_the_post_thumbnail_url( $pid, "medium-large" ); // do not remove line 33
 	if( !empty( $feat_img ) && !empty( $mfunc->setup_field_control_validation( 'featured_media_link', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
-		echo '<figure class="item-thumbnail"><a href="'.get_the_permalink( $pid ).'"><img src="'.$feat_img.'" border="0" /></a></figure>';
+		//echo '<figure class="item-thumbnail"><a href="'.get_the_permalink( $pid ).'"><img src="'.$feat_img.'" border="0" /></a></figure>';
+		echo '<figure class="item-thumbnail"><img src="'.$feat_img.'" border="0" /></figure>';
 	}
 
 echo '<div class="items-info">';
@@ -171,15 +172,14 @@ echo '<div class="items-info">';
 	// wp-title
 	$wp_title = get_the_title( $pid );
 	if( !empty( $wp_title ) && !empty( $mfunc->setup_field_control_validation( 'title', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
-		echo '<div class="item-title"><a href="'.get_the_permalink( $pid ).'">'.$wp_title.'</a></div>';	
+		//echo '<div class="item-title"><a href="'.get_the_permalink( $pid ).'">'.$wp_title.'</a></div>';
+		echo '<div class="item-title">'.$wp_title.'</div>';	
 	}
 	
 	// wp-content
 	$wp_content = $mfunc->setup_pull_apply_filters_to_content( $pid );
 	if( !empty( $wp_content ) && !empty( $mfunc->setup_field_control_validation( 'content', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
-		echo '<div class="item-content">';
-			echo $wp_content;
-		echo '</div>';
+		echo '<div class="item-content">'.$wp_content.'</div>';
 	}
 
 	// wp-excerpt
@@ -198,7 +198,8 @@ echo '<div class="items-info">';
 		echo '<div class="item-published">'.get_the_date( "F j, Y, g:i a", $pid ).'</div>';
 	}
 
-	echo '<div class="item-cta"><a href="'.get_the_permalink( $pid ).'">MORE INFO</a></div>';
+	//echo '<div class="item-cta"><a href="'.get_the_permalink( $pid ).'">MORE INFO</a></div>';
+	echo '<div class="item-cta">MORE INFO</div>';
 
 	// ACF | Title
 	/*$acf_title = $mfunc->setup_array_validation( "title", $bars );
@@ -240,8 +241,9 @@ echo '<div class="items-info">';
 	// SOURCE
 	$e_source = $mfunc->setup_array_validation( "sources", $bars );
 	if( !empty( $e_source ) && $e_source === TRUE ) {
-		$link = '<a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>';
-		echo '<div class="item-cta">'.$link.'</div>';
+		/*$link = '<a href="'.get_the_permalink( $pid ).'">'.get_the_title( $pid ).'</a>';
+		echo '<div class="item-cta">'.$link.'</div>';*/
+		echo '<div class="item-cta">'.get_the_title( $pid ).'</div>';
 	}
 
 echo '</div>';
