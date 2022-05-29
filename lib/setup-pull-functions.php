@@ -335,6 +335,10 @@ class SetupPullMain {
 
         global $bars;
 
+        // ENTRY CSS | Declare variable empty since this block copies the previous block's wrap_sel and wrap_sty
+        $bars[ 'wrap_sel' ] = '';
+        $bars[ 'wrap_sty' ] = '';
+
         $etemplate = get_field( 'pull-template-multi' );
 
         // FIELDS TO SHOW
@@ -475,7 +479,7 @@ class SetupPullMain {
             }
 
         }
-        
+
         // SECTION CLASS
         $section_class = array(
             'block_class'               => $this->setup_array_validation( 'className', $block ) ? $block[ 'className' ] : '',
