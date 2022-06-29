@@ -101,6 +101,13 @@ class SetupPullVariables {
 
     }
 
+    // order by list
+    public $order_by = array(
+        'title'             => 'Title',
+        'date'              => 'Date Published',
+        'modified'          => 'Date Modified',
+    );
+
 }
 
 

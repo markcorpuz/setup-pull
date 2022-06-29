@@ -429,6 +429,8 @@ class SetupPullMain {
                 'post_type'         => $tax_post,
                 'post_status'       => 'publish',
                 'posts_per_page'    => $max_ppp,
+                'orderby'           => get_field( 'pull-order-by' ),
+                'order'             => get_field( 'pull-order' ),
                 'tax_query'         => array(
                     array(
                         'taxonomy'      => $taxes_tax,
@@ -625,7 +627,7 @@ class SetupPullMain {
 
                 $return .= $ar[ $z ];
 
-                if( $z != ( count( $ar ) - 1 ) ) {
+                if( $z != ( count( $ar ) - 2 ) ) {
                     $return .= ' ';
                 }
 
