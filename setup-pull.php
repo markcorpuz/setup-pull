@@ -97,6 +97,7 @@ class SetupPullVariables {
             '_pods_pod',
             '_pods_group',
             '_pods_field',
+            '_pods_template',
         );
 
     }
