@@ -399,6 +399,29 @@ function acf_setup_subsite_choices( $field ) {
 }
 
 
+// AUTO FILL SELECT FOR ORDER BY (ACF)
+add_filter( 'acf/load_field/name=pull-order-by', 'atl_tm_ob_autofill_hooks' );
+function atl_tm_ob_autofill_hooks( $field ) {
+
+    $hookers = new SetupPullVariables();
+
+    $field['choices'] = array();
+
+    //Loop through whatever data you are using, and assign a key/value
+    if( is_array( $hookers->order_by ) ) {
+
+        foreach( $hookers->order_by as $key => $value ) {
+
+            $field['choices'][$key] = $value;
+        }
+
+        return $field;
+
+    }
+
+}
+
+
 /**
  * Get VIEW template | this function is called by SETUP-PULL-FLEX.PHP found in PARTIALS/BLOCKS folder
  *

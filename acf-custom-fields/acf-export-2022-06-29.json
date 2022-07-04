@@ -70,7 +70,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "",
                     "class": "",
                     "id": ""
                 },
@@ -82,7 +82,7 @@
                 },
                 "allow_custom": 0,
                 "default_value": [],
-                "layout": "vertical",
+                "layout": "horizontal",
                 "toggle": 0,
                 "return_format": "value",
                 "save_custom": 0
@@ -96,7 +96,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "70",
                     "class": "",
                     "id": ""
                 },
@@ -108,6 +108,78 @@
                 "return_format": "object",
                 "multiple": 0,
                 "allow_null": 0
+            },
+            {
+                "key": "field_627bd6af4c238",
+                "label": "Taxonomy Max Entries",
+                "name": "pull-tax-max-multi",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": -1,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_62bc248f601b4",
+                "label": "Order By",
+                "name": "pull-order-by",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "Title",
+                    "date": "Date Published",
+                    "modified": "Date Modified"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_62bc24a9601b5",
+                "label": "Order",
+                "name": "pull-order",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "desc": "Descending",
+                    "asc": "Ascending"
+                },
+                "default_value": "desc",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
             },
             {
                 "key": "field_62712de1d4aa4",
@@ -281,6 +353,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",
@@ -361,7 +434,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "",
                     "class": "",
                     "id": ""
                 },
@@ -370,27 +443,6 @@
                 "ui": 0,
                 "ui_on_text": "",
                 "ui_off_text": ""
-            },
-            {
-                "key": "field_627bd6af4c238",
-                "label": "Taxonomy Max Entries",
-                "name": "pull-tax-max-multi",
-                "type": "number",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "50",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": -1,
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "min": "",
-                "max": "",
-                "step": ""
             },
             {
                 "key": "field_6273df2e7a1dc",
@@ -726,6 +778,7 @@
                                     "id": ""
                                 },
                                 "choices": {
+                                    "atl-feature-boxed.php": "atl-feature-boxed",
                                     "atl-featureditem.php": "atl-featureditem",
                                     "line-textwcta.php": "line-textwcta",
                                     "pull-all.php": "pull-all",
@@ -908,6 +961,7 @@
                             "id": ""
                         },
                         "choices": {
+                            "atl-feature-boxed.php": "atl-feature-boxed",
                             "atl-featureditem.php": "atl-featureditem",
                             "line-textwcta.php": "line-textwcta",
                             "pull-all.php": "pull-all",
@@ -1250,6 +1304,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",
@@ -1483,6 +1538,7 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all.php": "pull-all",

@@ -97,9 +97,17 @@ class SetupPullVariables {
             '_pods_pod',
             '_pods_group',
             '_pods_field',
+            '_pods_template',
         );
 
     }
+
+    // order by list
+    public $order_by = array(
+        'title'             => 'Title',
+        'date'              => 'Date Published',
+        'modified'          => 'Date Modified',
+    );
 
 }
 
