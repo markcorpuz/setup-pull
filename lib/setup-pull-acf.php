@@ -126,6 +126,27 @@ function setup_pull_block_acf_init() {
 
     );
 
+    $fields_func = new SetupPullGen();
+    foreach( $fields_func->setup_pull_gen_details() as $key => $value ) {
+        
+        $blocks[ $key ] = array(
+            'name'                  => $value[ 'block' ][ 'name' ],
+            'title'                 => $value[ 'block' ][ 'title' ],
+            'render_template'       => $z->setup_plugin_dir_path().'templates/blocks/'.$value[ 'block' ][ 'template' ],
+            'category'              => 'setup',
+            'icon'                  => $value[ 'block' ][ 'icon' ],
+            'mode'                  => 'edit',
+            'keywords'              => $value[ 'block' ][ 'keywords' ],
+            'supports'              => [
+                'align'             => false,
+                'anchor'            => true,
+                'customClassName'   => true,
+                'jsx'               => true,
+            ],            
+        );
+
+    }
+
     // Bail out if function doesn’t exist or no blocks available to register.
     if ( !function_exists( 'acf_register_block_type' ) && !$blocks ) {
         return;
@@ -147,6 +168,7 @@ add_filter( 'acf/load_field/name=pull-template-global', 'acf_setup_load_view_tem
 add_filter( 'acf/load_field/name=pull-template-multi', 'acf_setup_load_view_template_choices' ); // MULTI - ENTRIES
 add_filter( 'acf/load_field/name=pull-template-flex', 'acf_setup_load_view_template_choices' ); // MULTI - FLEX
 add_filter( 'acf/load_field/name=pull-template-remote', 'acf_setup_load_view_template_choices' ); // REMOTE
+add_filter( 'acf/load_field/name=pull-tax-template', 'acf_setup_load_view_template_choices' ); // TAXONOMY
 function acf_setup_load_view_template_choices( $field ) {
     
     $z = new SetupPullVariables();

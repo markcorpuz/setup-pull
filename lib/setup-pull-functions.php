@@ -5,9 +5,196 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-//global $gcounter;
 
 class SetupPullMain {
+
+
+    /**
+     * General function to call
+     */
+    public function setup_pull_general( $block, $identify ) {
+
+        // declare global variable for succeeding blocks
+        //global $post_ids;
+
+        if( $identify == 'taxonomy' ) {
+
+            global $bars, $post_ids;
+
+            if( !is_array( $post_ids ) )
+                $post_ids = array();
+            
+            $fields_func = new SetupPullGen();
+
+            // FILTER THE BLOCK
+            $bname = explode( '/', $block[ 'name' ] );
+            
+            $arr_structure = $fields_func->setup_pull_gen_details();
+            $value = $arr_structure[ $bname[ 1 ] ];
+            
+            if( is_array( $value ) ) {
+
+                $bars = array();
+
+                // template
+                $etemplate = get_field( $value[ 'fields' ][ 'template' ] );
+                // field controller
+                $bars[ 'field_control' ] = get_field( $value[ 'fields' ][ 'show_fields' ] );
+
+                $it_pos = get_field( $value[ 'fields' ][ 'info_position' ] );
+                $ptfi = get_field( $value[ 'fields' ][ 'info_tax_show_fields' ] );
+                $hide_ptfi = get_field( $value[ 'fields' ][ 'info_hide_all_fields' ] );
+                $wrap_sel = get_field( $value[ 'fields' ][ 'wrap_sel' ] );
+                $wrap_sty = get_field( $value[ 'fields' ][ 'wrap_sty' ] );
+
+                // Select Info fields to show
+                if( $hide_ptfi === FALSE ) {
+
+                    if( is_array( $ptfi ) && !empty( $ptfi ) ) {
+                        //echo '<span style="color:orange;">'; var_dump( $ptfi ); echo '</span>';
+                        if( in_array( 'title', $ptfi ) ) {
+                            $title_out = '<div class="info-title">'.get_field( $value[ 'fields' ][ 'title' ] ).'</div>';
+                        } else {
+                            $title_out = '<div class="info-title"></div>';
+                        }
+
+                        if( in_array( 'summary', $ptfi ) ) {
+                            $summary_out = '<div class="info-summary">'.get_field( $value[ 'fields' ][ 'summary' ] ).'</div>';
+                        } else {
+                            $summary_out = '<div class="info-summary"></div>';
+                        }
+
+                        /*for( $q=0; $q<=( count( $ptfi ) -1 ); $q++ ) {
+                            echo '<h1>'.get_field( $value[ 'fields' ][ $ptfi[ $q ] ] ).'</h1>';
+
+                        }*/
+
+                    }
+                    
+                } else {
+
+                    $title_out = '';
+                    $summary_out = '';
+
+                }
+                
+                // validate block class
+                /*$blk_css = $this->setup_array_validation( 'className', $block );
+                if( !empty( $blk_css ) ) {
+                    $bars[ 'block_class' ] = $blk_css;
+                } else {
+                    $bars[ 'block_class' ] = '';
+                }*/
+                
+                // loop through the tax field to get tax type
+                foreach( get_field( $value[ 'fields' ][ 'tax_type' ] ) as $tax ) {
+
+                    // capture the taxonomy
+                    if( empty( $taxes_tax ) )
+                        $taxes_tax = $tax->taxonomy;
+
+                    $taxes[] = $tax->slug;
+
+                }
+
+                // post per page count (max entries to show)
+                $max_e = get_field( $value[ 'fields' ][ 'max_tax' ] );
+                if( $max_e <= 0 ) {
+                    $max_ppp = -1;
+                } else {
+                    $max_ppp = $max_e;
+                }
+                
+                // arguments
+                $args = array(
+                    'post_type'         => get_field( $value[ 'fields' ][ 'post_type' ] ),
+                    'post_status'       => 'publish',
+                    'posts_per_page'    => $max_ppp,
+                    'orderby'           => get_field( $value[ 'fields' ][ 'order_by' ] ),
+                    'order'             => get_field( $value[ 'fields' ][ 'order' ] ),
+                    'tax_query'         => array(
+                        array(
+                            'taxonomy'      => $taxes_tax,
+                            'field'         => 'slug',
+                            'terms'         => $taxes,
+                        ),
+                    ),
+                    'post__not_in' => $post_ids,
+                );
+            
+                $loop = new WP_Query( $args );
+
+                // loop
+                if( $loop->have_posts() ):
+
+                    $out = '';
+
+                    // get all post IDs
+                    while( $loop->have_posts() ): $loop->the_post();
+                        
+                        if( !in_array( get_the_ID(), $post_ids ) ) {
+
+                            $post_ids[] = get_the_ID();
+
+                            $bars[ 'pid' ] = get_the_ID();
+                        
+                            $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+                        }
+                        
+                    endwhile;
+
+                    /* Restore original Post Data 
+                     * NB: Because we are using new WP_Query we aren't stomping on the 
+                     * original $wp_query and it does not need to be reset.
+                     */
+                    wp_reset_postdata();
+
+                endif;
+
+                // set empty variable
+                if( empty( $out ) ) {
+                    $out = '';
+                }
+
+                // SECTION CLASS
+                $section_class = array(
+                    'block_class'               => $this->setup_array_validation( 'className', $block ) ? $block[ 'className' ] : '',
+                    'item_class'                => $wrap_sel,
+                    'manual_class'              => '',
+                );
+                $sec_class = $this->setup_pull_combine_classes( $section_class );
+                if( !empty( $sec_class ) ) {
+                    $sc = ' class="'.$sec_class.'"';
+                } else {
+                    $sc = '';
+                }
+
+                // SECTION STYLE
+                $section_styles = array(
+                    'item_style'                => $wrap_sty,
+                    'manual_style'              => '',
+                );
+                $sec_style = $this->setup_pull_combine_styles( $section_styles );
+                if( !empty( $sec_style ) ) {
+                    $ss = ' style="'.$sec_style.'"';
+                } else {
+                    $ss = '';
+                }
+
+                // OUTPUT
+                if( 'top' == $it_pos || empty( $it_pos ) ) {
+                    echo '<div'.$sc.$ss.'>'.$title_out.$summary_out.$out.'</div>';
+                } else {
+                    echo '<div'.$sc.$ss.'>'.$out.$title_out.$summary_out.'</div>';
+
+                }
+
+            }
+
+        }
+
+    }
 
 
     /**
@@ -184,7 +371,7 @@ class SetupPullMain {
                                     /* Restore original Post Data 
                                      * NB: Because we are using new WP_Query we aren't stomping on the 
                                      * original $wp_query and it does not need to be reset.
-                                    */
+                                     */
                                     wp_reset_postdata();
 
                                 endif;
@@ -425,6 +612,7 @@ class SetupPullMain {
                 $max_ppp = $max_e;
             }
 
+            // arguments
             $argz = array(
                 'post_type'         => $tax_post,
                 'post_status'       => 'publish',
@@ -465,7 +653,7 @@ class SetupPullMain {
                 /* Restore original Post Data 
                  * NB: Because we are using new WP_Query we aren't stomping on the 
                  * original $wp_query and it does not need to be reset.
-                */
+                 */
                 wp_reset_postdata();
 
             endif;
