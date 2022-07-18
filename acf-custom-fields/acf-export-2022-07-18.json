@@ -1444,13 +1444,13 @@
                     "id": ""
                 },
                 "taxonomy": "movie_trailer",
-                "field_type": "checkbox",
+                "field_type": "multi_select",
+                "allow_null": 0,
                 "add_term": 1,
                 "save_terms": 0,
                 "load_terms": 0,
                 "return_format": "object",
-                "multiple": 0,
-                "allow_null": 0
+                "multiple": 0
             },
             {
                 "key": "field_62cea4bf84bbb",
