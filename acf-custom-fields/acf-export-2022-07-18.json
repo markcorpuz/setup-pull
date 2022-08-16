@@ -70,7 +70,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "",
                     "class": "",
                     "id": ""
                 },
@@ -82,7 +82,7 @@
                 },
                 "allow_custom": 0,
                 "default_value": [],
-                "layout": "vertical",
+                "layout": "horizontal",
                 "toggle": 0,
                 "return_format": "value",
                 "save_custom": 0
@@ -96,7 +96,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "70",
                     "class": "",
                     "id": ""
                 },
@@ -108,6 +108,78 @@
                 "return_format": "object",
                 "multiple": 0,
                 "allow_null": 0
+            },
+            {
+                "key": "field_627bd6af4c238",
+                "label": "Taxonomy Max Entries",
+                "name": "pull-tax-max-multi",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": -1,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_62bc248f601b4",
+                "label": "Order By",
+                "name": "pull-order-by",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "Title",
+                    "date": "Date Published",
+                    "modified": "Date Modified"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_62bc24a9601b5",
+                "label": "Order",
+                "name": "pull-order",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "desc": "Descending",
+                    "asc": "Ascending"
+                },
+                "default_value": "desc",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
             },
             {
                 "key": "field_62712de1d4aa4",
@@ -281,8 +353,10 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
+                    "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
                     "pull-multi-sf.php": "pull-multi-sf",
@@ -361,7 +435,7 @@
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
-                    "width": "50",
+                    "width": "",
                     "class": "",
                     "id": ""
                 },
@@ -370,27 +444,6 @@
                 "ui": 0,
                 "ui_on_text": "",
                 "ui_off_text": ""
-            },
-            {
-                "key": "field_627bd6af4c238",
-                "label": "Taxonomy Max Entries",
-                "name": "pull-tax-max-multi",
-                "type": "number",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "50",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": -1,
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "min": "",
-                "max": "",
-                "step": ""
             },
             {
                 "key": "field_6273df2e7a1dc",
@@ -726,8 +779,10 @@
                                     "id": ""
                                 },
                                 "choices": {
+                                    "atl-feature-boxed.php": "atl-feature-boxed",
                                     "atl-featureditem.php": "atl-featureditem",
                                     "line-textwcta.php": "line-textwcta",
+                                    "pull-all-tax.php": "pull-all-tax",
                                     "pull-all.php": "pull-all",
                                     "pull-multi-mf.php": "pull-multi-mf",
                                     "pull-multi-sf.php": "pull-multi-sf",
@@ -908,8 +963,10 @@
                             "id": ""
                         },
                         "choices": {
+                            "atl-feature-boxed.php": "atl-feature-boxed",
                             "atl-featureditem.php": "atl-featureditem",
                             "line-textwcta.php": "line-textwcta",
+                            "pull-all-tax.php": "pull-all-tax",
                             "pull-all.php": "pull-all",
                             "pull-multi-mf.php": "pull-multi-mf",
                             "pull-multi-sf.php": "pull-multi-sf",
@@ -1250,8 +1307,10 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
+                    "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
                     "pull-multi-sf.php": "pull-multi-sf",
@@ -1312,6 +1371,440 @@
                     "param": "block",
                     "operator": "==",
                     "value": "acf\/pull-local-single"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0
+    },
+    {
+        "key": "group_62cea4bf7e05c",
+        "title": "Pull - Local | Taxonomy",
+        "fields": [
+            {
+                "key": "field_62cea4bf84b17",
+                "label": "Taxonomy",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62cea4bf84b4e",
+                "label": "Post Type",
+                "name": "pull-tax-post-type",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "post": "post",
+                    "page": "page",
+                    "pull": "pull",
+                    "video": "video"
+                },
+                "allow_custom": 0,
+                "default_value": [],
+                "layout": "horizontal",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_62cea4bf84b85",
+                "label": "Taxonomy Type",
+                "name": "pull-tax-type",
+                "type": "taxonomy",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "70",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "movie_trailer",
+                "field_type": "multi_select",
+                "allow_null": 0,
+                "add_term": 1,
+                "save_terms": 0,
+                "load_terms": 0,
+                "return_format": "object",
+                "multiple": 0
+            },
+            {
+                "key": "field_62cea4bf84bbb",
+                "label": "Taxonomy Max Entries",
+                "name": "pull-tax-max",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": -1,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": -1,
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_62cea4bf84bf3",
+                "label": "Order By",
+                "name": "pull-tax-order-by",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "Title",
+                    "date": "Date Published",
+                    "modified": "Date Modified"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_62cea4bf84c29",
+                "label": "Order",
+                "name": "pull-tax-order",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "desc": "Descending",
+                    "asc": "Ascending"
+                },
+                "default_value": "desc",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_62cea4bf84c97",
+                "label": "Select fields to show",
+                "name": "pull-tax-fields",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "WP Title",
+                    "content": "WP Content",
+                    "excerpt": "Excerpt",
+                    "featured_media": "Featured Image",
+                    "featured_media_link": "Featured Image Link",
+                    "modified": "Date Modified",
+                    "date_published": "Date Published"
+                },
+                "allow_custom": 0,
+                "default_value": [
+                    "title"
+                ],
+                "layout": "horizontal",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_62cea4bf84cce",
+                "label": "Info",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62cea4bf84d04",
+                "label": "Title",
+                "name": "pull-tax-title",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_62cea4bf84d3b",
+                "label": "Summary",
+                "name": "pull-tax-summary",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 1,
+                "delay": 0
+            },
+            {
+                "key": "field_62cea4bf84d72",
+                "label": "Select Info fields to show",
+                "name": "pull-tax-fields-info",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "70",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "Title",
+                    "summary": "Summary"
+                },
+                "allow_custom": 0,
+                "default_value": [
+                    "title"
+                ],
+                "layout": "horizontal",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_62cea4bf84da9",
+                "label": "Hide all fields",
+                "name": "pull-tax-hide-all-fields",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "30",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_62cea4bf84ddf",
+                "label": "Layout",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62cea4bf84e16",
+                "label": "Template",
+                "name": "pull-tax-template",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
+                    "atl-featureditem.php": "atl-featureditem",
+                    "line-textwcta.php": "line-textwcta",
+                    "pull-all-tax.php": "pull-all-tax",
+                    "pull-all.php": "pull-all",
+                    "pull-multi-mf.php": "pull-multi-mf",
+                    "pull-multi-sf.php": "pull-multi-sf",
+                    "pull-title-h1.php": "pull-title-h1",
+                    "pull-title-h2.php": "pull-title-h2",
+                    "remote-show-all.php": "remote-show-all"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_62cea4bf84e4d",
+                "label": "Section Class",
+                "name": "pull-tax-sec-class",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_62cea4bf84e84",
+                "label": "Section Style",
+                "name": "pull-tax-sec-style",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_62cea4bf84eba",
+                "label": "+",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_62cea4bf84ef1",
+                "label": "Show Source",
+                "name": "pull-tax-source",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_62cea4bf84f27",
+                "label": "Info Position",
+                "name": "pull-tax-info-pos",
+                "type": "button_group",
+                "instructions": "Control whether the Title & Summary appears on the top or bottom of the pulled entries.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "top": "Top",
+                    "bottom": "Bottom"
+                },
+                "allow_null": 0,
+                "default_value": "top",
+                "layout": "horizontal",
+                "return_format": "value"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "block",
+                    "operator": "==",
+                    "value": "acf\/pull-taxonomy"
                 }
             ]
         ],
@@ -1483,8 +1976,10 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed.php": "atl-feature-boxed",
                     "atl-featureditem.php": "atl-featureditem",
                     "line-textwcta.php": "line-textwcta",
+                    "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
                     "pull-multi-mf.php": "pull-multi-mf",
                     "pull-multi-sf.php": "pull-multi-sf",

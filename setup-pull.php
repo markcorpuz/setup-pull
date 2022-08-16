@@ -97,15 +97,25 @@ class SetupPullVariables {
             '_pods_pod',
             '_pods_group',
             '_pods_field',
+            '_pods_template',
         );
 
     }
+
+    // order by list
+    public $order_by = array(
+        'title'             => 'Title',
+        'date'              => 'Date Published',
+        'modified'          => 'Date Modified',
+    );
 
 }
 
 
 // include file
 include_once( 'lib/setup-pull-acf.php' );
+include_once( 'lib/setup-pull-acf-dynamic-taxonomy.php' );
 include_once( 'lib/setup-pull-functions.php' );
+include_once( 'lib/setup-pull-generator.php' );
 //include_once( 'lib/setup-pull-variables.php' );
 
