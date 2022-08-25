@@ -462,13 +462,13 @@ class SetupPullMain {
     }
 
 
-	/**
-	 * Main SINGLE function call
-	 */
-	public function setup_pull_single( $block ) {
+    /**
+     * Main SINGLE function call
+     */
+    public function setup_pull_single( $block ) {
 
         global $bars;
-		
+        
         $pull_from = get_field( 'pull-from' );
         if( is_array( $pull_from ) && count( $pull_from ) >= 1 ) {
             
@@ -508,7 +508,7 @@ class SetupPullMain {
         }
         
 
-	}
+    }
 
 
     /**
@@ -585,6 +585,52 @@ class SetupPullMain {
                 $out .= $this->setup_pull_view_template( $etemplate, 'views' );
 
             }
+
+        }
+
+        // POST TYPES
+        $cpt_pt = get_field( 'pull-pt-multi' );
+        $cpt_pt_max = get_field( 'pull-pt-max-multi' );
+        if( !empty( $cpt_pt ) ) {
+
+            // arguments
+            $atts = array(
+                'post_type'         => $cpt_pt,
+                'post_status'       => 'publish',
+                'posts_per_page'    => ( $cpt_pt_max == 0 || $cpt_pt_max == -1 ) ? -1 : $cpt_pt_max,
+                'orderby'           => get_field( 'pull-pt-order-by' ),
+                'order'             => get_field( 'pull-pt-order' ),
+            );
+            
+            $loop = new WP_Query( $atts );
+
+            // loop
+            if( $loop->have_posts() ):
+
+                $post_ids = array();
+
+                // get all post IDs
+                while( $loop->have_posts() ): $loop->the_post();
+                    
+                    if( !in_array( get_the_ID(), $post_ids ) ) {
+
+                        $post_ids[] = get_the_ID();
+
+                        $bars[ 'pid' ] = get_the_ID();
+                    
+                        $out .= $this->setup_pull_view_template( $etemplate, 'views' );
+
+                    }
+                    
+                endwhile;
+
+                /* Restore original Post Data 
+                 * NB: Because we are using new WP_Query we aren't stomping on the 
+                 * original $wp_query and it does not need to be reset.
+                 */
+                wp_reset_postdata();
+
+            endif;
 
         }
 
@@ -778,8 +824,8 @@ class SetupPullMain {
          *
          * @param string $content Content of the current post.
          */
-        $content = apply_filters( 'the_content', $content );
-        $content = str_replace( ']]>', ']]&gt;', $content );
+        // $content = apply_filters( 'the_content', $content );
+        // $content = str_replace( ']]>', ']]&gt;', $content );
 
         return $content;
 
