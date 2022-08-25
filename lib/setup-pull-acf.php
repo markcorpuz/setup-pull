@@ -423,6 +423,7 @@ function acf_setup_subsite_choices( $field ) {
 
 // AUTO FILL SELECT FOR ORDER BY (ACF)
 add_filter( 'acf/load_field/name=pull-order-by', 'atl_tm_ob_autofill_hooks' );
+add_filter( 'acf/load_field/name=pull-pt-order-by', 'atl_tm_ob_autofill_hooks' );
 function atl_tm_ob_autofill_hooks( $field ) {
 
     $hookers = new SetupPullVariables();
@@ -555,6 +556,8 @@ if( !function_exists( 'setup_pulls_view_files' ) ) {
  */
 add_filter( 'acf/load_field/name=pull-post-type-flex', 'acf_setup_load_posttype_choices' ); // MULTI FLEX - ENTRIES
 add_filter( 'acf/load_field/name=pull-post-type-multi', 'acf_setup_load_posttype_choices' ); // MULTI - ENTRIES
+add_filter( 'acf/load_field/name=pull-tax-post-type', 'acf_setup_load_posttype_choices' ); // PULL-TAX
+add_filter( 'acf/load_field/name=pull-pt-multi', 'acf_setup_load_posttype_choices' ); // MULTI - ENTRIES | CPT tab
 function acf_setup_load_posttype_choices( $field ) {
     
     $z = new SetupPullVariables();

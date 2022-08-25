@@ -1,4 +1,3 @@
-
 [
     {
         "key": "group_6263d83d23415",
@@ -46,6 +45,125 @@
                 "return_format": "id"
             },
             {
+                "key": "field_63074f00e4406",
+                "label": "Post Types",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_63074f1ee4408",
+                "label": "Post Types",
+                "name": "pull-pt-multi",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "post": "post",
+                    "page": "page",
+                    "soliloquy": "soliloquy",
+                    "foogallery": "foogallery",
+                    "shortcodesultimate": "shortcodesultimate",
+                    "shelter-floor-plan": "shelter-floor-plan",
+                    "shelter-model": "shelter-model",
+                    "shelter-series": "shelter-series",
+                    "shelter-type": "shelter-type"
+                },
+                "allow_custom": 0,
+                "default_value": [],
+                "layout": "horizontal",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_63076b5de7e68",
+                "label": "Order By",
+                "name": "pull-pt-order-by",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "40",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "title": "Title",
+                    "date": "Date Published",
+                    "modified": "Date Modified"
+                },
+                "default_value": false,
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_63076b8ce7e69",
+                "label": "Order",
+                "name": "pull-pt-order",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "40",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "desc": "Descending",
+                    "asc": "Ascending"
+                },
+                "default_value": "desc",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_6307660ce12a7",
+                "label": "Max Entries",
+                "name": "pull-pt-max-multi",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "20",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 6,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": -1,
+                "max": "",
+                "step": ""
+            },
+            {
                 "key": "field_6263d97a9a6a1",
                 "label": "Taxonomy",
                 "name": "",
@@ -67,7 +185,7 @@
                 "name": "pull-post-type-multi",
                 "type": "checkbox",
                 "instructions": "",
-                "required": 0,
+                "required": 1,
                 "conditional_logic": 0,
                 "wrapper": {
                     "width": "",
@@ -77,13 +195,18 @@
                 "choices": {
                     "post": "post",
                     "page": "page",
-                    "pull": "pull",
-                    "video": "video"
+                    "soliloquy": "soliloquy",
+                    "foogallery": "foogallery",
+                    "shortcodesultimate": "shortcodesultimate",
+                    "shelter-floor-plan": "shelter-floor-plan",
+                    "shelter-model": "shelter-model",
+                    "shelter-series": "shelter-series",
+                    "shelter-type": "shelter-type"
                 },
                 "allow_custom": 0,
                 "default_value": [],
                 "layout": "horizontal",
-                "toggle": 0,
+                "toggle": 1,
                 "return_format": "value",
                 "save_custom": 0
             },
@@ -93,14 +216,14 @@
                 "name": "pull-taxonomy-multi",
                 "type": "taxonomy",
                 "instructions": "",
-                "required": 0,
+                "required": 1,
                 "conditional_logic": 0,
                 "wrapper": {
                     "width": "70",
                     "class": "",
                     "id": ""
                 },
-                "taxonomy": "movie_trailer",
+                "taxonomy": "category",
                 "field_type": "checkbox",
                 "add_term": 1,
                 "save_terms": 0,
@@ -353,8 +476,9 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                     "atl-feature-boxed.php": "atl-feature-boxed",
-                    "atl-featureditem.php": "atl-featureditem",
+                    "atl-feature-model.php": "atl-feature-model",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
@@ -666,8 +790,13 @@
                                         "choices": {
                                             "post": "post",
                                             "page": "page",
-                                            "pull": "pull",
-                                            "video": "video"
+                                            "soliloquy": "soliloquy",
+                                            "foogallery": "foogallery",
+                                            "shortcodesultimate": "shortcodesultimate",
+                                            "shelter-floor-plan": "shelter-floor-plan",
+                                            "shelter-model": "shelter-model",
+                                            "shelter-series": "shelter-series",
+                                            "shelter-type": "shelter-type"
                                         },
                                         "allow_custom": 0,
                                         "default_value": [],
@@ -779,8 +908,9 @@
                                     "id": ""
                                 },
                                 "choices": {
+                                    "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                                     "atl-feature-boxed.php": "atl-feature-boxed",
-                                    "atl-featureditem.php": "atl-featureditem",
+                                    "atl-feature-model.php": "atl-feature-model",
                                     "line-textwcta.php": "line-textwcta",
                                     "pull-all-tax.php": "pull-all-tax",
                                     "pull-all.php": "pull-all",
@@ -963,8 +1093,9 @@
                             "id": ""
                         },
                         "choices": {
+                            "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                             "atl-feature-boxed.php": "atl-feature-boxed",
-                            "atl-featureditem.php": "atl-featureditem",
+                            "atl-feature-model.php": "atl-feature-model",
                             "line-textwcta.php": "line-textwcta",
                             "pull-all-tax.php": "pull-all-tax",
                             "pull-all.php": "pull-all",
@@ -1307,8 +1438,9 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                     "atl-feature-boxed.php": "atl-feature-boxed",
-                    "atl-featureditem.php": "atl-featureditem",
+                    "atl-feature-model.php": "atl-feature-model",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
@@ -1410,7 +1542,7 @@
                 "name": "pull-tax-post-type",
                 "type": "checkbox",
                 "instructions": "",
-                "required": 0,
+                "required": 1,
                 "conditional_logic": 0,
                 "wrapper": {
                     "width": "",
@@ -1420,8 +1552,13 @@
                 "choices": {
                     "post": "post",
                     "page": "page",
-                    "pull": "pull",
-                    "video": "video"
+                    "soliloquy": "soliloquy",
+                    "foogallery": "foogallery",
+                    "shortcodesultimate": "shortcodesultimate",
+                    "shelter-floor-plan": "shelter-floor-plan",
+                    "shelter-model": "shelter-model",
+                    "shelter-series": "shelter-series",
+                    "shelter-type": "shelter-type"
                 },
                 "allow_custom": 0,
                 "default_value": [],
@@ -1436,14 +1573,14 @@
                 "name": "pull-tax-type",
                 "type": "taxonomy",
                 "instructions": "",
-                "required": 0,
+                "required": 1,
                 "conditional_logic": 0,
                 "wrapper": {
                     "width": "70",
                     "class": "",
                     "id": ""
                 },
-                "taxonomy": "movie_trailer",
+                "taxonomy": "set",
                 "field_type": "multi_select",
                 "allow_null": 0,
                 "add_term": 1,
@@ -1684,8 +1821,9 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                     "atl-feature-boxed.php": "atl-feature-boxed",
-                    "atl-featureditem.php": "atl-featureditem",
+                    "atl-feature-model.php": "atl-feature-model",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
@@ -1976,8 +2114,9 @@
                     "id": ""
                 },
                 "choices": {
+                    "atl-feature-boxed-jake.php": "atl-feature-boxed-jake",
                     "atl-feature-boxed.php": "atl-feature-boxed",
-                    "atl-featureditem.php": "atl-featureditem",
+                    "atl-feature-model.php": "atl-feature-model",
                     "line-textwcta.php": "line-textwcta",
                     "pull-all-tax.php": "pull-all-tax",
                     "pull-all.php": "pull-all",
