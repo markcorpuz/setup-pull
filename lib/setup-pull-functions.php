@@ -1146,6 +1146,28 @@ class SetupPullMain {
         }
         
     }
+
+
+    /**
+    * Get Custom Taxonomy Terms
+    */
+    public function atl_get_tax_terms( $tid, $taxname, $anchor = FALSE ) {
+
+        $out = '';
+
+        foreach( $tid as $term ) {
+            $t = get_term_by( 'term_id', $term, $taxname );
+            if( $anchor !== FALSE ) {
+                $out .= '<li><a href="'.get_term_link( $t->term_id ).'">'.$t->name.'</a></li>';
+            } else {
+                $out .= '<li>'.$t->name.'</li>';
+            }
+            
+        }
+
+        return $out;
+
+    }
     
 
 }
