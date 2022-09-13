@@ -60,10 +60,10 @@ echo '<div'.$classes.$inline_style.'>';
 	}
 
 	// Label
-	$plan_label = get_field( 'plan-label', $pid );
+	/*$plan_label = get_field( 'plan-label', $pid );
 	if( !empty( $plan_label ) ) {
-		//echo '<div class="item-plan-label">'.$plan_label.'</div>';
-	}
+		echo '<div class="item-plan-label">'.$plan_label.'</div>';
+	}*/
 
 	// Price
 	$plan_price = get_field( 'plan-price', $pid );
@@ -84,7 +84,11 @@ echo '<div'.$classes.$inline_style.'>';
 	$plan_pic = get_field( "plan-pic", $pid );
 	if( !empty( $plan_pic ) ) {
 		//echo '<div class="item-pic">'.$plan_pic.'</div>';
-		$ppic = wp_get_attachment_image_src( $plan_pic, $mfunc->setup_array_validation( "plan_pic_size", $bars ) ? $bars[ "plan_pic_size" ] : 'full' );
+
+		$initial_size = get_field( "plan-pic-size", $pid );
+
+		$ppic = wp_get_attachment_image_src( $plan_pic, !empty( $initial_size ) ? $initial_size : 'full' );
+		echo '<h3 style="color:orange;">'.$initial_size.'</h3>';
 
 		echo '<div class="item-pic">';
 			echo '<a class="item-pic-link" href="'.get_the_permalink( $pid ).'"><img src="'.$ppic[ 0 ].'" border="0" /></a>';
