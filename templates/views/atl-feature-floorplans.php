@@ -86,9 +86,13 @@ echo '<div'.$classes.$inline_style.'>';
 		//echo '<div class="item-pic">'.$plan_pic.'</div>';
 
 		$initial_size = get_field( "plan-pic-size", $pid );
+		echo '<h3 style="color:orange;">'.$initial_size.'</h3>';
+		if( $pid == 3058 ) {
+			$initial_size = 'thumbnail';
+			echo '<h3 style="color:red;">OVERRIDE SIZE: '.$initial_size.'</h3>';
+		}
 
 		$ppic = wp_get_attachment_image_src( $plan_pic, !empty( $initial_size ) ? $initial_size : 'full' );
-		echo '<h3 style="color:orange;">'.$initial_size.'</h3>';
 
 		echo '<div class="item-pic">';
 			echo '<a class="item-pic-link" href="'.get_the_permalink( $pid ).'"><img src="'.$ppic[ 0 ].'" border="0" /></a>';
