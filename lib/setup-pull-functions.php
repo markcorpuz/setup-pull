@@ -1151,20 +1151,22 @@ class SetupPullMain {
     /**
     * Get Custom Taxonomy Terms
     */
-    public function atl_get_tax_terms( $tid, $taxname, $anchor = FALSE ) {
+    //public function atl_get_tax_terms( $tid, $taxname, $anchor = FALSE ) {
+    public function atl_get_tax_terms( $terms, $anchor = FALSE ) {
 
         $out = '';
-
-        foreach( $tid as $term ) {
-            $t = get_term_by( 'term_id', $term, $taxname );
+        //var_dump( $terms );
+        
+        foreach( $terms as $term ) {
+            
             if( $anchor !== FALSE ) {
-                $out .= '<li><a href="'.get_term_link( $t->term_id ).'">'.$t->name.'</a></li>';
+                $out .= '<li><a href="'.get_term_link( $term->term_id ).'">'.$term->name.'</a></li>';
             } else {
-                $out .= '<li>'.$t->name.'</li>';
+                $out .= '<li>'.$term->name.'</li>';
             }
             
         }
-
+        
         return $out;
 
     }
