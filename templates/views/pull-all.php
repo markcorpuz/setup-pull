@@ -36,13 +36,13 @@ echo '<div'.$classes.$inline_style.'>';
 	}
 	
 	// wp-content
-	/*$wp_content = $mfunc->setup_pull_apply_filters_to_content( $pid );
+	$wp_content = $mfunc->setup_pull_apply_filters_to_content( $pid );
 	if( !empty( $wp_content ) && !empty( $mfunc->setup_field_control_validation( 'content', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
 		echo '<div class="item-content-native"><b>WP CONTENT:</b> ';
 			echo $wp_content;
 		echo '</div>';
 	}
-
+	/*
 	// featured media/image
 	$feat_img = get_the_post_thumbnail_url( $pid, "large" );
 	if( !empty( $feat_img ) && !empty( $mfunc->setup_field_control_validation( 'featured_media', $mfunc->setup_array_validation( "field_control", $bars ) ) ) ) {
